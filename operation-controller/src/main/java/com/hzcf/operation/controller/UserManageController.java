@@ -67,6 +67,35 @@ public class UserManageController {
 
     }
 
+
+    /***
+     * 查看用户信息
+     * @param request
+     * @param
+     * @return
+     */
+    @ApiOperation(value="查看用户信息", notes="查看用户信息")
+    @RequestMapping(value="/detailuserinfo", method= RequestMethod.POST)
+    public Result detailUserInfo(HttpServletRequest request) {
+        Result<Map> ret = new Result<Map>();
+        int userId = StringUtils.strToInt(request.getParameter("userId"));//用户Id
+        if (userId<1) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            SystemUser systemUser = systemUserService.selectByPrimarykey(userId);
+            if (systemUser==null){
+                throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
+            }
+            map.put("data",systemUser);
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        return  ret.setData(map);
+
+    }
     /***
      * 修改用户信息
      * @param request
