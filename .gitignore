@@ -12,3 +12,4 @@ target
 /*.iml
 /operation-service/*.iml
 /.idea
+/logs

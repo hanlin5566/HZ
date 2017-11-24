@@ -1,7 +1,12 @@
 package com.hzcf.operation.gen.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hzcf.operation.base.enums.DataStatus;
 import com.hzcf.operation.base.enums.DerivedVarStatus;
+import com.hzcf.operation.base.serialize.EnumJsonSerializer;
+import com.hzcf.operation.base.util.DateUtils;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**

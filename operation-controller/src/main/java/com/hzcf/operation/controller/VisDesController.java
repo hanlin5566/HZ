@@ -6,7 +6,7 @@ import com.hzcf.operation.base.result.*;
 import com.hzcf.operation.base.util.DateUtils;
 import com.hzcf.operation.base.util.StringUtils;
 import com.hzcf.operation.gen.entity.ErrorLog;
-import com.hzcf.operation.inter.MongoService;
+import com.hzcf.operation.service.MongoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -244,20 +244,20 @@ public class BeanUtils {
         return returnMap;
     }
 
-	public static void main(String[] args) throws Exception {
-		DerivedVariable d = new DerivedVariable();
-		d.setClazzName("a");
-		d.setcTime(new Date());
-		d.setcUid(1);
-		d.setState(DerivedVarStatus.SAVED);
-		DerivedVariableExample e = new DerivedVariableExample();
-		e.createCriteria().andClazzNameLike("a%").andDeployTimeGreaterThan(new Date())
-				.andDeployTimeLessThan(DateUtils.getTomorrow(new Date())).andCUidEqualTo(1)
-				.andStateEqualTo(DerivedVarStatus.SAVED);
-		DerivedVariableExample example = BeanUtils.example(d, DerivedVariableExample.class);
-		System.out.println(e);
-		System.out.println(example);
+//	public static void main(String[] args) throws Exception {
+//		DerivedVariable d = new DerivedVariable();
+//		d.setClazzName("a");
+//		d.setcTime(new Date());
+//		d.setcUid(1);
+//		d.setState(DerivedVarStatus.SAVED);
+//		DerivedVariableExample e = new DerivedVariableExample();
+//		e.createCriteria().andClazzNameLike("a%").andDeployTimeGreaterThan(new Date())
+//				.andDeployTimeLessThan(DateUtils.getTomorrow(new Date())).andCUidEqualTo(1)
+//				.andStateEqualTo(DerivedVarStatus.SAVED);
+//		DerivedVariableExample example = BeanUtils.example(d, DerivedVariableExample.class);
+//		System.out.println(e);
+//		System.out.println(example);
 
-	}
+	//}
 
 }
