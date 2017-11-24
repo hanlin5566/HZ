@@ -1,8 +1,8 @@
-package com.hzcf.operation.service;
+package com.hzcf.operation.service.impl;
 
 import com.hzcf.operation.gen.entity.SystemUser;
 import com.hzcf.operation.gen.mapper.SystemUserMapper;
-import com.hzcf.operation.inter.SystemUserService;
+import com.hzcf.operation.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * work:系统用户管理
  */
 @Service("systemUserService")
-public class SystemUserServiceImpl implements SystemUserService{
+public class SystemUserServiceImpl implements SystemUserService {
 
     @Autowired
     private SystemUserMapper systemUserMapper;

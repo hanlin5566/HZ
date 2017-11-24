@@ -1,9 +1,9 @@
-package com.hzcf.operation.service;
+package com.hzcf.operation.service.impl;
 
 
 import com.hzcf.operation.gen.entity.SystemDept;
 import com.hzcf.operation.gen.mapper.SystemDeptMapper;
-import com.hzcf.operation.inter.SystemDeptService;
+import com.hzcf.operation.service.SystemDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,19 +1,19 @@
-package com.hzcf.operation.service;
+package com.hzcf.operation.service.impl;
 
 import java.util.List;
 
+import com.hzcf.operation.service.DerivedVariableService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hzcf.operation.base.enums.DataStatus;
 import com.hzcf.operation.gen.entity.DerivedVariable;
 import com.hzcf.operation.gen.entity.DerivedVariableExample;
 import com.hzcf.operation.gen.mapper.DerivedVariableMapper;
-import com.hzcf.operation.inter.DerivedVariableService;
 
 /**
  * Create by hanlin on 2017年11月7日
  **/
-public class DerivedVariableServiceImpl implements DerivedVariableService{
+public class DerivedVariableServiceImpl implements DerivedVariableService {
 	
 	@Autowired
 	private DerivedVariableMapper derivedVariableMapper;

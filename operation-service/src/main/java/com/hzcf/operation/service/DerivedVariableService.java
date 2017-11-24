@@ -1,8 +1,8 @@
-package com.hzcf.operation.inter;
-
-import java.util.List;
+package com.hzcf.operation.service;
 
 import com.hzcf.operation.gen.entity.DerivedVariable;
+
+import java.util.List;
 
 /**
  * Create by hanlin on 2017年11月7日

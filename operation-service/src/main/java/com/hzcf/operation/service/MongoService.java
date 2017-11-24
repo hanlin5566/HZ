@@ -1,4 +1,4 @@
-package com.hzcf.operation.inter;
+package com.hzcf.operation.service;
 import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.base.result.ErrorLogQueryDto;
 import com.hzcf.operation.base.result.InterfaceQueryEntity;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface MongoService {
 
-	public List<ErrorLog> getErrorLogs(Date start,Date end);
+	public List<ErrorLog> getErrorLogs(Date start, Date end);
 	Map getPv(String type, Date start, Date end);
 	public Map getTimeUsed(Date start, Date end);
 	public Map getState(Date start, Date end);

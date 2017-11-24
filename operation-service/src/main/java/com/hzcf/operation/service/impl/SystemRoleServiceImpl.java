@@ -1,10 +1,10 @@
-package com.hzcf.operation.service;
+package com.hzcf.operation.service.impl;
 
 
 import com.hzcf.operation.gen.entity.SystemRole;
 import com.hzcf.operation.gen.entity.SystemUser;
 import com.hzcf.operation.gen.mapper.SystemRoleMapper;
-import com.hzcf.operation.inter.SystemRoleService;
+import com.hzcf.operation.service.SystemRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
  * time:2017年11月23日19:37:52
  */
 @Service("systemRoleService")
-public class SystemRoleServiceImpl implements SystemRoleService{
+public class SystemRoleServiceImpl implements SystemRoleService {
 
     @Autowired
     private SystemRoleMapper systemRoleMapper;

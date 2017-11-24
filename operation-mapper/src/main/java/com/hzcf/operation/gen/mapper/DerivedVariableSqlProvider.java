@@ -11,22 +11,34 @@ public class DerivedVariableSqlProvider {
 
     public String insertSelective(DerivedVariable record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("t_derived_var");
+        sql.INSERT_INTO("derived_var");
         
-        if (record.getVarName() != null) {
-            sql.VALUES("var_name", "#{varName,jdbcType=VARCHAR}");
+        if (record.getVarRetName() != null) {
+            sql.VALUES("var_ret_name", "#{varRetName,jdbcType=VARCHAR}");
         }
         
         if (record.getDescription() != null) {
             sql.VALUES("description", "#{description,jdbcType=VARCHAR}");
         }
         
-        if (record.getVarCode() != null) {
-            sql.VALUES("var_code", "#{varCode,jdbcType=VARCHAR}");
+        if (record.getVarRecName() != null) {
+            sql.VALUES("var_rec_name", "#{varRecName,jdbcType=VARCHAR}");
         }
         
-        if (record.getQueryIface() != null) {
-            sql.VALUES("query_iface", "#{queryIface,jdbcType=VARCHAR}");
+        if (record.getVarType() != null) {
+            sql.VALUES("var_type", "#{varType,jdbcType=INTEGER}");
+        }
+        
+        if (record.getVarDataType() != null) {
+            sql.VALUES("var_data_type", "#{varDataType,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDefaultValue() != null) {
+            sql.VALUES("default_value", "#{defaultValue,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getVarGroupId() != null) {
+            sql.VALUES("var_group_id", "#{varGroupId,jdbcType=INTEGER}");
         }
         
         if (record.getClazzName() != null) {
@@ -41,28 +53,66 @@ public class DerivedVariableSqlProvider {
             sql.VALUES("state", "#{state,jdbcType=INTEGER}");
         }
         
-        if (record.getDataStatus() != null) {
-            sql.VALUES("data_status", "#{dataStatus,jdbcType=INTEGER}");
-        }
-        
         if (record.getDeployTime() != null) {
             sql.VALUES("deploy_time", "#{deployTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getcUid() != null) {
-            sql.VALUES("c_uid", "#{cUid,jdbcType=INTEGER}");
+        if (record.getDataStatus() != null) {
+            sql.VALUES("data_status", "#{dataStatus,jdbcType=INTEGER}");
         }
         
-        if (record.getcTime() != null) {
-            sql.VALUES("c_time", "#{cTime,jdbcType=TIMESTAMP}");
+        if (record.getCreateUid() != null) {
+            sql.VALUES("create_uid", "#{createUid,jdbcType=INTEGER}");
         }
         
-        if (record.getuUid() != null) {
-            sql.VALUES("u_uid", "#{uUid,jdbcType=INTEGER}");
+        if (record.getCreateTime() != null) {
+            sql.VALUES("create_time", "#{createTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getuTime() != null) {
-            sql.VALUES("u_time", "#{uTime,jdbcType=TIMESTAMP}");
+        if (record.getUpdateUid() != null) {
+            sql.VALUES("update_uid", "#{updateUid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getUpdateTime() != null) {
+            sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getClassFile() != null) {
+            sql.VALUES("class_file", "#{classFile,jdbcType=LONGVARBINARY}");
+        }
+        
+        return sql.toString();
+    }
+
+    public String selectByExampleWithBLOBs(DerivedVariableExample example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("var_id");
+        } else {
+            sql.SELECT("var_id");
+        }
+        sql.SELECT("var_ret_name");
+        sql.SELECT("description");
+        sql.SELECT("var_rec_name");
+        sql.SELECT("var_type");
+        sql.SELECT("var_data_type");
+        sql.SELECT("default_value");
+        sql.SELECT("var_group_id");
+        sql.SELECT("clazz_name");
+        sql.SELECT("clazz_path");
+        sql.SELECT("state");
+        sql.SELECT("deploy_time");
+        sql.SELECT("data_status");
+        sql.SELECT("create_uid");
+        sql.SELECT("create_time");
+        sql.SELECT("update_uid");
+        sql.SELECT("update_time");
+        sql.SELECT("class_file");
+        sql.FROM("derived_var");
+        applyWhere(sql, example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
         }
         
         return sql.toString();
@@ -75,20 +125,23 @@ public class DerivedVariableSqlProvider {
         } else {
             sql.SELECT("var_id");
         }
-        sql.SELECT("var_name");
+        sql.SELECT("var_ret_name");
         sql.SELECT("description");
-        sql.SELECT("var_code");
-        sql.SELECT("query_iface");
+        sql.SELECT("var_rec_name");
+        sql.SELECT("var_type");
+        sql.SELECT("var_data_type");
+        sql.SELECT("default_value");
+        sql.SELECT("var_group_id");
         sql.SELECT("clazz_name");
         sql.SELECT("clazz_path");
         sql.SELECT("state");
-        sql.SELECT("data_status");
         sql.SELECT("deploy_time");
-        sql.SELECT("c_uid");
-        sql.SELECT("c_time");
-        sql.SELECT("u_uid");
-        sql.SELECT("u_time");
-        sql.FROM("t_derived_var");
+        sql.SELECT("data_status");
+        sql.SELECT("create_uid");
+        sql.SELECT("create_time");
+        sql.SELECT("update_uid");
+        sql.SELECT("update_time");
+        sql.FROM("derived_var");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -100,22 +153,34 @@ public class DerivedVariableSqlProvider {
 
     public String updateByPrimaryKeySelective(DerivedVariable record) {
         SQL sql = new SQL();
-        sql.UPDATE("t_derived_var");
+        sql.UPDATE("derived_var");
         
-        if (record.getVarName() != null) {
-            sql.SET("var_name = #{varName,jdbcType=VARCHAR}");
+        if (record.getVarRetName() != null) {
+            sql.SET("var_ret_name = #{varRetName,jdbcType=VARCHAR}");
         }
         
         if (record.getDescription() != null) {
             sql.SET("description = #{description,jdbcType=VARCHAR}");
         }
         
-        if (record.getVarCode() != null) {
-            sql.SET("var_code = #{varCode,jdbcType=VARCHAR}");
+        if (record.getVarRecName() != null) {
+            sql.SET("var_rec_name = #{varRecName,jdbcType=VARCHAR}");
         }
         
-        if (record.getQueryIface() != null) {
-            sql.SET("query_iface = #{queryIface,jdbcType=VARCHAR}");
+        if (record.getVarType() != null) {
+            sql.SET("var_type = #{varType,jdbcType=INTEGER}");
+        }
+        
+        if (record.getVarDataType() != null) {
+            sql.SET("var_data_type = #{varDataType,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDefaultValue() != null) {
+            sql.SET("default_value = #{defaultValue,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getVarGroupId() != null) {
+            sql.SET("var_group_id = #{varGroupId,jdbcType=INTEGER}");
         }
         
         if (record.getClazzName() != null) {
@@ -130,28 +195,32 @@ public class DerivedVariableSqlProvider {
             sql.SET("state = #{state,jdbcType=INTEGER}");
         }
         
-        if (record.getDataStatus() != null) {
-            sql.SET("data_status = #{dataStatus,jdbcType=INTEGER}");
-        }
-        
         if (record.getDeployTime() != null) {
             sql.SET("deploy_time = #{deployTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getcUid() != null) {
-            sql.SET("c_uid = #{cUid,jdbcType=INTEGER}");
+        if (record.getDataStatus() != null) {
+            sql.SET("data_status = #{dataStatus,jdbcType=INTEGER}");
         }
         
-        if (record.getcTime() != null) {
-            sql.SET("c_time = #{cTime,jdbcType=TIMESTAMP}");
+        if (record.getCreateUid() != null) {
+            sql.SET("create_uid = #{createUid,jdbcType=INTEGER}");
         }
         
-        if (record.getuUid() != null) {
-            sql.SET("u_uid = #{uUid,jdbcType=INTEGER}");
+        if (record.getCreateTime() != null) {
+            sql.SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getuTime() != null) {
-            sql.SET("u_time = #{uTime,jdbcType=TIMESTAMP}");
+        if (record.getUpdateUid() != null) {
+            sql.SET("update_uid = #{updateUid,jdbcType=INTEGER}");
+        }
+        
+        if (record.getUpdateTime() != null) {
+            sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getClassFile() != null) {
+            sql.SET("class_file = #{classFile,jdbcType=LONGVARBINARY}");
         }
         
         sql.WHERE("var_id = #{varId,jdbcType=INTEGER}");

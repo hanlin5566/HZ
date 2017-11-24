@@ -1,8 +1,8 @@
-package com.hzcf.operation.service;
+package com.hzcf.operation.service.impl;
 
 import com.hzcf.operation.gen.entity.SystemMenu;
 import com.hzcf.operation.gen.mapper.SystemMenuMapper;
-import com.hzcf.operation.inter.SystemMenuService;
+import com.hzcf.operation.service.SystemMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * time:2017年11月24日09:49:29
  */
 @Service(value = "systemMenuService")
-public class SystemMenuServiceImpl implements SystemMenuService{
+public class SystemMenuServiceImpl implements SystemMenuService {
 
     @Autowired
     private SystemMenuMapper systemMenuMapper;

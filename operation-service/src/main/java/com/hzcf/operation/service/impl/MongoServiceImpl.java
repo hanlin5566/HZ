@@ -1,4 +1,4 @@
-package com.hzcf.operation.service;
+package com.hzcf.operation.service.impl;
 
 import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.base.result.ErrorLogQueryDto;
@@ -6,7 +6,7 @@ import com.hzcf.operation.base.result.InterfaceQueryEntity;
 import com.hzcf.operation.base.result.LogQuery;
 import com.hzcf.operation.base.util.StringUtils;
 import com.hzcf.operation.gen.entity.ErrorLog;
-import com.hzcf.operation.inter.MongoService;
+import com.hzcf.operation.service.MongoService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;

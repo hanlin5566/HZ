@@ -1,4 +1,4 @@
-package com.hzcf.operation.inter;
+package com.hzcf.operation.service;
 
 
 import com.hzcf.operation.gen.entity.SystemMenu;

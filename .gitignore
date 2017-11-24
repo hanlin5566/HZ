@@ -9,3 +9,6 @@
 target
 /operation-service/.gitignore
 /operations-front/.gitignore
+/*.iml
+/operation-service/*.iml
+/.idea
