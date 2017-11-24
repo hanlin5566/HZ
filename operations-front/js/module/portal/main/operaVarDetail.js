@@ -18,9 +18,8 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 		var me = this;
 		//点击详情时如果为已发布则置为只读
 		if ('PUBLISHED' == state) {
-			me.find(".varName").attr("readonly", "readonly");
-			me.find(".varCode").attr("readonly", "readonly");
-			me.find(".queryIface").attr("readonly", "readonly");
+			me.find(".varRetName").attr("readonly", "readonly");
+			me.find(".varRecName").attr("readonly", "readonly");
 			me.find(".clazzName").attr("readonly", "readonly");
 			editor.setReadOnly(true);
 			me.find('.default-btn').hide();
@@ -41,28 +40,38 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 	OperaVarDetail.prototype.postContent = function(state) {
 		var me = this;
 		var url = "derived";
-		var varName = me.find(".varName").val();
-		var varCode = me.find(".varCode").val();
-		var queryIface = me.find(".queryIface").val();
+		var varRetName = me.find(".varRetName").val();
+		var description = me.find(".description").val();
+		var varDataType = me.find(".varDataType").val();
+		var varRecName = me.find(".varRecName").val();
 		var clazzName = me.find(".clazzName").val();
-		var clazzPath = me.find(".clazzPath").val();
+        var clazzPath = me.find(".clazzPath").val();
 		var content = editor.getValue();
 		// 验证标题与内容
-		if (varName | varName.length <= 0) {
+		if (varRetName | varRetName.length <= 0) {
 			alert('请填写变量名称');
 			me.find(".varName").focus();
 			return;
 		}
-		if (varCode | varCode.length <= 0) {
-			alert('请填写变量标识');
-			me.find(".varCode").focus();
+		if (varDataType | varDataType.length <= 0) {
+			alert('请选择变量类型');
+			me.find(".varDataType").focus();
 			return;
 		}
-		if (queryIface | queryIface.length <= 0) {
-			alert('请填写取数接口');
-			me.find(".queryIface").focus();
+
+        if (varRecName.length <= 0 && varDataType==1) {
+            alert('直接变量请填写变量数据源字段名称');
+            me.find(".varRecName").focus();
+            return;
+        }
+
+		if (varGroupId | varGroupId.length <= 0) {
+			alert('请选择数据源');
+			me.find(".varGroupId").focus();
 			return;
 		}
+
+
 		if (clazzName | clazzName.length <= 0) {
 			alert('请填写变量类名');
 			me.find(".clazzName").focus();
@@ -75,10 +84,10 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 		}
 		var data = {
 			"varId" : me.find("#varId").val(),
-			"varName" : varName,
-			"varCode" : varCode,
-			"queryIface" : queryIface,
-			"clazzName" : clazzName,
+			"varRetName" : varRetName,
+			"description" : description,
+			"varDataType" : varDataType,
+			"varGroupId" : varGroupId,
 			"content" : content,
 			"clazzPath" : clazzPath,
 			"state" : state
@@ -107,6 +116,25 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 			var postStatus = me.find('.default-btn').attr('deployStatus');
 			me.postContent(postStatus);
 		});
+        me.find("#varGroupId").click(function() {
+
+            var url = "/derivedGroup";
+            var loaded  =$('#isLoadedGrops').val();
+            if(loaded==0)
+            {
+                requestUtil.get(url).then(function(result) {
+                    if(result.success){
+                        var data = result.data;
+                        for(var v in data)
+                        {
+                            $('#varGroupId').append("<option value="+data[v].varGroupId+">"+data[v].description+"</option>");
+                        }
+                        $('#isLoadedGrops').val(1);
+                    }
+                });
+            }
+
+        });
 	};
 
 	// 重新显示 绑定数据后绑定点击事件（暂时这么做）
@@ -165,20 +193,24 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 //		});
 		//如果有ID则填充内容
 		if(me.parameter.varId){
-        	var url = "derived/"+me.parameter.varId;
+        	var url = "/derived/"+me.parameter.varId;
         	requestUtil.get(url,null).then(function(result) {
 				if (result.code == 200) {
 					var varId = result.data.varId;
-					var varName = result.data.varName;
-					var varCode = result.data.varCode;
-					var queryIface = result.data.queryIface;
+					var varRetName = result.data.varRetName;
+					var description = result.data.description;
+					var varDataType = result.data.varDataType;
+                    var varRecName = result.data.varRecName;
+                    var varGroupId = result.data.varGroupId;
 					var clazzName = result.data.clazzName;
 					var clazzPath = result.data.clazzPath;
 					var content = result.data.content;
 					me.find("#varId").val(varId);
-					me.find(".varName").val(varName);
-					me.find(".varCode").val(varCode);
-					me.find(".queryIface").val(queryIface);
+					me.find(".varRetName").val(varRetName);
+					me.find(".description").val(description);
+					me.find(".varDataType").val(varDataType);
+                    me.find(".varRecName").val(varRecName);
+                    me.find(".varGroupId").val(varGroupId);
 					me.find(".clazzName").val(clazzName);
 					me.find(".clazzPath").val(clazzPath);
 					editor.setValue(content);

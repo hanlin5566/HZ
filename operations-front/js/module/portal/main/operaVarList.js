@@ -22,9 +22,9 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
         if(varName.length > 0){
         	 temp.varName = varName;
         }
-        var queryIface = me.find("#queryIface").val();
-        if(queryIface.length > 0){
-        	temp.queryIface = queryIface;
+        var varGroupId = me.find("#varGroupId").val();
+        if(varGroupId.length > 0){
+        	temp.varGroupId = varGroupId;
         }
         var state = me.find("#state").val();
         if(state.length > 0){
@@ -96,20 +96,24 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 					    	  checkbox: true,
 					      },
 					      {
-					    	  field: 'varName',
+					    	  field: 'varRetName',
 		                      title: '名称'
 					      },
 					      {
-					    	  field: 'varCode',
-		                      title: '标识'
+					    	  field: 'description',
+		                      title: '变量描述'
 					      },
 					      {
-					    	  field: 'queryIface',
-		                      title: '取数接口'
+					    	  field: 'varType',
+		                      title: '变量类型',
+                              formatter: function (value, row, index) {
+					    	  	if(value=="1") return "直接变量";
+					    	  	if(value=="2") return "衍生变量";
+                              }
 					      },
 					      {
-					    	  field: 'clazzName',
-					    	  title: '算法类'
+					    	  field: 'varDataType',
+					    	  title: '变量类型'
 					      },
 					      {
 					    	  field: 'state',
@@ -127,7 +131,6 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 		                      title: '操作',
 		                      events: operateEvents,
 		                      formatter: function (value, row, index) {
-		                    	  
 		                    	  //已保存
 		                    	  if(row.state.name == 'SAVED'){
 		                    		  return '<a class="state-link" id="varDetail" varId="'+value+'">详情</a>';
@@ -202,7 +205,27 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
                 }
 			});
 		});
-		
+
+        me.find("#varGroupId").click(function() {
+
+            var url = "/derivedGroup";
+            var loaded  =$('#isLoadedGrops').val();
+            if(loaded==0)
+			{
+                requestUtil.get(url).then(function(result) {
+                    if(result.success){
+                        var data = result.data;
+                        for(var v in data)
+                        {
+                            $('#varGroupId').append("<option value="+data[v].varGroupId+">"+data[v].description+"</option>");
+                        }
+                        $('#isLoadedGrops').val(1);
+                    }
+                });
+			}
+
+        });
+
 		me.find("a[name='searchBtn']").click(function() {
 			me.find('#tb_var').bootstrapTable('refresh', me.queryParams);
 		});
