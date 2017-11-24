@@ -1,7 +1,7 @@
 <script id="tpl_operaVarDetail" type="text/x-jsrender">
 <div class="long-main-content">
 	<div class="long-main-title">
-    	<h1><span class="pull-left">发布衍生变量</span> <a href="#" class="default-btn pull-right">保存</a></h1>
+    	<h1><span class="pull-left">发布变量</span> <a href="#" class="default-btn pull-right">保存</a></h1>
     </div>
     <div class="pubOperaMsg-con">
 		<div class="filter">
@@ -9,17 +9,33 @@
 				<input type="hidden" id="varId"/>
 				<input type="hidden" class="clazzPath"/>
 				<div class="col-md-3">
-						<input type="text" placeholder="在此输入算法名称" class="varName"/>
+						<input type="text" placeholder="在此输入变量名称" class="varRetName"/>
 				</div>
 				<div class="col-md-3">
-				 		<input type="text" placeholder="在此输入算法标识" class="varCode"/>
+				 		<input type="text" placeholder="在此输入变量描述" class="description"/>
 				</div>
 				<div class="col-md-3">
-						<input type="text" placeholder="在此输入取数接口" class="queryIface"/>
+						 <select id="varDataType">
+  								<option value ="">--请选择变量类型--</option>
+  								<option value ="1">直接变量</option>
+  								<option value ="2">衍生变量</option>
+							</select>
 				</div>
+
+                <div class="col-md-3">
+				 		<input type="text" placeholder="在此输入直接变量的数据源字段" class="varRecName"/>
+				</div>
+
 				<div class="col-md-3">
-						<input type="text" placeholder="在此输入算法类名" class="clazzName"/>
+						<input type="text" placeholder="在此输入变量算法类名" class="clazzName"/>
 				</div>
+				 <div class="col-md-3">
+						     <input type="hidden"  id="isLoadedGrops" value="0"/>
+							  <select id="varGroupId" onmousedown="this.size=10" style="position: absolute;z-index: 1;width:180px;"
+							  onblur="this.size=0" onchange="this.size=0">
+  								<option value ="">--请选择取数接口名称--</option>
+							</select>
+				 </div>
 				<pre id="aceEditor" style="height: 800px;margin-left: 10px"></pre>
 			</div>
 		</div>

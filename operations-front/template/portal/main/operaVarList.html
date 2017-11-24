@@ -1,7 +1,7 @@
 <script id="tpl_operaVarList" type="text/x-jsrender">
 <div class="long-main-content">
 	<div class="long-main-title">
-		<h1>衍生变量</h1>
+		<h1>变量管理</h1>
 	</div>
 	<div class="teach-admin">
 		<div class="admin-con">
@@ -10,14 +10,18 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-3">
-							 <input type="text" placeholder="请输入变量衍生名称" id="varName" maxlength="40"/>
+							 <input type="text" placeholder="请输入变量名称" id="varName" maxlength="40"/>
 						</div>
 						<div class="col-md-3">
-							 <input type="text" placeholder="请输入取数接口名称" id="queryIface" maxlength="40"/>
+						     <input type="hidden"  id="isLoadedGrops" value="0"/>
+							  <select id="varGroupId" onmousedown="this.size=10" style="position: absolute;z-index: 1;width:180px;"
+							  onblur="this.size=0" onchange="this.size=0">
+  								<option value ="">--请选择取数接口名称--</option>
+							</select>
 						</div>
 						<div class="col-md-3">
 							 <select id="state">
-  								<option value ="">--请选择衍生变量状态--</option>
+  								<option value ="">--请选择变量状态--</option>
   								<option value ="SAVED">已保存</option>
   								<option value ="COMPILED">通过编译</option>
  								<option value="PUBLISHED">已发布</option>

@@ -17,7 +17,7 @@ html { font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-ad
 
 /*首页*/
 /*header*/
-.page-container{width:1160px; margin:75px auto}
+.page-container{width:100%; margin:75px auto}
 .nav-header{height:60px; position:fixed; top:0; right:0; left:0; background-color:#fff; z-index:9999; box-shadow:2px 2px 5px rgba(102,102,102,.1)}
 .nav-header .header-wrap{width:1160px; margin:auto; position:relative} 
 .nav-header .logo{float:left; width:210px}
@@ -39,11 +39,11 @@ html { font-family: sans-serif; -ms-text-size-adjust: 100%; -webkit-text-size-ad
 .nav-header .mobile a:hover span{display:inline; width:120px; height:120px; position:absolute; top:60px} 
 .nav-header .mobile a:hover span img{ width:100%}
 /*左侧*/
-.layout-nav-wrapper{position:fixed; top:75px; width:220px; margin-right:15px;border-radius:4px; overflow:hidden}
+.layout-nav-wrapper{position:fixed; top:75px; width:220px; margin-right:15px;margin-left:15px;border-radius:4px; overflow:hidden}
 .layout-nav-wrapper li{ border-bottom:solid 1px #eee}
 /*中间*/
 .layout-main{width:600px; float:left; margin-left:235px;}
-.layout-long-main{width:925px; float:left; padding:0 10px 50px; margin-bottom:50px; background-color:#fff; border-radius:4px;margin-left:235px;}
+.layout-long-main{width:80%; float:left; padding:0 10px 50px; margin-bottom:50px; background-color:#fff; border-radius:4px;margin-left:250px;}
 .layout-main .editwrap{background-color:#fff;border-radius:4px; box-shadow:2px 2px 3px rgba(204,204,204,.6)}
 .layout-main .editwrap .inner-content{ border:solid 1px #eee}
 .layout-main .editwrap .hidecon .icon-up{ display:block;cursor:pointer; opacity:.5; margin-top:10px}

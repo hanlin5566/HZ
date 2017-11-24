@@ -35,19 +35,35 @@
                 pageCode: "operaVarList",
                 positionId: "layout_manage",
                 layoutId: "layout_manage",
-                label: "衍生变量"
+                label: "变量管理"
             });
-            var level2 = new Menu({
+            level2 = new Menu({
                 pageCode: "operaVarDetail",
                 positionId: "layout_manage",
                 layoutId: "layout_manage",
-                label: "活动消息"
+                label: "衍生变量详情"
+            });
+            level1.addChild(level2);
+            nodeNavbar.addChild(level1);
+            level1 = new Menu({
+                pageCode: "operaVarGroupList",
+                positionId: "layout_manage",
+                layoutId: "layout_manage",
+                label: "变量源管理"
+
+            });
+            level2 = new Menu({
+                pageCode: "operaVarGroupDetail",
+                positionId: "layout_manage",
+                layoutId: "layout_manage",
+                label: "变量源详情"
 
             });
             level1.addChild(level2);
             nodeNavbar.addChild(level1);
             nodeHeader.addChild(nodeNavbar);
             pageTree.addChild(nodeHeader);
+
             /*******************************/
             nodeHeader = new Menu({
                 pageCode: "personal_center",
@@ -76,8 +92,8 @@
                 layoutId: "layout_manage",
                 label: "日志管理",
             });
-
             nodeNavbar.addChild(level1);
+
             nodeHeader.addChild(nodeNavbar);
             pageTree.addChild(nodeHeader);
             me.pageTree = pageTree;
