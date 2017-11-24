@@ -42,7 +42,8 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 		var url = "derived";
 		var varRetName = me.find(".varRetName").val();
 		var description = me.find(".description").val();
-		var varDataType = me.find(".varDataType").val();
+		var varDataType = me.find("#varDataType").val();
+        var varGroupId = me.find("#varGroupId").val();
 		var varRecName = me.find(".varRecName").val();
 		var clazzName = me.find(".clazzName").val();
         var clazzPath = me.find(".clazzPath").val();
@@ -53,9 +54,9 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 			me.find(".varName").focus();
 			return;
 		}
-		if (varDataType | varDataType.length <= 0) {
+		if (varDataType==0) {
 			alert('请选择变量类型');
-			me.find(".varDataType").focus();
+			me.find("#varDataType").focus();
 			return;
 		}
 
@@ -65,9 +66,9 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
             return;
         }
 
-		if (varGroupId | varGroupId.length <= 0) {
+		if (varGroupId.length == 0) {
 			alert('请选择数据源');
-			me.find(".varGroupId").focus();
+			me.find("#varGroupId").focus();
 			return;
 		}
 

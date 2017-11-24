@@ -10,6 +10,15 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 	
 	var sessionId;
 
+    // 页面初始化
+    OperaVarGroupList.prototype.create = function() {
+        var me = this;
+        me.renderMainContent("tpl_operaVarGroupList");
+        me.renderPage();
+        me.bindEvent();
+    };
+
+	//查询参数处理
     OperaVarGroupList.prototype.queryParams = function(params) {
         var me = this;
         var sessionIdParameter = sessionId;
@@ -29,16 +38,12 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
         return temp;
     };
 	
-	// 页面初始化
-    OperaVarGroupList.prototype.create = function() {
-		var me = this;
-		me.renderMainContent("tpl_operaVarGroupList");
-		me.renderPage();
-		me.bindEvent();
-	};
 
+
+    //渲染数据
     OperaVarGroupList.prototype.renderPage = function() {
 		var me=this;
+		//table字段的事件绑定
 		var operateEvents = {
 				'click #varGroupDetail': function (e, value, row, index) {
 					me.moveTo('operaVarGroupDetail',{
@@ -46,7 +51,8 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 					});
 				}
 		};
-		
+
+		//表格渲染
 		var url = "/derivedGroup"
 		var $table = new Table(
 				me.find("#tb_var_group"),
@@ -124,7 +130,7 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 		
 	};
 	
-	//页面点击
+	//页面事件
     OperaVarGroupList.prototype.bindEvent = function() {
 		var me = this;
 		me.find("#remove").click(function() {

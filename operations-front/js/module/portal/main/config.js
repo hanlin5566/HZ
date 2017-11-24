@@ -45,22 +45,26 @@
             });
             level1.addChild(level2);
             nodeNavbar.addChild(level1);
+
+            //设置一个新Menu
             level1 = new Menu({
-                pageCode: "operaVarGroupList",
+                pageCode: "operaVarGroupList",//js 文件名 模块
                 positionId: "layout_manage",
                 layoutId: "layout_manage",
                 label: "变量源管理"
 
             });
-            level2 = new Menu({
+            nodeNavbar.addChild(level1);//右侧导航显示
+            level2 = new Menu({// 模块子页面
                 pageCode: "operaVarGroupDetail",
                 positionId: "layout_manage",
                 layoutId: "layout_manage",
                 label: "变量源详情"
 
             });
-            level1.addChild(level2);
-            nodeNavbar.addChild(level1);
+            level1.addChild(level2);//导航栏目下的子页面
+
+
             nodeHeader.addChild(nodeNavbar);
             pageTree.addChild(nodeHeader);
 
