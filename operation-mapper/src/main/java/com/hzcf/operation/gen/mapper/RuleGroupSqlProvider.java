@@ -1,60 +1,24 @@
 package com.hzcf.operation.gen.mapper;
 
-import com.hzcf.operation.gen.entity.DerivedVariableExample.Criteria;
-import com.hzcf.operation.gen.entity.DerivedVariableExample.Criterion;
-import com.hzcf.operation.gen.entity.DerivedVariableExample;
-import com.hzcf.operation.gen.entity.DerivedVariableWithBLOBs;
+import com.hzcf.operation.gen.entity.RuleGroup;
+import com.hzcf.operation.gen.entity.RuleGroupExample.Criteria;
+import com.hzcf.operation.gen.entity.RuleGroupExample.Criterion;
+import com.hzcf.operation.gen.entity.RuleGroupExample;
 import java.util.List;
 import org.apache.ibatis.jdbc.SQL;
 
-public class DerivedVariableSqlProvider {
+public class RuleGroupSqlProvider {
 
-    public String insertSelective(DerivedVariableWithBLOBs record) {
+    public String insertSelective(RuleGroup record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("derived_var");
+        sql.INSERT_INTO("rule_group");
         
-        if (record.getVarRetName() != null) {
-            sql.VALUES("var_ret_name", "#{varRetName,jdbcType=VARCHAR}");
+        if (record.getRuleId() != null) {
+            sql.VALUES("rule_id", "#{ruleId,jdbcType=INTEGER}");
         }
         
-        if (record.getDescription() != null) {
-            sql.VALUES("description", "#{description,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVarRecName() != null) {
-            sql.VALUES("var_rec_name", "#{varRecName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVarType() != null) {
-            sql.VALUES("var_type", "#{varType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getVarDataType() != null) {
-            sql.VALUES("var_data_type", "#{varDataType,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getDefaultValue() != null) {
-            sql.VALUES("default_value", "#{defaultValue,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVarGroupId() != null) {
-            sql.VALUES("var_group_id", "#{varGroupId,jdbcType=INTEGER}");
-        }
-        
-        if (record.getClazzName() != null) {
-            sql.VALUES("clazz_name", "#{clazzName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getState() != null) {
-            sql.VALUES("state", "#{state,jdbcType=INTEGER}");
-        }
-        
-        if (record.getDeployTime() != null) {
-            sql.VALUES("deploy_time", "#{deployTime,jdbcType=TIMESTAMP}");
-        }
-        
-        if (record.getDataStatus() != null) {
-            sql.VALUES("data_status", "#{dataStatus,jdbcType=INTEGER}");
+        if (record.getGroupId() != null) {
+            sql.VALUES("group_id", "#{groupId,jdbcType=INTEGER}");
         }
         
         if (record.getCreateUid() != null) {
@@ -73,134 +37,47 @@ public class DerivedVariableSqlProvider {
             sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getClassFile() != null) {
-            sql.VALUES("class_file", "#{classFile,jdbcType=LONGVARBINARY}");
-        }
-        
-        if (record.getClazzPath() != null) {
-            sql.VALUES("clazz_path", "#{clazzPath,jdbcType=LONGVARBINARY}");
-        }
-        
-        if (record.getTestDemo() != null) {
-            sql.VALUES("test_demo", "#{testDemo,jdbcType=LONGVARCHAR}");
-        }
-        
-        return sql.toString();
-    }
-
-    public String selectByExampleWithBLOBs(DerivedVariableExample example) {
-        SQL sql = new SQL();
-        if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("var_id");
-        } else {
-            sql.SELECT("var_id");
-        }
-        sql.SELECT("var_ret_name");
-        sql.SELECT("description");
-        sql.SELECT("var_rec_name");
-        sql.SELECT("var_type");
-        sql.SELECT("var_data_type");
-        sql.SELECT("default_value");
-        sql.SELECT("var_group_id");
-        sql.SELECT("clazz_name");
-        sql.SELECT("state");
-        sql.SELECT("deploy_time");
-        sql.SELECT("data_status");
-        sql.SELECT("create_uid");
-        sql.SELECT("create_time");
-        sql.SELECT("update_uid");
-        sql.SELECT("update_time");
-        sql.SELECT("class_file");
-        sql.SELECT("clazz_path");
-        sql.SELECT("test_demo");
-        sql.FROM("derived_var");
-        applyWhere(sql, example, false);
-        
-        if (example != null && example.getOrderByClause() != null) {
-            sql.ORDER_BY(example.getOrderByClause());
-        }
-        
-        return sql.toString();
-    }
-
-    public String selectByExample(DerivedVariableExample example) {
-        SQL sql = new SQL();
-        if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("var_id");
-        } else {
-            sql.SELECT("var_id");
-        }
-        sql.SELECT("var_ret_name");
-        sql.SELECT("description");
-        sql.SELECT("var_rec_name");
-        sql.SELECT("var_type");
-        sql.SELECT("var_data_type");
-        sql.SELECT("default_value");
-        sql.SELECT("var_group_id");
-        sql.SELECT("clazz_name");
-        sql.SELECT("state");
-        sql.SELECT("deploy_time");
-        sql.SELECT("data_status");
-        sql.SELECT("create_uid");
-        sql.SELECT("create_time");
-        sql.SELECT("update_uid");
-        sql.SELECT("update_time");
-        sql.FROM("derived_var");
-        applyWhere(sql, example, false);
-        
-        if (example != null && example.getOrderByClause() != null) {
-            sql.ORDER_BY(example.getOrderByClause());
-        }
-        
-        return sql.toString();
-    }
-
-    public String updateByPrimaryKeySelective(DerivedVariableWithBLOBs record) {
-        SQL sql = new SQL();
-        sql.UPDATE("derived_var");
-        
-        if (record.getVarRetName() != null) {
-            sql.SET("var_ret_name = #{varRetName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getDescription() != null) {
-            sql.SET("description = #{description,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVarRecName() != null) {
-            sql.SET("var_rec_name = #{varRecName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVarType() != null) {
-            sql.SET("var_type = #{varType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getVarDataType() != null) {
-            sql.SET("var_data_type = #{varDataType,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getDefaultValue() != null) {
-            sql.SET("default_value = #{defaultValue,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVarGroupId() != null) {
-            sql.SET("var_group_id = #{varGroupId,jdbcType=INTEGER}");
-        }
-        
-        if (record.getClazzName() != null) {
-            sql.SET("clazz_name = #{clazzName,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getState() != null) {
-            sql.SET("state = #{state,jdbcType=INTEGER}");
-        }
-        
-        if (record.getDeployTime() != null) {
-            sql.SET("deploy_time = #{deployTime,jdbcType=TIMESTAMP}");
-        }
-        
         if (record.getDataStatus() != null) {
-            sql.SET("data_status = #{dataStatus,jdbcType=INTEGER}");
+            sql.VALUES("data_status", "#{dataStatus,jdbcType=INTEGER}");
+        }
+        
+        return sql.toString();
+    }
+
+    public String selectByExample(RuleGroupExample example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("id");
+        } else {
+            sql.SELECT("id");
+        }
+        sql.SELECT("rule_id");
+        sql.SELECT("group_id");
+        sql.SELECT("create_uid");
+        sql.SELECT("create_time");
+        sql.SELECT("update_uid");
+        sql.SELECT("update_time");
+        sql.SELECT("data_status");
+        sql.FROM("rule_group");
+        applyWhere(sql, example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
+        }
+        
+        return sql.toString();
+    }
+
+    public String updateByPrimaryKeySelective(RuleGroup record) {
+        SQL sql = new SQL();
+        sql.UPDATE("rule_group");
+        
+        if (record.getRuleId() != null) {
+            sql.SET("rule_id = #{ruleId,jdbcType=INTEGER}");
+        }
+        
+        if (record.getGroupId() != null) {
+            sql.SET("group_id = #{groupId,jdbcType=INTEGER}");
         }
         
         if (record.getCreateUid() != null) {
@@ -219,24 +96,16 @@ public class DerivedVariableSqlProvider {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
         
-        if (record.getClassFile() != null) {
-            sql.SET("class_file = #{classFile,jdbcType=LONGVARBINARY}");
+        if (record.getDataStatus() != null) {
+            sql.SET("data_status = #{dataStatus,jdbcType=INTEGER}");
         }
         
-        if (record.getClazzPath() != null) {
-            sql.SET("clazz_path = #{clazzPath,jdbcType=LONGVARBINARY}");
-        }
-        
-        if (record.getTestDemo() != null) {
-            sql.SET("test_demo = #{testDemo,jdbcType=LONGVARCHAR}");
-        }
-        
-        sql.WHERE("var_id = #{varId,jdbcType=INTEGER}");
+        sql.WHERE("id = #{id,jdbcType=INTEGER}");
         
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, DerivedVariableExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, RuleGroupExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

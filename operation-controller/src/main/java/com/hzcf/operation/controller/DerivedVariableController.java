@@ -1,12 +1,17 @@
 package com.hzcf.operation.controller;
 
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.hzcf.compile.DynamicEngine;
+import com.hzcf.compile.JavaStringCompiler;
+import com.hzcf.operation.gen.entity.DerivedVariableWithBLOBs;
+import com.hzcf.variable.engine.DerivedAlgorithms;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
@@ -59,12 +64,12 @@ public class DerivedVariableController {
 	@RequestMapping(value={"/{varId}"}, method=RequestMethod.GET)
 	public Result<DerivedVariableExt>getDerivedVariable(@PathVariable Integer varId) throws Exception {
 		Result<DerivedVariableExt> ret = new Result<DerivedVariableExt>();
-		DerivedVariable result = derivedVariableMapper.selectByPrimaryKey(varId);
+		DerivedVariableExample example = new DerivedVariableExample();
+		example.createCriteria().andVarIdEqualTo(varId);
+		List<DerivedVariableWithBLOBs> result = derivedVariableMapper.selectByExampleWithBLOBs(example);
 		//读取文件并将内容写入
-		String path = result.getClazzPath();
-		FileReader in = new FileReader(new File(path));
-		String content = FileCopyUtils.copyToString(in);
-		DerivedVariableExt copyResult = BeanUtils.copyProperties(result, DerivedVariableExt.class);
+		String content = new String(result.get(0).getClazzPath());
+		DerivedVariableExt copyResult = BeanUtils.copyProperties(result.get(0), DerivedVariableExt.class);
 		copyResult.setContent(content);
 		ret.setData(copyResult);
 		return ret;
@@ -73,14 +78,13 @@ public class DerivedVariableController {
 	@ApiOperation(value="保存或新增衍生变量", notes="根据衍生变量ID，保存或新增衍生变量。获取request仅为了拿到存储文件地址")
     @RequestMapping(value={""}, method=RequestMethod.POST)
 	public Result<Integer> saveOrUpdate(@RequestBody DerivedVariableExt derivedVar,HttpServletRequest request) throws Exception {
+		//文件保存至本地
+		String fileName = UUID.randomUUID().toString().replaceAll("-", "")+".tmp";
+		String filePath = request.getServletContext().getRealPath(fileName);
+		derivedVar.setClazzPath(derivedVar.getContent().getBytes());
 		if(derivedVar.getVarId()!= null){
-			derivedVariableMapper.updateByPrimaryKey(derivedVar);
+			derivedVariableMapper.updateByPrimaryKeyWithBLOBs(derivedVar);
 		}else{
-			//新增状态文件保存至本地
-			String fileName = UUID.randomUUID().toString().replaceAll("-", "")+".tmp";
-			String filePath = request.getServletContext().getRealPath(fileName);
-			FileCopyUtils.copy(derivedVar.getClazzPath().getBytes(), new File(filePath));
-			derivedVar.setClazzPath(filePath);
 			derivedVariableMapper.insert(derivedVar);
 		}
 		Result<Integer> ret = new Result<Integer>();
@@ -95,7 +99,27 @@ public class DerivedVariableController {
 		if(StringUtils.isEmpty(content)){
 			throw new CustomException(ResponseCode.ERROR_PARAM, "传入文件内容不能为空");
 		}
-		Result<String> result = CompileUtils.javaCodeToObject(derivedVar.getClazzPath());
+		JavaStringCompiler dynamicEngine =new JavaStringCompiler();
+		String packagePath = "com.hzcf.variable.engine.algorithms.";
+		String fullClassName =packagePath + derivedVar.getVarRetName();
+		final Map<String,byte[]> classBytes =new HashMap<>();
+		Object derived = dynamicEngine.compile(derivedVar.getVarRetName(),fullClassName,content,classBytes);
+		Result<String> result =  new Result<>();
+		if(derived instanceof String)
+		{
+			result.setResponseCode(ResponseCode.RESULT_SYSTEM_ERROR);
+			result.setData(derived.toString());
+		}
+		else if(derived instanceof DerivedAlgorithms)
+		{
+			DerivedAlgorithms derivedAlgorithms = (DerivedAlgorithms)derived;
+			derivedAlgorithms.setVarName(derivedVar.getVarRetName());
+			String ret = derivedAlgorithms.execute(derivedVar.getTestDemo().toString());
+			result.setData(derivedVar.getVarRetName()+"="+ret);
+			derivedVar.setClazzName(fullClassName);
+			derivedVar.setClassFile(classBytes.entrySet().iterator().next().getValue());
+			derivedVariableMapper.updateByPrimaryKeyWithBLOBs(derivedVar);
+		}
 		return result;
 	}
 }

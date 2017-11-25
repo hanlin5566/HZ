@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * derived_var 变量管理表
- * @author huhanlin 2017-11-24
+ * @author huhanlin 2017-11-25
  */
 public class DerivedVariable {
     /**
@@ -60,11 +60,6 @@ public class DerivedVariable {
     private String clazzName;
 
     /**
-     * 算法类保存的路径，新建与已编译时为本地地址，发布时为文件服务器地址。
-     */
-    private String clazzPath;
-
-    /**
      * 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
      */
     @JsonSerialize(using = EnumJsonSerializer.class)
@@ -103,11 +98,6 @@ public class DerivedVariable {
      */
     @DateTimeFormat(pattern = DateUtils.ISO_DATE)
     private Date updateTime;
-
-    /**
-     * 变量的class文件，目前不支持内部类等，因为一个java文件有可能编译出多个class文件，放入一个字段回有问题。日后迁移至文件服务器时，可以用一个classList，动态按序加载class
-     */
-    private byte[] classFile;
 
     /**
      * 变量主键
@@ -254,22 +244,6 @@ public class DerivedVariable {
     }
 
     /**
-     * 算法类保存的路径，新建与已编译时为本地地址，发布时为文件服务器地址。
-     * @return clazz_path 算法类保存的路径，新建与已编译时为本地地址，发布时为文件服务器地址。
-     */
-    public String getClazzPath() {
-        return clazzPath;
-    }
-
-    /**
-     * 算法类保存的路径，新建与已编译时为本地地址，发布时为文件服务器地址。
-     * @param clazzPath 算法类保存的路径，新建与已编译时为本地地址，发布时为文件服务器地址。
-     */
-    public void setClazzPath(String clazzPath) {
-        this.clazzPath = clazzPath == null ? null : clazzPath.trim();
-    }
-
-    /**
      * 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
      * @return state 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
      */
@@ -379,21 +353,5 @@ public class DerivedVariable {
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
-    }
-
-    /**
-     * 变量的class文件，目前不支持内部类等，因为一个java文件有可能编译出多个class文件，放入一个字段回有问题。日后迁移至文件服务器时，可以用一个classList，动态按序加载class
-     * @return class_file 变量的class文件，目前不支持内部类等，因为一个java文件有可能编译出多个class文件，放入一个字段回有问题。日后迁移至文件服务器时，可以用一个classList，动态按序加载class
-     */
-    public byte[] getClassFile() {
-        return classFile;
-    }
-
-    /**
-     * 变量的class文件，目前不支持内部类等，因为一个java文件有可能编译出多个class文件，放入一个字段回有问题。日后迁移至文件服务器时，可以用一个classList，动态按序加载class
-     * @param classFile 变量的class文件，目前不支持内部类等，因为一个java文件有可能编译出多个class文件，放入一个字段回有问题。日后迁移至文件服务器时，可以用一个classList，动态按序加载class
-     */
-    public void setClassFile(byte[] classFile) {
-        this.classFile = classFile;
     }
 }

@@ -25,7 +25,6 @@ public class CompileUtils {
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		// 建立DiagnosticCollector对象
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-
 		// 建立用于保存被编译文件名的对象
 		// 每个文件被保存在一个从JavaFileObject继承的类中
 		StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(diagnostics, null, null);

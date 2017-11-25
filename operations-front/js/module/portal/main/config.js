@@ -20,15 +20,14 @@
              * level2 : 二级页面
              * level3 : 三级页面
              */
-            /**************系统运维*****************/
+            /**************变量管理*****************/
             var nodeHeader = new Menu({
-                pageCode: "my_work",
-                label: "系统运维",
+                pageCode: "var_center",
+                label: "变量管理",
                 isMenu: true
             });
-
             var nodeNavbar = new Menu({
-                pageCode: "my_work_main",
+                pageCode: "var_center_main",
                 isMenu: true,
             });
             level1 = new Menu({
@@ -45,7 +44,6 @@
             });
             level1.addChild(level2);
             nodeNavbar.addChild(level1);
-
             //设置一个新Menu
             level1 = new Menu({
                 pageCode: "operaVarGroupList",//js 文件名 模块
@@ -63,45 +61,73 @@
 
             });
             level1.addChild(level2);//导航栏目下的子页面
+            nodeHeader.addChild(nodeNavbar);
+            pageTree.addChild(nodeHeader);
 
+            /**************规则管理*****************/
+            var nodeHeader = new Menu({
+                pageCode: "rule_center",
+                label: "规则管理",
+                isMenu: true
+            });
+            var nodeNavbar = new Menu({
+                pageCode: "var_center_main",
+                isMenu: true,
+            });
+            level1 = new Menu({
+                pageCode: "operaRuleGroupList",
+                positionId: "layout_manage",
+                layoutId: "layout_manage",
+                label: "规则组管理"
+            });
+            nodeNavbar.addChild(level1);
+
+            level2 = new Menu({
+                pageCode: "operaRuleList",
+                positionId: "layout_manage",
+                layoutId: "layout_manage",
+                label: "规则库管理"
+            });
+            level21 = new Menu({
+                pageCode: "operaRuleDetail",
+                positionId: "layout_manage",
+                layoutId: "layout_manage",
+                label: "规则开发"
+            });
+            level2.addChild(level21);
+            nodeNavbar.addChild(level2);
 
             nodeHeader.addChild(nodeNavbar);
             pageTree.addChild(nodeHeader);
 
-            /*******************************/
+            /****************监控中心***************/
             nodeHeader = new Menu({
-                pageCode: "personal_center",
-                label: "个人中心",
+                pageCode: "monitor_center",
+                label: "监控中心",
                 isMenu: true
             });
-
             nodeNavbar = new Menu({
-                pageCode: "personal_center_main",
+                pageCode: "monitor_center_main",
                 isMenu: true
             });
-
             level1 = new Menu({
                 pageCode: "info_myinfo",
                 positionId: "layout_manage",
                 layoutId: "layout_manage",
-                label: "个人信息",
+                label: "决策日志",
             });
-
             nodeNavbar.addChild(level1);
             nodeHeader.addChild(nodeNavbar);
-
             level1 = new Menu({
                 pageCode: "system_manage_log",
                 positionId: "layout_manage",
                 layoutId: "layout_manage",
-                label: "日志管理",
+                label: "访问日志",
             });
             nodeNavbar.addChild(level1);
-
             nodeHeader.addChild(nodeNavbar);
             pageTree.addChild(nodeHeader);
             me.pageTree = pageTree;
-
             me.getPageMapping();
 
             // layout与页面对应关系，每个layout都显示哪些widget，粗匹配，如果涉及到西匹配，这个配置要移动到每个页面内部配置（pageList）

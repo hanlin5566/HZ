@@ -2,6 +2,7 @@ package com.hzcf.operation.gen.mapper;
 
 import com.hzcf.operation.gen.entity.DerivedVariable;
 import com.hzcf.operation.gen.entity.DerivedVariableExample;
+import com.hzcf.operation.gen.entity.DerivedVariableWithBLOBs;
 import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -28,27 +29,27 @@ public interface DerivedVariableMapper {
         "var_rec_name, var_type, ",
         "var_data_type, default_value, ",
         "var_group_id, clazz_name, ",
-        "clazz_path, state, ",
-        "deploy_time, data_status, ",
-        "create_uid, create_time, ",
-        "update_uid, update_time, ",
-        "class_file)",
+        "state, deploy_time, ",
+        "data_status, create_uid, ",
+        "create_time, update_uid, ",
+        "update_time, class_file, ",
+        "clazz_path, test_demo)",
         "values (#{varRetName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, ",
         "#{varRecName,jdbcType=VARCHAR}, #{varType,jdbcType=INTEGER}, ",
         "#{varDataType,jdbcType=VARCHAR}, #{defaultValue,jdbcType=VARCHAR}, ",
         "#{varGroupId,jdbcType=INTEGER}, #{clazzName,jdbcType=VARCHAR}, ",
-        "#{clazzPath,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, ",
-        "#{deployTime,jdbcType=TIMESTAMP}, #{dataStatus,jdbcType=INTEGER}, ",
-        "#{createUid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
-        "#{updateUid,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, ",
-        "#{classFile,jdbcType=LONGVARBINARY})"
+        "#{state,jdbcType=INTEGER}, #{deployTime,jdbcType=TIMESTAMP}, ",
+        "#{dataStatus,jdbcType=INTEGER}, #{createUid,jdbcType=INTEGER}, ",
+        "#{createTime,jdbcType=TIMESTAMP}, #{updateUid,jdbcType=INTEGER}, ",
+        "#{updateTime,jdbcType=TIMESTAMP}, #{classFile,jdbcType=LONGVARBINARY}, ",
+        "#{clazzPath,jdbcType=LONGVARBINARY}, #{testDemo,jdbcType=LONGVARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="varId", before=false, resultType=Integer.class)
-    int insert(DerivedVariable record);
+    int insert(DerivedVariableWithBLOBs record);
 
     @InsertProvider(type=DerivedVariableSqlProvider.class, method="insertSelective")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="varId", before=false, resultType=Integer.class)
-    int insertSelective(DerivedVariable record);
+    int insertSelective(DerivedVariableWithBLOBs record);
 
     @SelectProvider(type=DerivedVariableSqlProvider.class, method="selectByExampleWithBLOBs")
     @Results({
@@ -61,7 +62,6 @@ public interface DerivedVariableMapper {
         @Result(column="default_value", property="defaultValue", jdbcType=JdbcType.VARCHAR),
         @Result(column="var_group_id", property="varGroupId", jdbcType=JdbcType.INTEGER),
         @Result(column="clazz_name", property="clazzName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.VARCHAR),
         @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
         @Result(column="deploy_time", property="deployTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
@@ -69,9 +69,11 @@ public interface DerivedVariableMapper {
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="class_file", property="classFile", jdbcType=JdbcType.LONGVARBINARY)
+        @Result(column="class_file", property="classFile", jdbcType=JdbcType.LONGVARBINARY),
+        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.LONGVARBINARY),
+        @Result(column="test_demo", property="testDemo", jdbcType=JdbcType.LONGVARCHAR)
     })
-    List<DerivedVariable> selectByExampleWithBLOBsWithRowbounds(DerivedVariableExample example, RowBounds rowBounds);
+    List<DerivedVariableWithBLOBs> selectByExampleWithBLOBsWithRowbounds(DerivedVariableExample example, RowBounds rowBounds);
 
     @SelectProvider(type=DerivedVariableSqlProvider.class, method="selectByExampleWithBLOBs")
     @Results({
@@ -84,7 +86,6 @@ public interface DerivedVariableMapper {
         @Result(column="default_value", property="defaultValue", jdbcType=JdbcType.VARCHAR),
         @Result(column="var_group_id", property="varGroupId", jdbcType=JdbcType.INTEGER),
         @Result(column="clazz_name", property="clazzName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.VARCHAR),
         @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
         @Result(column="deploy_time", property="deployTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
@@ -92,9 +93,11 @@ public interface DerivedVariableMapper {
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="class_file", property="classFile", jdbcType=JdbcType.LONGVARBINARY)
+        @Result(column="class_file", property="classFile", jdbcType=JdbcType.LONGVARBINARY),
+        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.LONGVARBINARY),
+        @Result(column="test_demo", property="testDemo", jdbcType=JdbcType.LONGVARCHAR)
     })
-    List<DerivedVariable> selectByExampleWithBLOBs(DerivedVariableExample example);
+    List<DerivedVariableWithBLOBs> selectByExampleWithBLOBs(DerivedVariableExample example);
 
     @SelectProvider(type=DerivedVariableSqlProvider.class, method="selectByExample")
     @Results({
@@ -107,7 +110,6 @@ public interface DerivedVariableMapper {
         @Result(column="default_value", property="defaultValue", jdbcType=JdbcType.VARCHAR),
         @Result(column="var_group_id", property="varGroupId", jdbcType=JdbcType.INTEGER),
         @Result(column="clazz_name", property="clazzName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.VARCHAR),
         @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
         @Result(column="deploy_time", property="deployTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
@@ -129,7 +131,6 @@ public interface DerivedVariableMapper {
         @Result(column="default_value", property="defaultValue", jdbcType=JdbcType.VARCHAR),
         @Result(column="var_group_id", property="varGroupId", jdbcType=JdbcType.INTEGER),
         @Result(column="clazz_name", property="clazzName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.VARCHAR),
         @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
         @Result(column="deploy_time", property="deployTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
@@ -143,8 +144,8 @@ public interface DerivedVariableMapper {
     @Select({
         "select",
         "var_id, var_ret_name, description, var_rec_name, var_type, var_data_type, default_value, ",
-        "var_group_id, clazz_name, clazz_path, state, deploy_time, data_status, create_uid, ",
-        "create_time, update_uid, update_time, class_file",
+        "var_group_id, clazz_name, state, deploy_time, data_status, create_uid, create_time, ",
+        "update_uid, update_time, class_file, clazz_path, test_demo",
         "from derived_var",
         "where var_id = #{varId,jdbcType=INTEGER}"
     })
@@ -158,7 +159,6 @@ public interface DerivedVariableMapper {
         @Result(column="default_value", property="defaultValue", jdbcType=JdbcType.VARCHAR),
         @Result(column="var_group_id", property="varGroupId", jdbcType=JdbcType.INTEGER),
         @Result(column="clazz_name", property="clazzName", jdbcType=JdbcType.VARCHAR),
-        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.VARCHAR),
         @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
         @Result(column="deploy_time", property="deployTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
@@ -166,12 +166,14 @@ public interface DerivedVariableMapper {
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="class_file", property="classFile", jdbcType=JdbcType.LONGVARBINARY)
+        @Result(column="class_file", property="classFile", jdbcType=JdbcType.LONGVARBINARY),
+        @Result(column="clazz_path", property="clazzPath", jdbcType=JdbcType.LONGVARBINARY),
+        @Result(column="test_demo", property="testDemo", jdbcType=JdbcType.LONGVARCHAR)
     })
-    DerivedVariable selectByPrimaryKey(Integer varId);
+    DerivedVariableWithBLOBs selectByPrimaryKey(Integer varId);
 
     @UpdateProvider(type=DerivedVariableSqlProvider.class, method="updateByPrimaryKeySelective")
-    int updateByPrimaryKeySelective(DerivedVariable record);
+    int updateByPrimaryKeySelective(DerivedVariableWithBLOBs record);
 
     @Update({
         "update derived_var",
@@ -183,7 +185,6 @@ public interface DerivedVariableMapper {
           "default_value = #{defaultValue,jdbcType=VARCHAR},",
           "var_group_id = #{varGroupId,jdbcType=INTEGER},",
           "clazz_name = #{clazzName,jdbcType=VARCHAR},",
-          "clazz_path = #{clazzPath,jdbcType=VARCHAR},",
           "state = #{state,jdbcType=INTEGER},",
           "deploy_time = #{deployTime,jdbcType=TIMESTAMP},",
           "data_status = #{dataStatus,jdbcType=INTEGER},",
@@ -191,10 +192,12 @@ public interface DerivedVariableMapper {
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_uid = #{updateUid,jdbcType=INTEGER},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",
-          "class_file = #{classFile,jdbcType=LONGVARBINARY}",
+          "class_file = #{classFile,jdbcType=LONGVARBINARY},",
+          "clazz_path = #{clazzPath,jdbcType=LONGVARBINARY},",
+          "test_demo = #{testDemo,jdbcType=LONGVARCHAR}",
         "where var_id = #{varId,jdbcType=INTEGER}"
     })
-    int updateByPrimaryKeyWithBLOBs(DerivedVariable record);
+    int updateByPrimaryKeyWithBLOBs(DerivedVariableWithBLOBs record);
 
     @Update({
         "update derived_var",
@@ -206,7 +209,6 @@ public interface DerivedVariableMapper {
           "default_value = #{defaultValue,jdbcType=VARCHAR},",
           "var_group_id = #{varGroupId,jdbcType=INTEGER},",
           "clazz_name = #{clazzName,jdbcType=VARCHAR},",
-          "clazz_path = #{clazzPath,jdbcType=VARCHAR},",
           "state = #{state,jdbcType=INTEGER},",
           "deploy_time = #{deployTime,jdbcType=TIMESTAMP},",
           "data_status = #{dataStatus,jdbcType=INTEGER},",
