@@ -1,5 +1,8 @@
 package com.hzcf.operation.gen.entity;
 
+import com.hzcf.operation.base.util.DateUtils;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 /**
@@ -11,6 +14,26 @@ public class ErrorLog {
     private String message;
     private String timestamp;
     private String fileName;
+    @DateTimeFormat(pattern = DateUtils.ISO_DATE)
+    private Date beginTime;
+    @DateTimeFormat(pattern = DateUtils.ISO_DATE)
+    private Date endTime;
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
 
     public String get_id() {
         return _id;

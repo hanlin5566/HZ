@@ -2,6 +2,7 @@ package com.hzcf.operation.service;
 import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.base.result.ErrorLogQueryDto;
 import com.hzcf.operation.base.result.InterfaceQueryEntity;
+import com.hzcf.operation.base.result.InterfaceRecordEntity;
 import com.hzcf.operation.base.result.LogQuery;
 import com.hzcf.operation.gen.entity.ErrorLog;
 
@@ -17,8 +18,9 @@ public interface MongoService {
 	public Map getState(Date start, Date end);
 	public Map getError(String id);
 	//InterfaceQueryEntity
-	public List<LogQuery> getLogQuery(ErrorLogQueryDto params);
+	public List<LogQuery> getLogQuery(InterfaceQueryEntity params);
 	public PageInfo getLogQueryCount(InterfaceQueryEntity params);
 	public Map getLogDetail(String id);
+	public Map getRuleIntoMsg(String taskId, String interfaceParentType, String interfaceType, String releId);
 
 }

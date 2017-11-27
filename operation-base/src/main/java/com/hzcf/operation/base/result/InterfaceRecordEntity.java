@@ -13,6 +13,15 @@ public class InterfaceRecordEntity {
 	private String queryHi;
 	private String queryHis;
 	private Long timeUsed;
+	private String taskId;
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
 
 	public String getQueryHis() {
 		return queryHis;

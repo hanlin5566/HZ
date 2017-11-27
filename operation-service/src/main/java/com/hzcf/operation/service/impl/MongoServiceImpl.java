@@ -3,6 +3,7 @@ package com.hzcf.operation.service.impl;
 import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.base.result.ErrorLogQueryDto;
 import com.hzcf.operation.base.result.InterfaceQueryEntity;
+import com.hzcf.operation.base.result.InterfaceRecordEntity;
 import com.hzcf.operation.base.result.LogQuery;
 import com.hzcf.operation.base.util.StringUtils;
 import com.hzcf.operation.gen.entity.ErrorLog;
@@ -10,6 +11,8 @@ import com.hzcf.operation.service.MongoService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -37,8 +40,13 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 @Service("mongoService")
 public class MongoServiceImpl implements MongoService {
 
-    @Resource(name = "mongoTemplate")
-    public MongoTemplate mongoTemplate;
+    @Autowired
+    @Qualifier(value = "hjAPIpiMongoTemplate")
+    protected MongoTemplate mongoTemplate;
+
+
+    /*@Resource(name = "mongoTemplate")
+    public MongoTemplate mongoTemplate;*/
 
     public static final String collectionErrorName = "log_error";
     public static final String collectionQueryName = "log_query";
@@ -55,7 +63,7 @@ public class MongoServiceImpl implements MongoService {
         //System.out.println("格式化之后 时间："+df.format(start));
         //System.out.println("转换之后八小时时差："+start);
         DBObject dbObjectTime = new BasicDBObject();
-        dbObjectTime.put("$gte", start);
+        dbObjectTime.put("$gte", df.format(start));
         dbObject.put("timestamp", dbObjectTime);
 
         DBObject fieldObject = new BasicDBObject();
@@ -65,7 +73,6 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message", true);
 
         Query query_ = new BasicQuery(dbObject, fieldObject);
-        System.out.println("query:"+query_);
         List<ErrorLog> list = mongoTemplate.find(query_, ErrorLog.class, collectionErrorName);
         return list;
     }
@@ -177,7 +184,7 @@ public class MongoServiceImpl implements MongoService {
     }
 
     @Override
-    public List<LogQuery> getLogQuery(ErrorLogQueryDto params) {
+    public List<LogQuery> getLogQuery(InterfaceQueryEntity params) {
         Query query = getQueryForLog(params);
         Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "_id"));
         List<LogQuery> list = mongoTemplate.find(query.with(sort).skip((params.getPageNo()-1)*params.getPageSize()).limit(params.getPageSize()), LogQuery.class, "log_query");
@@ -242,5 +249,67 @@ public class MongoServiceImpl implements MongoService {
         return query;
     }
 
+
+    private Query getQueryForLog2(InterfaceQueryEntity params)
+    {
+        DBObject dbObject = new BasicDBObject();
+        if (StringUtils.isNotNull(params.getIdCard())) {
+            dbObject.put("message.idCard", params.getIdCard());
+        }
+        if (StringUtils.isNotNull(params.getName())) {
+            dbObject.put("message.name", params.getName());
+        }
+        if (StringUtils.isNotNull(params.getMobile())) {
+            dbObject.put("message.mobile", params.getMobile());
+        }
+        if (StringUtils.isNotNull(params.getUserId())) {
+            dbObject.put("message.userId", params.getUserId());
+        }
+        if (StringUtils.isNotNull(params.getState())) {
+            dbObject.put("message.state", params.getState());
+        }
+        if (StringUtils.isNotNull(params.getInterfaceType())) {
+            dbObject.put("message.interfaceType", params.getInterfaceType());
+        }
+
+        if (StringUtils.isNotNull(params.getInterfaceParentType())) {
+            dbObject.put("message.interfaceParentType", params.getInterfaceParentType());
+        }
+       /* Calendar calendar = Calendar.getInstance();//有8小时时差
+        calendar.set(2017, 8, 10, 16, 28, 0);
+        Date start = calendar.getTime();
+        calendar.set(2018, 8, 10, 16, 28, 0);*/
+        //Date end = calendar.getTime();
+       // DBObject dbObjectTime = new BasicDBObject();
+       // dbObjectTime.put("$gte", start);
+       // dbObjectTime.put("$lt", end);
+       //dbObject.put("message.queryTime", dbObjectTime);
+        DBObject fieldObject = new BasicDBObject();
+        fieldObject.put("_id", true);
+        fieldObject.put("message.interfaceParentType", true);
+        fieldObject.put("message.interfaceType", true);
+        fieldObject.put("message.timeUsed", true);
+        fieldObject.put("message.idCard", true);
+        fieldObject.put("message.ipAddress", true);
+        fieldObject.put("message.mobile", true);
+        fieldObject.put("message.userName", true);
+        fieldObject.put("message.queryTime", true);
+        fieldObject.put("message.state", true);
+        Query query= new BasicQuery(dbObject, fieldObject);
+        return query;
+    }
+    @Override
+    public Map getRuleIntoMsg(String taskId, String interfaceParentType, String interfaceType, String releId) {
+
+        InterfaceQueryEntity params = new InterfaceQueryEntity();
+        params.setInterfaceParentType(interfaceParentType);
+        params.setInterfaceType(interfaceType);
+        params.setTaskId(taskId);
+        //params.setRuleId(releId);
+        Query query = getQueryForLog2(params);
+        Map x =  mongoTemplate.findOne(query, Map.class,collectionQueryName);
+       // List<InterfaceRecordEntity> list = mongoTemplate.find(query, InterfaceRecordEntity.class,collectionQueryName);
+        return x;
+    }
 }
 

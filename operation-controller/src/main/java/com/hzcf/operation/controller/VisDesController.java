@@ -38,25 +38,20 @@ public class VisDesController {
      * @return
      */
     @ApiOperation(value="数据平台异常监控", notes="根据查询日期获取平台异常监控信息")
-    @RequestMapping(value="/queryErrors", method= RequestMethod.POST)
-    public Result queryLogErrorList(HttpServletRequest request,ErrorLogQueryDto errorLogQueryDto) {
+    @RequestMapping(value="/queryErrorsByTime")
+    public Result queryLogErrorList(HttpServletRequest request,ErrorLog errorLogQueryDto) {
         Result<List<ErrorLog>> ret = new Result<List<ErrorLog>>();
 
-        if (!StringUtils.isNotNull(errorLogQueryDto.getBeginTime())) {
+        if (errorLogQueryDto==null) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
-        Map<String, Object> validate = new HashMap<String, Object>();
-        Date begin ;
-        Date end;
+        List<ErrorLog>  errorsList = new ArrayList<>();
         try {
-             validate   = DateUtils.validate(request, errorLogQueryDto.getBeginTime(), errorLogQueryDto.getEndTime());
-             begin = (Date) validate.get("beginTime");
-             end = (Date) validate.get("endTime");
+              errorsList  = mongoService.getErrorLogs(errorLogQueryDto.getBeginTime(),errorLogQueryDto.getEndTime());
+
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-
-        List<ErrorLog>  errorsList  = mongoService.getErrorLogs(begin,end);
         return  ret.setData(errorsList);
     }
 
@@ -64,22 +59,22 @@ public class VisDesController {
     /***
      * work:数据平台异常监控详情
      * @param request
-     * @param orderNo=主键 id
+     * @param  id
      * @return
      */
 
     @ApiOperation(value="数据平台异常监控详情", notes="数据异常详情")
-    @RequestMapping(value="/getErrorByOrno", method= RequestMethod.POST)
-    public Result getErrorByOrderNo(HttpServletRequest request,String orderNo) {
+    @RequestMapping(value="/getErrorBylogErrorId")
+    public Result getErrorByOrderNo(HttpServletRequest request,String logErrorId) {
         Result<Map> ret = new Result<Map>();
 
-        if (!StringUtils.isNotNull(orderNo)) {
+        if (!StringUtils.isNotNull(logErrorId)) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
         Map<String, Object> map = new HashMap<String, Object>();
 
         try {
-            map  =  mongoService.getError(orderNo);
+            map  =  mongoService.getError(logErrorId);
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
@@ -91,20 +86,20 @@ public class VisDesController {
     /***
      * 接口查询详情
      * @param request
-     * @param orderNo
+     * @param queryLogId
      * @return
      */
     @ApiOperation(value="接口查询使用详情", notes="根据主键I")
-    @RequestMapping(value="/getErrorDetail", method= RequestMethod.POST)
-    public Result getErrorDetail(HttpServletRequest request,String orderNo) {
+    @RequestMapping(value="/getQueryDetail")
+    public Result getErrorDetail(HttpServletRequest request,String queryLogId) {
         Result<Map> ret = new Result<Map>();
 
-        if (!StringUtils.isNotNull(orderNo)) {
+        if (!StringUtils.isNotNull(queryLogId)) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            Map  detailMap = mongoService.getLogDetail(orderNo);
+            Map  detailMap = mongoService.getLogDetail(queryLogId);
             map.put("message",detailMap.get("message"));
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
@@ -115,7 +110,7 @@ public class VisDesController {
 
 
     @ApiOperation(value="获取详", notes="")
-    @RequestMapping(value="/{module}", method= RequestMethod.POST)
+    @RequestMapping(value="/{module}")
     public Result getErrorLogsByModule(HttpServletRequest request,String orderNo,String beginTime,String endTime,@PathVariable(value = "module") String module) {
         Result<Map> ret = new Result<Map>();
 
@@ -129,7 +124,6 @@ public class VisDesController {
             Map dateMap   = DateUtils.validate(request, beginTime, endTime);
             begin = (Date) dateMap.get("beginTime");
             end = (Date) dateMap.get("endTime");
-            System.out.printf("转换之后的时间:"+begin+end);
             Map reLog = new HashMap();
             switch (module){
                 case "queryBySeconds":reLog = mongoService.getPv("queryHis",begin,end);break;
@@ -147,7 +141,7 @@ public class VisDesController {
 
 
     @ApiOperation(value="获取分页数据", notes="分页")
-    @RequestMapping(value="/queryErrorLogs", method= RequestMethod.POST)
+    @RequestMapping(value="/queryErrorLogs")
     public ResultPage getReponseBody(HttpServletRequest request,ErrorLogQueryDto errorLogQueryDto) {
         ResultPage<LogQuery> ret = new ResultPage<LogQuery>();
         if (!StringUtils.isNotNull(errorLogQueryDto.getBeginTime())||!StringUtils.isNotNull(errorLogQueryDto.getEndTime())) {
@@ -169,6 +163,30 @@ public class VisDesController {
         ret.setData(logs);
         ret.setPageInfo(page);
         return  ret;
+    }
+
+    @ApiOperation(value="获取规则集", notes="获取规则集详情根据taskId-interfaceParentType-ruleId")
+    @RequestMapping(value="/getRuleIntoMsg")
+    public Result getRuleIntoMsg(HttpServletRequest request) {
+        Result ret = new Result();
+        String taskId = request.getParameter("taskId");
+        String interfaceParentType = request.getParameter("interfaceParentType");
+        String interfaceType = request.getParameter("interfaceType");
+        String ruleId =request.getParameter("ruleId");
+        //必要参数验证
+        if (!StringUtils.isNotNull(taskId)||!StringUtils.isNotNull(interfaceParentType)||!StringUtils.isNotNull(interfaceParentType)
+                ||!StringUtils.isNotNull(interfaceType)||!StringUtils.isNotNull(ruleId)) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
+        }
+
+        Map x = new HashMap();
+        try {
+            x  =  mongoService.getRuleIntoMsg("TS1405021988111022446","baiRong","baiRong_ApplyLoanStr",null);
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        return  ret.setData(x);
+
     }
 
 }
