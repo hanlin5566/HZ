@@ -17,10 +17,10 @@ public interface MongoService {
 	public Map getTimeUsed(Date start, Date end);
 	public Map getState(Date start, Date end);
 	public Map getError(String id);
-	//InterfaceQueryEntity
 	public List<LogQuery> getLogQuery(InterfaceQueryEntity params);
 	public PageInfo getLogQueryCount(InterfaceQueryEntity params);
 	public Map getLogDetail(String id);
 	public Map getRuleIntoMsg(String taskId, String interfaceParentType, String interfaceType, String releId);
+	public Map getDesionMsg(String taskId,String parentInterfaceType,String interfaceType);
 
 }
