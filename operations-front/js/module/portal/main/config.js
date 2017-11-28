@@ -130,6 +130,36 @@
             me.pageTree = pageTree;
             me.getPageMapping();
 
+            /**********系统管理***********/
+            nodeHeader = new Menu({
+                pageCode: "system_center",
+                label: "系统管理",
+                isMenu: true
+            });
+            nodeNavbar = new Menu({
+                pageCode: "system_center_main",
+                isMenu: true
+            });
+            level1 = new Menu({
+                pageCode: "operaUserList",
+                positionId: "layout_manage",
+                layoutId: "layout_manage",
+                label: "用户管理",
+            });
+            nodeNavbar.addChild(level1);
+            nodeHeader.addChild(nodeNavbar);
+            level1 = new Menu({
+                pageCode: "role_info",
+                positionId: "layout_manage",
+                layoutId: "layout_manage",
+                label: "角色管理",
+            });
+            nodeNavbar.addChild(level1);
+            nodeHeader.addChild(nodeNavbar);
+            pageTree.addChild(nodeHeader);
+            me.pageTree = pageTree;
+            me.getPageMapping();
+
             // layout与页面对应关系，每个layout都显示哪些widget，粗匹配，如果涉及到西匹配，这个配置要移动到每个页面内部配置（pageList）
             me.layoutPageMapping = {
                 layout_work: [

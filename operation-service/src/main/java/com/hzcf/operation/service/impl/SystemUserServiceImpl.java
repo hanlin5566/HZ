@@ -1,10 +1,14 @@
 package com.hzcf.operation.service.impl;
 
+import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.gen.entity.SystemUser;
+import com.hzcf.operation.gen.entity.SystemUserExample;
 import com.hzcf.operation.gen.mapper.SystemUserMapper;
 import com.hzcf.operation.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 /***
@@ -31,6 +35,11 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Override
     public SystemUser selectByPrimarykey(int id){
         return  systemUserMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<SystemUser> getSystemUserByCondition(SystemUserExample examp, PageInfo pageInfo){
+        return  systemUserMapper.selectByExampleWithRowbounds(examp,pageInfo);
     }
 
 }
