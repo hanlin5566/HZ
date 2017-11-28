@@ -35,7 +35,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
- * Created by liqinwen on 2017/9/4.
+ * 
  */
 @Service("mongoService")
 public class MongoServiceImpl implements MongoService {
@@ -307,9 +307,9 @@ public class MongoServiceImpl implements MongoService {
         params.setTaskId(taskId);
         //params.setRuleId(releId);
         Query query = getQueryForLog2(params);
-        Map x =  mongoTemplate.findOne(query, Map.class,collectionQueryName);
+        Map queryMap =  mongoTemplate.findOne(query, Map.class,collectionQueryName);
        // List<InterfaceRecordEntity> list = mongoTemplate.find(query, InterfaceRecordEntity.class,collectionQueryName);
-        return x;
+        return queryMap;
     }
 }
 
