@@ -45,11 +45,17 @@ public class MongoServiceImpl implements MongoService {
     protected MongoTemplate mongoTemplate;
 
 
+    @Autowired
+    @Qualifier(value = "hjDecisionMongoTemplate")
+    protected MongoTemplate decisionMongoTemplate;
+
     /*@Resource(name = "mongoTemplate")
     public MongoTemplate mongoTemplate;*/
 
     public static final String collectionErrorName = "log_error";
     public static final String collectionQueryName = "log_query";
+
+    public static final String hjDecisionStep = "step";//HjDecision
 
 
     @Override
@@ -298,6 +304,54 @@ public class MongoServiceImpl implements MongoService {
         Query query= new BasicQuery(dbObject, fieldObject);
         return query;
     }
+
+    private Query getQueryDecisionSet(InterfaceQueryEntity params)
+    {
+        DBObject dbObject = new BasicDBObject();
+        if (StringUtils.isNotNull(params.getIdCard())) {
+            dbObject.put("message.idCard", params.getIdCard());
+        }
+        if (StringUtils.isNotNull(params.getName())) {
+            dbObject.put("message.name", params.getName());
+        }
+        if (StringUtils.isNotNull(params.getMobile())) {
+            dbObject.put("message.mobile", params.getMobile());
+        }
+        if (StringUtils.isNotNull(params.getUserId())) {
+            dbObject.put("message.userId", params.getUserId());
+        }
+        if (StringUtils.isNotNull(params.getState())) {
+            dbObject.put("message.state", params.getState());
+        }
+        if (StringUtils.isNotNull(params.getInterfaceType())) {
+            dbObject.put("message.interfaceType", params.getInterfaceType());
+        }
+
+        if (StringUtils.isNotNull(params.getInterfaceParentType())) {
+            dbObject.put("message.interfaceParentType", params.getInterfaceParentType());
+        }
+
+        DBObject fieldObject = new BasicDBObject();
+        fieldObject.put("_id", true);
+        fieldObject.put("message.interfaceParentType", true);
+        fieldObject.put("message.interfaceType", true);
+      /*  fieldObject.put("message.timeUsed", true);
+        fieldObject.put("message.idCard", true);
+        fieldObject.put("message.ipAddress", true);
+        fieldObject.put("message.mobile", true);
+        fieldObject.put("message.userName", true);*/
+        fieldObject.put("message.queryTime", true);
+        fieldObject.put("message.state", true);
+        fieldObject.put("message.ruleId",true);
+        fieldObject.put("message.queryTime",true);
+        fieldObject.put("message.queryParams",true);
+        fieldObject.put("message.results",true);
+        fieldObject.put("msaage.returnTime",true);
+        fieldObject.put("message.timeUsed",true);
+        Query query= new BasicQuery(dbObject, fieldObject);
+        return query;
+    }
+
     @Override
     public Map getRuleIntoMsg(String taskId, String interfaceParentType, String interfaceType, String releId) {
 
@@ -310,6 +364,17 @@ public class MongoServiceImpl implements MongoService {
         Map queryMap =  mongoTemplate.findOne(query, Map.class,collectionQueryName);
        // List<InterfaceRecordEntity> list = mongoTemplate.find(query, InterfaceRecordEntity.class,collectionQueryName);
         return queryMap;
+    }
+
+    @Override
+    public Map getDesionMsg(String taskId,String parentInterfaceType,String interfaceType){
+        InterfaceQueryEntity param = new InterfaceQueryEntity();
+        param.setInterfaceParentType(interfaceType);
+        param.setInterfaceParentType(parentInterfaceType);
+        param.setTaskId(taskId);
+        Query query = getQueryDecisionSet(param);
+        Map map =decisionMongoTemplate.findOne(query,Map.class,hjDecisionStep);
+        return map;
     }
 }
 

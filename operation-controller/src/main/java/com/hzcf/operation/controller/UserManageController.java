@@ -1,12 +1,17 @@
 package com.hzcf.operation.controller;
 
 
+import com.hzcf.operation.base.entity.PageEntity;
+import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.base.exception.CustomException;
 import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
+import com.hzcf.operation.base.result.ResultPage;
+import com.hzcf.operation.base.util.BeanUtils;
 import com.hzcf.operation.base.util.StringUtils;
 import com.hzcf.operation.gen.entity.SystemRole;
 import com.hzcf.operation.gen.entity.SystemUser;
+import com.hzcf.operation.gen.entity.SystemUserExample;
 import com.hzcf.operation.service.SystemRoleService;
 import com.hzcf.operation.service.SystemUserService;
 import io.swagger.annotations.Api;
@@ -17,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /***
  *  work:用户管理
@@ -35,6 +38,42 @@ public class UserManageController {
 
     @Autowired
     private SystemRoleService systemRoleService;
+
+
+    /***
+     * 用户信息
+     * @param request
+     * @param systemUser
+     * @return
+     */
+    @ApiOperation(value="用户信息", notes="查询用户信息Bycondition")
+    @RequestMapping(value="/queryUserInfo")
+    public ResultPage queryUserInfo(HttpServletRequest request, SystemUser systemUser, PageEntity page) {
+        ResultPage ret = new ResultPage();
+        List<SystemUser> list = new ArrayList<>();
+        PageInfo pageInfo = page.toPageInfo();
+        try {
+          /*  System.out.println(systemUser.getUserName());
+            SystemUserExample example = new SystemUserExample();
+            example.createCriteria().andDataStatusEqualTo(1);//正常数据
+            if (systemUser.getUserName()!=null) {
+                example.createCriteria().andUserNameLike(systemUser.getUserName());
+            }if (systemUser.getUserPhone()!=null){
+                example.createCriteria().andUserPhoneEqualTo(systemUser.getUserPhone());
+            }if (systemUser.getCreateTime()!=null){
+                example.createCriteria().andCreateTimeEqualTo(systemUser.getCreateTime());
+            }*/
+            SystemUserExample example = BeanUtils.example(systemUser,SystemUserExample.class);
+            list = systemUserService.getSystemUserByCondition(example,pageInfo);
+
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        ret.setPageInfo(pageInfo);
+        ret.setData(list);
+        return  ret;
+
+    }
 
 
     /***

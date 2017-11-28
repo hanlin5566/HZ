@@ -58,7 +58,7 @@ public class VisDesController {
     /***
      * work:数据平台异常监控详情
      * @param request
-     * @param  id
+     * @param
      * @return
      */
 
@@ -144,16 +144,11 @@ public class VisDesController {
     public ResultPage getReponseBody(HttpServletRequest request,ErrorLogQueryDto errorLogQueryDto) {
         ResultPage<LogQuery> ret = new ResultPage<LogQuery>();
         if (!StringUtils.isNotNull(errorLogQueryDto.getBeginTime())||!StringUtils.isNotNull(errorLogQueryDto.getEndTime())) {
-            ret.setCode(401);
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
-        Map<String, Object> validate = new HashMap<String, Object>();
         List<LogQuery> logs = new ArrayList<>();
         PageInfo page = new PageInfo();
         try {
-           // validate   = DateUtils.validate(request, errorLogQueryDto.getBeginTime(), errorLogQueryDto.getEndTime());
-            //Date  begin = (Date) validate.get("beginTime");
-            //Date  end = (Date) validate.get("endTime");
             logs = mongoService.getLogQuery(errorLogQueryDto);
             page = mongoService.getLogQueryCount(errorLogQueryDto);
         }catch (Exception e){
@@ -178,13 +173,37 @@ public class VisDesController {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
 
-        Map x = new HashMap();
+        Map returnMap = new HashMap();
         try {
-            x  =  mongoService.getRuleIntoMsg("TS1405021988111022446","baiRong","baiRong_ApplyLoanStr",null);
+            returnMap  =  mongoService.getRuleIntoMsg("TS1405021988111022446","baiRong","baiRong_ApplyLoanStr",null);
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-        return  ret.setData(x);
+        return  ret.setData(returnMap);
+
+    }
+
+    @ApiOperation(value="获取决策引擎信息", notes="获取决策引擎信息根据taskId-interfaceParentType-interfaceType")
+    @RequestMapping(value="/getDecisionMsg")
+    public Result getDecisionMsg(HttpServletRequest request) {
+        Result ret = new Result();
+        String taskId = request.getParameter("taskId");
+        String interfaceParentType = request.getParameter("interfaceParentType");
+        String interfaceType = request.getParameter("interfaceType");
+
+        //必要参数验证
+        if (!StringUtils.isNotNull(taskId)||!StringUtils.isNotNull(interfaceParentType)||!StringUtils.isNotNull(interfaceParentType)
+                ||!StringUtils.isNotNull(interfaceType)) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
+        }
+
+        Map returnMap = new HashMap();
+        try {
+            returnMap  =  mongoService.getDesionMsg("AP500228199306179610","variable","app");
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        return  ret.setData(returnMap);
 
     }
 

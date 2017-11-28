@@ -15,7 +15,7 @@ define(['util/logger', ],
     var TEST_DOMAIN = false;
     var FRONT_DOMAIN = "operationsWebIf";
     var SERVER_DOMAIN = document.domain;
-    if (SERVER_DOMAIN.indexOf('edupj') < 0) {
+    if (SERVER_DOMAIN.indexOf('hzcf') < 0) {
         SERVER_DOMAIN = 'localhost';
         TEST_DOMAIN = true;
     }
