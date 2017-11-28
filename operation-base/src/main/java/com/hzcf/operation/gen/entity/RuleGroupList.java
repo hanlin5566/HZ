@@ -1,15 +1,17 @@
 package com.hzcf.operation.gen.entity;
 
-import com.hzcf.operation.base.enums.DataStatus;
-import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hzcf.operation.base.enums.DataStatus;
+import com.hzcf.operation.base.enums.RuleGroupStatus;
 import com.hzcf.operation.base.serialize.EnumJsonSerializer;
 import com.hzcf.operation.base.util.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 /**
- * rule_group_name 规则组
- * @author huhanlin 2017-11-25
+ * rule_group 规则组成员
+ * @author huhanlin 2017-11-28
  */
 public class RuleGroupList {
     /**
@@ -18,19 +20,20 @@ public class RuleGroupList {
     private Integer id;
 
     /**
-     * 规则组英文名
+     * 规则ID
      */
-    private String groupKey;
+    private Integer ruleId;
 
     /**
-     * 规则组名称
+     * 
      */
-    private String groupName;
+    private Integer groupId;
 
     /**
-     * 规则组描述
+     * 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
      */
-    private String groupDescribe;
+    @JsonSerialize(using = EnumJsonSerializer.class)
+    private RuleGroupStatus state;
 
     /**
      * 创建用户
@@ -61,6 +64,11 @@ public class RuleGroupList {
     private DataStatus dataStatus;
 
     /**
+     * 测试用例
+     */
+    private String testDemo;
+
+    /**
      * 
      * @return id 
      */
@@ -77,51 +85,51 @@ public class RuleGroupList {
     }
 
     /**
-     * 规则组英文名
-     * @return group_key 规则组英文名
+     * 规则ID
+     * @return rule_id 规则ID
      */
-    public String getGroupKey() {
-        return groupKey;
+    public Integer getRuleId() {
+        return ruleId;
     }
 
     /**
-     * 规则组英文名
-     * @param groupKey 规则组英文名
+     * 规则ID
+     * @param ruleId 规则ID
      */
-    public void setGroupKey(String groupKey) {
-        this.groupKey = groupKey == null ? null : groupKey.trim();
+    public void setRuleId(Integer ruleId) {
+        this.ruleId = ruleId;
     }
 
     /**
-     * 规则组名称
-     * @return group_name 规则组名称
+     * 
+     * @return group_id 
      */
-    public String getGroupName() {
-        return groupName;
+    public Integer getGroupId() {
+        return groupId;
     }
 
     /**
-     * 规则组名称
-     * @param groupName 规则组名称
+     * 
+     * @param groupId 
      */
-    public void setGroupName(String groupName) {
-        this.groupName = groupName == null ? null : groupName.trim();
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     /**
-     * 规则组描述
-     * @return group_describe 规则组描述
+     * 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
+     * @return state 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
      */
-    public String getGroupDescribe() {
-        return groupDescribe;
+    public RuleGroupStatus getState() {
+        return state;
     }
 
     /**
-     * 规则组描述
-     * @param groupDescribe 规则组描述
+     * 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
+     * @param state 变量状态(0:未知,1：已保存，2：通过编译，3：已发布）
      */
-    public void setGroupDescribe(String groupDescribe) {
-        this.groupDescribe = groupDescribe == null ? null : groupDescribe.trim();
+    public void setState(RuleGroupStatus state) {
+        this.state = state;
     }
 
     /**
@@ -202,5 +210,21 @@ public class RuleGroupList {
      */
     public void setDataStatus(DataStatus dataStatus) {
         this.dataStatus = dataStatus;
+    }
+
+    /**
+     * 测试用例
+     * @return test_demo 测试用例
+     */
+    public String getTestDemo() {
+        return testDemo;
+    }
+
+    /**
+     * 测试用例
+     * @param testDemo 测试用例
+     */
+    public void setTestDemo(String testDemo) {
+        this.testDemo = testDemo == null ? null : testDemo.trim();
     }
 }

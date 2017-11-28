@@ -19,7 +19,7 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 		var url = "/Rules";
 		var ruleName = me.find(".ruleName").val();
 		var ruleDescribe = me.find(".ruleDescribe").val();
-		var ruleId = me.find(".ruleId").val();
+		var ruleKey = me.find(".ruleKey").val();
         var score = me.find(".score").val();
         var ruleType = me.find("#ruleType").val();
 		var content = editor.getValue();
@@ -34,9 +34,9 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
             me.find(".ruleDescribe").focus();
             return;
         }
-        if (ruleId | ruleId.length <= 0) {
+        if (ruleKey | ruleKey.length <= 0) {
             alert('请填写规则对应变量');
-            me.find(".ruleId").focus();
+            me.find(".ruleKey").focus();
             return;
         }
 		if (!score>0) {
@@ -54,7 +54,7 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 			"id" : me.find("#id").val(),
 			"ruleName" : ruleName,
 			"ruleDescribe" : ruleDescribe,
-            "ruleId" : ruleId,
+            "ruleKey" : ruleKey,
 			"score" : score,
 			"type":ruleType,
 			"content" : content
@@ -133,14 +133,14 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
                         if (result.code == 200) {
                             var ruleName = result.data.ruleName;
                             var ruleDescribe = result.data.ruleDescribe;
-                            var ruleId = result.data.ruleId;
+                            var ruleKey = result.data.ruleKey;
                             var score = result.data.score;
                             var ruleType = result.data.type;
                             var content = result.data.content;
                             me.find("#id").val(me.parameter.id);
                             me.find(".ruleName").val(ruleName);
                             me.find(".ruleDescribe").val(ruleDescribe);
-                            me.find(".ruleId").val(ruleId);
+                            me.find(".ruleKey").val(ruleKey);
                             me.find("#ruleType").val(ruleType);
                             me.find(".score").val(score);
                             editor.setValue(content);

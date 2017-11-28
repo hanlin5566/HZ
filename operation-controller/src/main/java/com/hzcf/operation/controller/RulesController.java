@@ -34,6 +34,14 @@ public class RulesController {
         return derivedRulesService.getList(rules,page);
     }
 
+
+    @ApiOperation(value="获取所有规则库列表", notes="根据搜索条件")
+    @RequestMapping(value={"/all"}, method= RequestMethod.POST)
+    public ResultPage<Rules> getAllDerivedVariableList(@RequestBody Rules rules) {
+
+        return derivedRulesService.getAllList(rules);
+    }
+
     @ApiOperation(value="获取规则库", notes="根据规则库ID获取")
     @RequestMapping(value={"/{ruleId}"}, method=RequestMethod.GET)
     public Result<RulesExt> getDerivedVariable(@PathVariable Integer ruleId) throws Exception {

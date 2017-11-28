@@ -13,4 +13,5 @@ public interface DerivedRulesService {
     public ResultPage<Rules> getList(Rules rules, PageEntity page);
     public Rules getEdit(Integer ruleId);
     public Integer saveOrUpdate(Rules rules);
+    public ResultPage<Rules> getAllList(Rules rules);
 }

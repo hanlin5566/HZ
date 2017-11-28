@@ -11,18 +11,22 @@ public class RuleGroupListSqlProvider {
 
     public String insertSelective(RuleGroupList record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("rule_group_name");
+        sql.INSERT_INTO("rule_group");
         
-        if (record.getGroupKey() != null) {
-            sql.VALUES("group_key", "#{groupKey,jdbcType=VARCHAR}");
+        if (record.getId() != null) {
+            sql.VALUES("id", "#{id,jdbcType=INTEGER}");
         }
         
-        if (record.getGroupName() != null) {
-            sql.VALUES("group_name", "#{groupName,jdbcType=VARCHAR}");
+        if (record.getRuleId() != null) {
+            sql.VALUES("rule_id", "#{ruleId,jdbcType=INTEGER}");
         }
         
-        if (record.getGroupDescribe() != null) {
-            sql.VALUES("group_describe", "#{groupDescribe,jdbcType=VARCHAR}");
+        if (record.getGroupId() != null) {
+            sql.VALUES("group_id", "#{groupId,jdbcType=INTEGER}");
+        }
+        
+        if (record.getState() != null) {
+            sql.VALUES("state", "#{state,jdbcType=INTEGER}");
         }
         
         if (record.getCreateUid() != null) {
@@ -45,6 +49,36 @@ public class RuleGroupListSqlProvider {
             sql.VALUES("data_status", "#{dataStatus,jdbcType=INTEGER}");
         }
         
+        if (record.getTestDemo() != null) {
+            sql.VALUES("test_demo", "#{testDemo,jdbcType=LONGVARCHAR}");
+        }
+        
+        return sql.toString();
+    }
+
+    public String selectByExampleWithBLOBs(RuleGroupListExample example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("id");
+        } else {
+            sql.SELECT("id");
+        }
+        sql.SELECT("rule_id");
+        sql.SELECT("group_id");
+        sql.SELECT("state");
+        sql.SELECT("create_uid");
+        sql.SELECT("create_time");
+        sql.SELECT("update_uid");
+        sql.SELECT("update_time");
+        sql.SELECT("data_status");
+        sql.SELECT("test_demo");
+        sql.FROM("rule_group");
+        applyWhere(sql, example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
+        }
+        
         return sql.toString();
     }
 
@@ -55,15 +89,15 @@ public class RuleGroupListSqlProvider {
         } else {
             sql.SELECT("id");
         }
-        sql.SELECT("group_key");
-        sql.SELECT("group_name");
-        sql.SELECT("group_describe");
+        sql.SELECT("rule_id");
+        sql.SELECT("group_id");
+        sql.SELECT("state");
         sql.SELECT("create_uid");
         sql.SELECT("create_time");
         sql.SELECT("update_uid");
         sql.SELECT("update_time");
         sql.SELECT("data_status");
-        sql.FROM("rule_group_name");
+        sql.FROM("rule_group");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -75,18 +109,18 @@ public class RuleGroupListSqlProvider {
 
     public String updateByPrimaryKeySelective(RuleGroupList record) {
         SQL sql = new SQL();
-        sql.UPDATE("rule_group_name");
+        sql.UPDATE("rule_group");
         
-        if (record.getGroupKey() != null) {
-            sql.SET("group_key = #{groupKey,jdbcType=VARCHAR}");
+        if (record.getRuleId() != null) {
+            sql.SET("rule_id = #{ruleId,jdbcType=INTEGER}");
         }
         
-        if (record.getGroupName() != null) {
-            sql.SET("group_name = #{groupName,jdbcType=VARCHAR}");
+        if (record.getGroupId() != null) {
+            sql.SET("group_id = #{groupId,jdbcType=INTEGER}");
         }
         
-        if (record.getGroupDescribe() != null) {
-            sql.SET("group_describe = #{groupDescribe,jdbcType=VARCHAR}");
+        if (record.getState() != null) {
+            sql.SET("state = #{state,jdbcType=INTEGER}");
         }
         
         if (record.getCreateUid() != null) {
@@ -107,6 +141,10 @@ public class RuleGroupListSqlProvider {
         
         if (record.getDataStatus() != null) {
             sql.SET("data_status = #{dataStatus,jdbcType=INTEGER}");
+        }
+        
+        if (record.getTestDemo() != null) {
+            sql.SET("test_demo = #{testDemo,jdbcType=LONGVARCHAR}");
         }
         
         sql.WHERE("id = #{id,jdbcType=INTEGER}");

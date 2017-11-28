@@ -164,6 +164,7 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 	OperaVarDetail.prototype.bindInitEvent = function() {
 		var me = this;
 		me.find('.default-btn').on('click', function() {
+
 			var postStatus = me.find('.default-btn').attr('deployStatus');
 			me.postContent(postStatus);
 		});

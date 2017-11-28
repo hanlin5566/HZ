@@ -38,6 +38,18 @@ public class DerivedRulesServiceImpl implements DerivedRulesService {
         return ret;
     }
 
+
+    @Override
+    public ResultPage<Rules> getAllList(Rules rules)
+    {
+        ResultPage<Rules> ret = new ResultPage<Rules>();
+        RulesExample example = BeanUtils.example(rules,RulesExample.class);
+        example.createCriteria().andDataStatusEqualTo(DataStatus.NORMAL);
+        List<Rules> rulesList =  rulesMapper.selectByExample(example);
+        ret.setData(rulesList);
+        return ret;
+    }
+
     @Override
     public Rules getEdit(Integer ruleId)
     {

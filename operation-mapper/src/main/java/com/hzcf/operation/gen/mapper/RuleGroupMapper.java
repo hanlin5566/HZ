@@ -18,20 +18,22 @@ import org.apache.ibatis.type.JdbcType;
 
 public interface RuleGroupMapper {
     @Delete({
-        "delete from rule_group",
+        "delete from rule_group_name",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into rule_group (rule_id, group_id, ",
-        "create_uid, create_time, ",
-        "update_uid, update_time, ",
-        "data_status)",
-        "values (#{ruleId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, ",
-        "#{createUid,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, ",
-        "#{updateUid,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, ",
-        "#{dataStatus,jdbcType=INTEGER})"
+        "insert into rule_group_name (group_key, group_name, ",
+        "group_describe, create_uid, ",
+        "create_time, update_uid, ",
+        "update_time, data_status, ",
+        "state, sort, test_demo)",
+        "values (#{groupKey,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, ",
+        "#{groupDescribe,jdbcType=VARCHAR}, #{createUid,jdbcType=INTEGER}, ",
+        "#{createTime,jdbcType=TIMESTAMP}, #{updateUid,jdbcType=INTEGER}, ",
+        "#{updateTime,jdbcType=TIMESTAMP}, #{dataStatus,jdbcType=INTEGER}, ",
+        "#{state,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{testDemo,jdbcType=LONGVARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(RuleGroup record);
@@ -40,47 +42,92 @@ public interface RuleGroupMapper {
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insertSelective(RuleGroup record);
 
-    @SelectProvider(type=RuleGroupSqlProvider.class, method="selectByExample")
+    @SelectProvider(type=RuleGroupSqlProvider.class, method="selectByExampleWithBLOBs")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="rule_id", property="ruleId", jdbcType=JdbcType.INTEGER),
-        @Result(column="group_id", property="groupId", jdbcType=JdbcType.INTEGER),
+        @Result(column="group_key", property="groupKey", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_name", property="groupName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_describe", property="groupDescribe", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
+        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
+        @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
+        @Result(column="sort", property="sort", jdbcType=JdbcType.INTEGER),
+        @Result(column="test_demo", property="testDemo", jdbcType=JdbcType.LONGVARCHAR)
+    })
+    List<RuleGroup> selectByExampleWithBLOBsWithRowbounds(RuleGroupExample example, RowBounds rowBounds);
+
+    @SelectProvider(type=RuleGroupSqlProvider.class, method="selectByExampleWithBLOBs")
+    @Results({
+        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="group_key", property="groupKey", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_name", property="groupName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_describe", property="groupDescribe", jdbcType=JdbcType.VARCHAR),
+        @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
+        @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
+        @Result(column="sort", property="sort", jdbcType=JdbcType.INTEGER),
+        @Result(column="test_demo", property="testDemo", jdbcType=JdbcType.LONGVARCHAR)
+    })
+    List<RuleGroup> selectByExampleWithBLOBs(RuleGroupExample example);
+
+    @SelectProvider(type=RuleGroupSqlProvider.class, method="selectByExample")
+    @Results({
+        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="group_key", property="groupKey", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_name", property="groupName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_describe", property="groupDescribe", jdbcType=JdbcType.VARCHAR),
+        @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
+        @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
+        @Result(column="sort", property="sort", jdbcType=JdbcType.INTEGER)
     })
     List<RuleGroup> selectByExampleWithRowbounds(RuleGroupExample example, RowBounds rowBounds);
 
     @SelectProvider(type=RuleGroupSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="rule_id", property="ruleId", jdbcType=JdbcType.INTEGER),
-        @Result(column="group_id", property="groupId", jdbcType=JdbcType.INTEGER),
+        @Result(column="group_key", property="groupKey", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_name", property="groupName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_describe", property="groupDescribe", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
+        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
+        @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
+        @Result(column="sort", property="sort", jdbcType=JdbcType.INTEGER)
     })
     List<RuleGroup> selectByExample(RuleGroupExample example);
 
     @Select({
         "select",
-        "id, rule_id, group_id, create_uid, create_time, update_uid, update_time, data_status",
-        "from rule_group",
+        "id, group_key, group_name, group_describe, create_uid, create_time, update_uid, ",
+        "update_time, data_status, state, sort, test_demo",
+        "from rule_group_name",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="rule_id", property="ruleId", jdbcType=JdbcType.INTEGER),
-        @Result(column="group_id", property="groupId", jdbcType=JdbcType.INTEGER),
+        @Result(column="group_key", property="groupKey", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_name", property="groupName", jdbcType=JdbcType.VARCHAR),
+        @Result(column="group_describe", property="groupDescribe", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
+        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER),
+        @Result(column="state", property="state", jdbcType=JdbcType.INTEGER),
+        @Result(column="sort", property="sort", jdbcType=JdbcType.INTEGER),
+        @Result(column="test_demo", property="testDemo", jdbcType=JdbcType.LONGVARCHAR)
     })
     RuleGroup selectByPrimaryKey(Integer id);
 
@@ -88,14 +135,34 @@ public interface RuleGroupMapper {
     int updateByPrimaryKeySelective(RuleGroup record);
 
     @Update({
-        "update rule_group",
-        "set rule_id = #{ruleId,jdbcType=INTEGER},",
-          "group_id = #{groupId,jdbcType=INTEGER},",
+        "update rule_group_name",
+        "set group_key = #{groupKey,jdbcType=VARCHAR},",
+          "group_name = #{groupName,jdbcType=VARCHAR},",
+          "group_describe = #{groupDescribe,jdbcType=VARCHAR},",
           "create_uid = #{createUid,jdbcType=INTEGER},",
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_uid = #{updateUid,jdbcType=INTEGER},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",
-          "data_status = #{dataStatus,jdbcType=INTEGER}",
+          "data_status = #{dataStatus,jdbcType=INTEGER},",
+          "state = #{state,jdbcType=INTEGER},",
+          "sort = #{sort,jdbcType=INTEGER},",
+          "test_demo = #{testDemo,jdbcType=LONGVARCHAR}",
+        "where id = #{id,jdbcType=INTEGER}"
+    })
+    int updateByPrimaryKeyWithBLOBs(RuleGroup record);
+
+    @Update({
+        "update rule_group_name",
+        "set group_key = #{groupKey,jdbcType=VARCHAR},",
+          "group_name = #{groupName,jdbcType=VARCHAR},",
+          "group_describe = #{groupDescribe,jdbcType=VARCHAR},",
+          "create_uid = #{createUid,jdbcType=INTEGER},",
+          "create_time = #{createTime,jdbcType=TIMESTAMP},",
+          "update_uid = #{updateUid,jdbcType=INTEGER},",
+          "update_time = #{updateTime,jdbcType=TIMESTAMP},",
+          "data_status = #{dataStatus,jdbcType=INTEGER},",
+          "state = #{state,jdbcType=INTEGER},",
+          "sort = #{sort,jdbcType=INTEGER}",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(RuleGroup record);
