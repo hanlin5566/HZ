@@ -35,7 +35,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
- * 
+ *
  */
 @Service("mongoService")
 public class MongoServiceImpl implements MongoService {
