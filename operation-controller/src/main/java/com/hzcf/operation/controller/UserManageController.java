@@ -53,7 +53,7 @@ public class UserManageController {
         List<SystemUser> list = new ArrayList<>();
         PageInfo pageInfo = page.toPageInfo();
         try {
-            System.out.println(systemUser.getUserName());
+          /*  System.out.println(systemUser.getUserName());
             SystemUserExample example = new SystemUserExample();
             example.createCriteria().andDataStatusEqualTo(1);//正常数据
             if (systemUser.getUserName()!=null) {
@@ -62,7 +62,8 @@ public class UserManageController {
                 example.createCriteria().andUserPhoneEqualTo(systemUser.getUserPhone());
             }if (systemUser.getCreateTime()!=null){
                 example.createCriteria().andCreateTimeEqualTo(systemUser.getCreateTime());
-            }
+            }*/
+            SystemUserExample example = BeanUtils.example(systemUser,SystemUserExample.class);
             list = systemUserService.getSystemUserByCondition(example,pageInfo);
 
         }catch (Exception e){
