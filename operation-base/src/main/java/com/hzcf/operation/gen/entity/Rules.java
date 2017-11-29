@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * rule 规则库
- * @author huhanlin 2017-11-25
+ * @author huhanlin 2017-11-28
  */
 public class Rules {
     /**
@@ -21,7 +21,7 @@ public class Rules {
     /**
      * 规则变量
      */
-    private String ruleId;
+    private String ruleKey;
 
     /**
      * 规则中文名称
@@ -32,6 +32,11 @@ public class Rules {
      * 规则描述
      */
     private String ruleDescribe;
+
+    /**
+     * 所属数据源
+     */
+    private Integer varGroupId;
 
     /**
      * 规则类型（1=仅拒绝或2=拒绝加黑）
@@ -94,18 +99,18 @@ public class Rules {
 
     /**
      * 规则变量
-     * @return rule_id 规则变量
+     * @return rule_key 规则变量
      */
-    public String getRuleId() {
-        return ruleId;
+    public String getRuleKey() {
+        return ruleKey;
     }
 
     /**
      * 规则变量
-     * @param ruleId 规则变量
+     * @param ruleKey 规则变量
      */
-    public void setRuleId(String ruleId) {
-        this.ruleId = ruleId == null ? null : ruleId.trim();
+    public void setRuleKey(String ruleKey) {
+        this.ruleKey = ruleKey == null ? null : ruleKey.trim();
     }
 
     /**
@@ -138,6 +143,22 @@ public class Rules {
      */
     public void setRuleDescribe(String ruleDescribe) {
         this.ruleDescribe = ruleDescribe == null ? null : ruleDescribe.trim();
+    }
+
+    /**
+     * 所属数据源
+     * @return var_group_id 所属数据源
+     */
+    public Integer getVarGroupId() {
+        return varGroupId;
+    }
+
+    /**
+     * 所属数据源
+     * @param varGroupId 所属数据源
+     */
+    public void setVarGroupId(Integer varGroupId) {
+        this.varGroupId = varGroupId;
     }
 
     /**

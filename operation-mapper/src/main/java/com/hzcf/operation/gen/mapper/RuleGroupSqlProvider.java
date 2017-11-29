@@ -11,14 +11,18 @@ public class RuleGroupSqlProvider {
 
     public String insertSelective(RuleGroup record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("rule_group");
+        sql.INSERT_INTO("rule_group_name");
         
-        if (record.getRuleId() != null) {
-            sql.VALUES("rule_id", "#{ruleId,jdbcType=INTEGER}");
+        if (record.getGroupKey() != null) {
+            sql.VALUES("group_key", "#{groupKey,jdbcType=VARCHAR}");
         }
         
-        if (record.getGroupId() != null) {
-            sql.VALUES("group_id", "#{groupId,jdbcType=INTEGER}");
+        if (record.getGroupName() != null) {
+            sql.VALUES("group_name", "#{groupName,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getGroupDescribe() != null) {
+            sql.VALUES("group_describe", "#{groupDescribe,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateUid() != null) {
@@ -41,6 +45,46 @@ public class RuleGroupSqlProvider {
             sql.VALUES("data_status", "#{dataStatus,jdbcType=INTEGER}");
         }
         
+        if (record.getState() != null) {
+            sql.VALUES("state", "#{state,jdbcType=INTEGER}");
+        }
+        
+        if (record.getSort() != null) {
+            sql.VALUES("sort", "#{sort,jdbcType=INTEGER}");
+        }
+        
+        if (record.getTestDemo() != null) {
+            sql.VALUES("test_demo", "#{testDemo,jdbcType=LONGVARCHAR}");
+        }
+        
+        return sql.toString();
+    }
+
+    public String selectByExampleWithBLOBs(RuleGroupExample example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("id");
+        } else {
+            sql.SELECT("id");
+        }
+        sql.SELECT("group_key");
+        sql.SELECT("group_name");
+        sql.SELECT("group_describe");
+        sql.SELECT("create_uid");
+        sql.SELECT("create_time");
+        sql.SELECT("update_uid");
+        sql.SELECT("update_time");
+        sql.SELECT("data_status");
+        sql.SELECT("state");
+        sql.SELECT("sort");
+        sql.SELECT("test_demo");
+        sql.FROM("rule_group_name");
+        applyWhere(sql, example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
+        }
+        
         return sql.toString();
     }
 
@@ -51,14 +95,17 @@ public class RuleGroupSqlProvider {
         } else {
             sql.SELECT("id");
         }
-        sql.SELECT("rule_id");
-        sql.SELECT("group_id");
+        sql.SELECT("group_key");
+        sql.SELECT("group_name");
+        sql.SELECT("group_describe");
         sql.SELECT("create_uid");
         sql.SELECT("create_time");
         sql.SELECT("update_uid");
         sql.SELECT("update_time");
         sql.SELECT("data_status");
-        sql.FROM("rule_group");
+        sql.SELECT("state");
+        sql.SELECT("sort");
+        sql.FROM("rule_group_name");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -70,14 +117,18 @@ public class RuleGroupSqlProvider {
 
     public String updateByPrimaryKeySelective(RuleGroup record) {
         SQL sql = new SQL();
-        sql.UPDATE("rule_group");
+        sql.UPDATE("rule_group_name");
         
-        if (record.getRuleId() != null) {
-            sql.SET("rule_id = #{ruleId,jdbcType=INTEGER}");
+        if (record.getGroupKey() != null) {
+            sql.SET("group_key = #{groupKey,jdbcType=VARCHAR}");
         }
         
-        if (record.getGroupId() != null) {
-            sql.SET("group_id = #{groupId,jdbcType=INTEGER}");
+        if (record.getGroupName() != null) {
+            sql.SET("group_name = #{groupName,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getGroupDescribe() != null) {
+            sql.SET("group_describe = #{groupDescribe,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateUid() != null) {
@@ -98,6 +149,18 @@ public class RuleGroupSqlProvider {
         
         if (record.getDataStatus() != null) {
             sql.SET("data_status = #{dataStatus,jdbcType=INTEGER}");
+        }
+        
+        if (record.getState() != null) {
+            sql.SET("state = #{state,jdbcType=INTEGER}");
+        }
+        
+        if (record.getSort() != null) {
+            sql.SET("sort = #{sort,jdbcType=INTEGER}");
+        }
+        
+        if (record.getTestDemo() != null) {
+            sql.SET("test_demo = #{testDemo,jdbcType=LONGVARCHAR}");
         }
         
         sql.WHERE("id = #{id,jdbcType=INTEGER}");

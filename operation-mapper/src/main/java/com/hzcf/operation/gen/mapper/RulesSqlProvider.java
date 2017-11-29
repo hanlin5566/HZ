@@ -13,8 +13,8 @@ public class RulesSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("rule");
         
-        if (record.getRuleId() != null) {
-            sql.VALUES("rule_id", "#{ruleId,jdbcType=VARCHAR}");
+        if (record.getRuleKey() != null) {
+            sql.VALUES("rule_key", "#{ruleKey,jdbcType=VARCHAR}");
         }
         
         if (record.getRuleName() != null) {
@@ -23,6 +23,10 @@ public class RulesSqlProvider {
         
         if (record.getRuleDescribe() != null) {
             sql.VALUES("rule_describe", "#{ruleDescribe,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getVarGroupId() != null) {
+            sql.VALUES("var_group_id", "#{varGroupId,jdbcType=INTEGER}");
         }
         
         if (record.getType() != null) {
@@ -67,9 +71,10 @@ public class RulesSqlProvider {
         } else {
             sql.SELECT("id");
         }
-        sql.SELECT("rule_id");
+        sql.SELECT("rule_key");
         sql.SELECT("rule_name");
         sql.SELECT("rule_describe");
+        sql.SELECT("var_group_id");
         sql.SELECT("type");
         sql.SELECT("score");
         sql.SELECT("create_uid");
@@ -95,9 +100,10 @@ public class RulesSqlProvider {
         } else {
             sql.SELECT("id");
         }
-        sql.SELECT("rule_id");
+        sql.SELECT("rule_key");
         sql.SELECT("rule_name");
         sql.SELECT("rule_describe");
+        sql.SELECT("var_group_id");
         sql.SELECT("type");
         sql.SELECT("score");
         sql.SELECT("create_uid");
@@ -119,8 +125,8 @@ public class RulesSqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("rule");
         
-        if (record.getRuleId() != null) {
-            sql.SET("rule_id = #{ruleId,jdbcType=VARCHAR}");
+        if (record.getRuleKey() != null) {
+            sql.SET("rule_key = #{ruleKey,jdbcType=VARCHAR}");
         }
         
         if (record.getRuleName() != null) {
@@ -129,6 +135,10 @@ public class RulesSqlProvider {
         
         if (record.getRuleDescribe() != null) {
             sql.SET("rule_describe = #{ruleDescribe,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getVarGroupId() != null) {
+            sql.SET("var_group_id = #{varGroupId,jdbcType=INTEGER}");
         }
         
         if (record.getType() != null) {

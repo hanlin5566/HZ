@@ -17,54 +17,53 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 	OperaRuleDetail.prototype.postContent = function() {
 		var me = this;
 		var url = "/Rules";
-		var ruleName = me.find(".ruleName").val();
-		var ruleDescribe = me.find(".ruleDescribe").val();
-		var ruleId = me.find(".ruleId").val();
+        var ruleName = me.find(".ruleName").val();
+        var ruleDescribe = me.find(".ruleDescribe").val();
+        var ruleKey = me.find(".ruleKey").val();
         var score = me.find(".score").val();
         var ruleType = me.find("#ruleType").val();
-		var content = editor.getValue();
-		// 验证标题与内容
-		if (ruleName | ruleName.length <= 0) {
-			alert('请填写规则标识');
-			me.find(".ruleName").focus();
-			return;
-		}
+        var content = editor.getValue();
+        // 验证标题与内容
+        if (ruleName | ruleName.length <= 0) {
+            alert('请填写规则标识');
+            me.find(".ruleName").focus();
+            return;
+        }
         if (ruleDescribe | ruleDescribe.length <= 0) {
             alert('请填写规则描述');
             me.find(".ruleDescribe").focus();
             return;
         }
-        if (ruleId | ruleId.length <= 0) {
+        if (ruleKey | ruleKey.length <= 0) {
             alert('请填写规则对应变量');
-            me.find(".ruleId").focus();
+            me.find(".ruleKey").focus();
             return;
         }
-		if (!score>0) {
-			alert('请填写评分');
-			me.find(".score").focus();
-			return;
-		}
-
-		if (content | content.length <= 0) {
-			editor.focus();
-			alert('请填写规则代码');
-			return;
-		}
+        if (!score>0) {
+            alert('请填写评分');
+            me.find(".score").focus();
+            return;
+        }
+        if (content | content.length <= 0) {
+            editor.focus();
+            alert('请填写规则代码');
+            return;
+        }
 		var data = {
 			"id" : me.find("#id").val(),
 			"ruleName" : ruleName,
 			"ruleDescribe" : ruleDescribe,
-            "ruleId" : ruleId,
+            "ruleKey" : ruleKey,
 			"score" : score,
 			"type":ruleType,
 			"content" : content
 		};
         requestUtil.post(url, data).then(function(result) {
             if (result.code == 200) {
-                me.find("#id").val(result.data);
+                me.find("#id").val(result.data.id);
                 alert("保存成功");
             } else {
-                alert("保存失败");
+                alert("保存失败:"+result.message);
             }
         });
 
@@ -76,8 +75,57 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
         me.find('.default-btn').on('click', function() {
             me.postContent();
         });
-        me.find('.back-btn').on('click', function() {
-            me.postContent();
+
+        // me.find('.back-btn').on('click', function() {
+        //     me.postContent();
+        // });
+
+        me.find('#createTestDemo').on('click', function() {
+            //me.prePostContent();
+            var ruleName = me.find(".ruleName").val();
+            var ruleDescribe = me.find(".ruleDescribe").val();
+            var ruleKey = me.find(".ruleKey").val();
+            var score = me.find(".score").val();
+            var ruleType = me.find("#ruleType").val();
+            if (ruleName | ruleName.length <= 0) {
+                alert('请填写规则标识');
+                me.find(".ruleName").focus();
+                return;
+            }
+            if (ruleDescribe | ruleDescribe.length <= 0) {
+                alert('请填写规则描述');
+                me.find(".ruleDescribe").focus();
+                return;
+            }
+            if (ruleKey | ruleKey.length <= 0) {
+                alert('请填写规则对应变量');
+                me.find(".ruleKey").focus();
+                return;
+            }
+            if (!score>0) {
+                alert('请填写评分');
+                me.find(".score").focus();
+                return;
+            }
+        	var code ='import java.util.Map'+"\r\n"
+            +'import com.huizhongcf.bean.CommonMessage'+"\r\n"
+            +'global  java.util.List messageList;//全局变量'+"\r\n"
+			+'dialect "mvel'+"\r\n"
+			+'rule "'+ruleKey+'"'+"\r\n"
+            +'salience 1'+"\r\n"
+            +'lock-on-active true'+"\r\n"
+            +'enabled true //规则是否可用 false＝不可用'+"\r\n"
+            +'when $factMap: Map(此处填写条件)'+"\r\n"
+            +'then'+"\r\n"
+            +'CommonMessage commonMessage = new CommonMessage();'+"\r\n"
+			+'commonMessage.setType("'+ruleType+'");'+"\r\n"
+                +'commonMessage.setRuleDescribe("'+ruleDescribe+'");'+"\r\n"
+                +'commonMessage.setRuleName("'+ruleDescribe+'");'+"\r\n"
+                +'commonMessage.setRuleId("'+ruleKey+'");'+"\r\n"
+                +'commonMessage.setScore(100);'+"\r\n"
+                +'messageList.add(commonMessage);'+"\r\n"
+                +'end'+"\r\n";
+            editor.setValue(code);
         });
     };
 
@@ -133,14 +181,14 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
                         if (result.code == 200) {
                             var ruleName = result.data.ruleName;
                             var ruleDescribe = result.data.ruleDescribe;
-                            var ruleId = result.data.ruleId;
+                            var ruleKey = result.data.ruleKey;
                             var score = result.data.score;
                             var ruleType = result.data.type;
                             var content = result.data.content;
                             me.find("#id").val(me.parameter.id);
                             me.find(".ruleName").val(ruleName);
                             me.find(".ruleDescribe").val(ruleDescribe);
-                            me.find(".ruleId").val(ruleId);
+                            me.find(".ruleKey").val(ruleKey);
                             me.find("#ruleType").val(ruleType);
                             me.find(".score").val(score);
                             editor.setValue(content);

@@ -2,24 +2,15 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 		'util/sessionUtil', 'util/domUtil','util/dateUtil','mobiscroll', 'portal/main/config','widget/table', 'bootstrapTable'], function(
 		requestUtil, Base,formatUtil, sessionUtil, domUtil, dateUtil, mobiscroll,config,Table) {
 	
-	var OperaRuleList = function() {
+	var OperaRuleGroup = function() {
 		
 	};
 
-    OperaRuleList.prototype = new Base();
+	OperaRuleGroup.prototype = new Base();
 	
 	var sessionId;
-
-    // 页面初始化
-    OperaRuleList.prototype.create = function() {
-        var me = this;
-        me.renderMainContent("tpl_OperaRuleList");
-        me.renderPage();
-        me.bindEvent();
-    };
-
-	//查询参数处理
-    OperaRuleList.prototype.queryParams = function(params) {
+	
+	OperaRuleGroup.prototype.queryParams = function(params) {
         var me = this;
         var sessionIdParameter = sessionId;
         var temp = { // 这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
@@ -27,39 +18,49 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
             offset : params.offset, // 页码
             sessionId : sessionIdParameter,
         };
-        var ruleName = me.find("#ruleName").val();
-        if(ruleName.length > 0){
-        	 temp.ruleName = ruleName;
+        var groupName = me.find("#groupName").val();
+        if(groupName.length > 0){
+        	 temp.groupName = groupName;
         }
-        var ruleDescribe = me.find("#ruleDescribe").val();
-        if(ruleDescribe.length > 0){
-            temp.ruleDescribe = ruleDescribe;
+
+        var groupKey = me.find("#groupKey").val();
+        if(groupKey.length > 0){
+            temp.groupKey = groupKey;
         }
-        var ruleType = me.find("#ruleType").val();
-        if(ruleType> 0){
-            temp.type = ruleType;
+
+        var groupDescribe = me.find("#groupDescribe").val();
+        if(groupDescribe.length > 0){
+            temp.groupDescribe = groupDescribe;
+        }
+        var state = me.find("#state").val();
+        if(state.length > 0){
+        	temp.state = state;
         }
         return temp;
     };
 	
-
-
-    //渲染数据
-    OperaRuleList.prototype.renderPage = function() {
+	// 页面初始化
+	OperaRuleGroup.prototype.create = function() {
+		var me = this;
+		me.renderMainContent("tpl_OperaRuleGroup");
+		me.renderPage();
+		me.bindEvent();
+	};
+	
+	OperaRuleGroup.prototype.renderPage = function() {
 		var me=this;
-		//table字段的事件绑定
 		var operateEvents = {
-				'click #operaRuleDetail': function (e, value, row, index) {
-					me.moveTo('operaRuleDetail',{
-						'id' : value
+				'click #groupDetail': function (e, value, row, index) {
+					me.moveTo('operaRuleGroupDetail',{
+						'ruleGroupId' : value,
+						'state': row.state.name
 					});
 				}
 		};
-
-		//表格渲染
-		var url = "/Rules"
+		
+		var url = "/ruleGroup"
 		var $table = new Table(
-				me.find("#tb_rule_list"),
+				me.find("#tb_rule_group"),
 				{
 					url: url,// 请求后台的URL（*）
 					toolbar: me.find('#toolbar'), // 工具按钮用哪个容器
@@ -71,35 +72,34 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 					    	  checkbox: true,
 					      },
 					      {
-					    	  field: 'ruleName',
+					    	  field: 'groupKey',
+		                      title: '规则编码'
+					      },
+					      {
+					    	  field: 'groupName',
 		                      title: '规则名称'
 					      },
-						  {
-								field: 'ruleKey',
-								title: '规则对应变量'
-						  },
+                        {
+                            field: 'sort',
+                            title: '规则排序'
+                        },
 					      {
-					    	  field: 'ruleDescribe',
-		                      title: '规则描述'
+					    	  field: 'groupDescribe',
+					    	  title: '规则描述'
 					      },
-							{
-								field: 'score',
-								title: '规则评分'
-							},
-							{
-                            field: 'type',
-                            title: '规则类型',
-                            formatter: function (value, row, index) {
-                                if(value=="1") return "拒绝类规则";
-                                if(value=="2") return "加黑类规则";
-                            }
-                            },
-					       {
+					      {
+					    	  field: 'state',
+					    	  title: '状态',
+					    	  formatter: function (value, row, index) {
+		                            return value.text;
+		                      }
+					      },
+					      {
 					    	  field: 'id',
 		                      title: '操作',
 		                      events: operateEvents,
 		                      formatter: function (value, row, index) {
-                                  return '<a class="state-link" id="operaRuleDetail" id="'+value+'">详情</a>';
+                                  return '<a class="state-link" id="groupDetail" ruleGroupId="'+value+'">详情</a>';
 		                      }
 					      },
 					],
@@ -136,46 +136,69 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 	};
 	
 	//清空数据
-    OperaRuleList.prototype.clearList = function() {
+	OperaRuleGroup.prototype.clearList = function() {
         var me = this;
     };
     
     
 	// 重新显示
-    OperaRuleList.prototype.show = function() {
+	OperaRuleGroup.prototype.show = function() {
 		
 	};
 	
-	//页面事件
-    OperaRuleList.prototype.bindEvent = function() {
+	//页面点击
+	OperaRuleGroup.prototype.bindEvent = function() {
 		var me = this;
 		me.find("#remove").click(function() {
 			var selections = $('#tb_var').bootstrapTable('getSelections');
 			var varIds = new Array();
 			for(var i in selections){
-				varIds.push(selections[i].varId);
+				varIds.push(selections[i].id);
             } 
-			var url = "/Rules";
+			var url = "msg";
 			requestUtil.del(url, varIds).then(function(result) {
 				if(result.success){
-             	   $('#tb_var').bootstrapTable('refresh',me.queryParams);
+             	   $('#tb_rule_group').bootstrapTable('refresh',me.queryParams);
                 }
 			});
 		});
-		
 		me.find("a[name='searchBtn']").click(function() {
 			me.find('#tb_var').bootstrapTable('refresh', me.queryParams);
 		});
 		
 		me.find(".add").click(function() {
-			me.moveTo('operaRuleDetail');
+			me.moveTo('operaRuleGroupDetail');
 		});
+
+        me.find(".pub").click(function() {
+            var selections = $('#tb_rule_group').bootstrapTable('getSelections');
+            var groupIds="";
+            for(var i in selections){
+                groupIds += selections[i].id+"|"
+            }
+            if(groupIds.length==0)
+			{
+                alert('请选择已发布状态的规则集');
+                return;
+			}
+            var data = {
+                "groupIds" : groupIds
+            };
+            var url = "/ruleGroup/pub?groupIdStr="+groupIds;
+            requestUtil.get(url).then(function(result) {
+                if(result.success){
+                   alert("发布成功");
+                }else{
+                    alert(result.message);
+				}
+            });
+        });
 	};
 	
 	// 页面隐藏
-    OperaRuleList.prototype.hide = function() {
+	OperaRuleGroup.prototype.hide = function() {
 		
 	};
 
-	return new OperaRuleList();
+	return new OperaRuleGroup();
 });

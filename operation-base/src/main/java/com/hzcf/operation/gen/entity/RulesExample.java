@@ -75,7 +75,7 @@ public class RulesExample {
     }
 
     /**
-     * rule 2017-11-25
+     * rule 2017-11-28
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -178,73 +178,73 @@ public class RulesExample {
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdIsNull() {
-            addCriterion("rule_id is null");
+        public Criteria andRuleKeyIsNull() {
+            addCriterion("rule_key is null");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdIsNotNull() {
-            addCriterion("rule_id is not null");
+        public Criteria andRuleKeyIsNotNull() {
+            addCriterion("rule_key is not null");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdEqualTo(String value) {
-            addCriterion("rule_id =", value, "ruleId");
+        public Criteria andRuleKeyEqualTo(String value) {
+            addCriterion("rule_key =", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdNotEqualTo(String value) {
-            addCriterion("rule_id <>", value, "ruleId");
+        public Criteria andRuleKeyNotEqualTo(String value) {
+            addCriterion("rule_key <>", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdGreaterThan(String value) {
-            addCriterion("rule_id >", value, "ruleId");
+        public Criteria andRuleKeyGreaterThan(String value) {
+            addCriterion("rule_key >", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdGreaterThanOrEqualTo(String value) {
-            addCriterion("rule_id >=", value, "ruleId");
+        public Criteria andRuleKeyGreaterThanOrEqualTo(String value) {
+            addCriterion("rule_key >=", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdLessThan(String value) {
-            addCriterion("rule_id <", value, "ruleId");
+        public Criteria andRuleKeyLessThan(String value) {
+            addCriterion("rule_key <", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdLessThanOrEqualTo(String value) {
-            addCriterion("rule_id <=", value, "ruleId");
+        public Criteria andRuleKeyLessThanOrEqualTo(String value) {
+            addCriterion("rule_key <=", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdLike(String value) {
-            addCriterion("rule_id like", value, "ruleId");
+        public Criteria andRuleKeyLike(String value) {
+            addCriterion("rule_key like", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdNotLike(String value) {
-            addCriterion("rule_id not like", value, "ruleId");
+        public Criteria andRuleKeyNotLike(String value) {
+            addCriterion("rule_key not like", value, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdIn(List<String> values) {
-            addCriterion("rule_id in", values, "ruleId");
+        public Criteria andRuleKeyIn(List<String> values) {
+            addCriterion("rule_key in", values, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdNotIn(List<String> values) {
-            addCriterion("rule_id not in", values, "ruleId");
+        public Criteria andRuleKeyNotIn(List<String> values) {
+            addCriterion("rule_key not in", values, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdBetween(String value1, String value2) {
-            addCriterion("rule_id between", value1, value2, "ruleId");
+        public Criteria andRuleKeyBetween(String value1, String value2) {
+            addCriterion("rule_key between", value1, value2, "ruleKey");
             return (Criteria) this;
         }
 
-        public Criteria andRuleIdNotBetween(String value1, String value2) {
-            addCriterion("rule_id not between", value1, value2, "ruleId");
+        public Criteria andRuleKeyNotBetween(String value1, String value2) {
+            addCriterion("rule_key not between", value1, value2, "ruleKey");
             return (Criteria) this;
         }
 
@@ -385,6 +385,66 @@ public class RulesExample {
 
         public Criteria andRuleDescribeNotBetween(String value1, String value2) {
             addCriterion("rule_describe not between", value1, value2, "ruleDescribe");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdIsNull() {
+            addCriterion("var_group_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdIsNotNull() {
+            addCriterion("var_group_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdEqualTo(Integer value) {
+            addCriterion("var_group_id =", value, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdNotEqualTo(Integer value) {
+            addCriterion("var_group_id <>", value, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdGreaterThan(Integer value) {
+            addCriterion("var_group_id >", value, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("var_group_id >=", value, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdLessThan(Integer value) {
+            addCriterion("var_group_id <", value, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdLessThanOrEqualTo(Integer value) {
+            addCriterion("var_group_id <=", value, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdIn(List<Integer> values) {
+            addCriterion("var_group_id in", values, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdNotIn(List<Integer> values) {
+            addCriterion("var_group_id not in", values, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdBetween(Integer value1, Integer value2) {
+            addCriterion("var_group_id between", value1, value2, "varGroupId");
+            return (Criteria) this;
+        }
+
+        public Criteria andVarGroupIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("var_group_id not between", value1, value2, "varGroupId");
             return (Criteria) this;
         }
 
@@ -820,7 +880,7 @@ public class RulesExample {
     }
 
     /**
-     * rule 2017-11-25
+     * rule 2017-11-28
      */
     public static class Criterion {
         private String condition;

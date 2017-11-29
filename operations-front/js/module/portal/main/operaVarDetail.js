@@ -89,12 +89,12 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 			return;
 		}
 
-		if (content | content.length <= 0) {
+		if (varDataType==2 &&(content | content.length <= 0)) {
 			editor.focus();
 			alert('请填写算法代码');
 			return;
 		}
-        if (testDemo | testDemo.length <= 0) {
+        if (varDataType==2 &&(testDemo | testDemo.length <= 0)) {
             editorDemo.focus();
             alert('请填测试用例');
             return;
@@ -164,6 +164,7 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 	OperaVarDetail.prototype.bindInitEvent = function() {
 		var me = this;
 		me.find('.default-btn').on('click', function() {
+
 			var postStatus = me.find('.default-btn').attr('deployStatus');
 			me.postContent(postStatus);
 		});
