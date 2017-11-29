@@ -16,4 +16,6 @@ public interface SystemUserService {
 	  SystemUser selectByPrimarykey(int id);
 
 	  List<SystemUser> getSystemUserByCondition(SystemUserExample examp, PageInfo pageInfo);
+
+	  List<SystemUser> getSystemUserByExample(SystemUserExample example);
 }

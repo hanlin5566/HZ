@@ -216,6 +216,7 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 		});
 		
 		me.find(".add").click(function() {
+			//页面跳转
 			me.moveTo('operaVarDetail');
 		});
 	};

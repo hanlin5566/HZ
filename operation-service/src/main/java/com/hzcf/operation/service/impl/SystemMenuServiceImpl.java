@@ -1,10 +1,13 @@
 package com.hzcf.operation.service.impl;
 
 import com.hzcf.operation.gen.entity.SystemMenu;
+import com.hzcf.operation.gen.entity.SystemMenuExample;
 import com.hzcf.operation.gen.mapper.SystemMenuMapper;
 import com.hzcf.operation.service.SystemMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /***
  * author:qinfeng.zheng
@@ -18,15 +21,23 @@ public class SystemMenuServiceImpl implements SystemMenuService {
     private SystemMenuMapper systemMenuMapper;
 
 
+    @Override
     public  int addSystemMenu(SystemMenu systemMenu){
         return  systemMenuMapper.insert(systemMenu);
     }
 
-   public int updateSysteMenu(SystemMenu systemMenu){
+    @Override
+    public int updateSysteMenu(SystemMenu systemMenu){
         return  systemMenuMapper.updateByPrimaryKey(systemMenu);
-   }
+    }
 
-  public   SystemMenu selectByPrimaryKey(int id){
+   @Override
+   public   SystemMenu selectByPrimaryKey(int id){
        return  systemMenuMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public  List<SystemMenu> selectByExample(SystemMenuExample example){
+       return  systemMenuMapper.selectByExample(example);
     }
 }

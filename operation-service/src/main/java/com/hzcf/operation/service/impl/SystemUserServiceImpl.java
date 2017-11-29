@@ -42,4 +42,8 @@ public class SystemUserServiceImpl implements SystemUserService {
         return  systemUserMapper.selectByExampleWithRowbounds(examp,pageInfo);
     }
 
+    @Override
+    public List<SystemUser> getSystemUserByExample(SystemUserExample example){
+        return  systemUserMapper.selectByExample(example);
+    }
 }

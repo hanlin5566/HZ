@@ -2,6 +2,9 @@ package com.hzcf.operation.service;
 
 
 import com.hzcf.operation.gen.entity.SystemMenu;
+import com.hzcf.operation.gen.entity.SystemMenuExample;
+
+import java.util.List;
 
 public interface SystemMenuService {
 
@@ -10,5 +13,7 @@ public interface SystemMenuService {
 	  int updateSysteMenu(SystemMenu systemMenu);
 
 	  SystemMenu selectByPrimaryKey(int id);
+
+	  List<SystemMenu> selectByExample(SystemMenuExample example);
 
 }
