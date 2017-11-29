@@ -51,6 +51,16 @@ public class DerivedRulesServiceImpl implements DerivedRulesService {
     }
 
     @Override
+    public List<Rules> isExist(Rules rules)
+    {
+        RulesExample example = BeanUtils.example(rules,RulesExample.class);
+        example.createCriteria().andRuleKeyEqualTo(rules.getRuleKey());
+        example.createCriteria().andDataStatusEqualTo(DataStatus.NORMAL);
+        List<Rules> rulesList =  rulesMapper.selectByExample(example);
+        return rulesList;
+    }
+
+    @Override
     public Rules getEdit(Integer ruleId)
     {
         return rulesMapper.selectByPrimaryKey(ruleId);
@@ -62,7 +72,8 @@ public class DerivedRulesServiceImpl implements DerivedRulesService {
         if(rules.getId()!= null){
             return rulesMapper.updateByPrimaryKeyWithBLOBs(rules);
         }else{
-            return rulesMapper.insert(rules);
+            rules.setDataStatus(DataStatus.NORMAL);
+            return rulesMapper.insertSelective(rules);
         }
     }
 }

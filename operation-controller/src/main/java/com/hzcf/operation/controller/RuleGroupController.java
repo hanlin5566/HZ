@@ -14,8 +14,11 @@ import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
 import com.hzcf.operation.base.result.ResultPage;
 import com.hzcf.operation.base.util.BeanUtils;
+import com.hzcf.operation.gen.entity.DerivedVariable;
 import com.hzcf.operation.gen.entity.RuleGroup;
+import com.hzcf.operation.gen.entity.RuleGroupExample;
 import com.hzcf.operation.gen.entity.Rules;
+import com.hzcf.operation.gen.mapper.DerivedVariableMapper;
 import com.hzcf.operation.gen.mapper.GetInterFacesForRuleGroupMapper;
 import com.hzcf.operation.service.DerivedRulesService;
 import com.hzcf.operation.service.RuleGroupService;
@@ -43,6 +46,7 @@ public class RuleGroupController {
     @Autowired
     private GetInterFacesForRuleGroupMapper getInterFacesForRuleGroupMapper;
 
+
     @ApiOperation(value = "获取规则组列表", notes = "根据搜索条件")
     @RequestMapping(value = {""}, method = RequestMethod.GET)
     public ResultPage<RuleGroup> getDerivedVariableList(RuleGroup rules, PageEntity page) {
@@ -63,6 +67,7 @@ public class RuleGroupController {
     @ApiOperation(value = "保存或新增规则组", notes = "")
     @RequestMapping(value = {""}, method = RequestMethod.POST)
     public Result<Integer> saveOrUpdate(@RequestBody RuleGroupExt rules, HttpServletRequest request) throws Exception {
+
         Integer ruleId = ruleGroupService.saveOrUpdate(rules);
         Result<Integer> ret = new Result<Integer>();
         ret.setData(ruleId);

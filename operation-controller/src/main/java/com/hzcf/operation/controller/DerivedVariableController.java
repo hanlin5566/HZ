@@ -46,6 +46,7 @@ import io.swagger.annotations.ApiOperation;
 public class DerivedVariableController {
 	@Autowired
 	private DerivedVariableMapper derivedVariableMapper;
+
 	
 	
 	@ApiOperation(value="获取衍生变量列表列表", notes="根据搜索条件查询衍生变量列表")
@@ -78,9 +79,7 @@ public class DerivedVariableController {
 	@ApiOperation(value="保存或新增衍生变量", notes="根据衍生变量ID，保存或新增衍生变量。获取request仅为了拿到存储文件地址")
     @RequestMapping(value={""}, method=RequestMethod.POST)
 	public Result<Integer> saveOrUpdate(@RequestBody DerivedVariableExt derivedVar,HttpServletRequest request) throws Exception {
-		//文件保存至本地
-		String fileName = UUID.randomUUID().toString().replaceAll("-", "")+".tmp";
-		String filePath = request.getServletContext().getRealPath(fileName);
+
 		derivedVar.setClazzPath(derivedVar.getContent().getBytes());
 		if(derivedVar.getVarId()!= null){
 			derivedVariableMapper.updateByPrimaryKeyWithBLOBs(derivedVar);
