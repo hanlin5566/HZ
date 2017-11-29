@@ -22,11 +22,12 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 			me.find('.default-btn').hide();
 		} else if('SAVED' == state){
 			//保存状态右上角应该为编译，可以修改
-            me.find('.back-btn').css("display","inline-block");
+            me.find('.back-btn').show();
 			me.find('.default-btn').text("编译测试");
 			me.find('.default-btn').attr("deployStatus","COMPILED");
 		}else if('COMPILED' == state){
 			//编译通过，则右上方按钮应该为发布，并且不能修改。
+            me.find('.back-btn').show();
 			me.find('.default-btn').text("发布");
 			me.find('.default-btn').attr("deployStatus","PUBLISHED");
 		}else{
@@ -114,15 +115,16 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
                 if (result.code == 200) {
                     me.find('#myModal').modal('show');
                     me.find('#myModal').find(".modal-title").html("编译测试成功");
-                    me.find('#myModal').find(".modal-body").html("输出变量键值为"+result.data)
+                    me.find('#myModal').find(".modal-body").html("输出决策结果为："+result.data)
                    // alert("测试成功：输出变量键值为："+result.data);
                     //保存成功将右上角和当前状态修改为编译
+                    me.find('.back-btn').show();
                     me.find('.default-btn').text("发布");
                     me.find('.default-btn').attr("deployStatus","PUBLISHED");
                 } else {
                     me.find('#myModal').modal('show');
                     me.find('#myModal').find(".modal-title").html("编译测试失败");
-                    me.find('#myModal').find(".modal-body").html(result.data)
+                    me.find('#myModal').find(".modal-body").html(result.data.message)
                 }
             });
         }
@@ -202,6 +204,24 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
         me.find('#sava-btn').on('click', function() {
             var postStatus = "SAVED";
             me.postContent(postStatus);
+        });
+
+        me.find("#createTestDemo").on('click', function() {
+            var demo ="{"+"\r\n";
+            var selected =me.find("#selected").find(".tyue-checkbox-input");
+            var len=0;
+            selected.each(function(){
+                len ++;
+                var ruleKey = $(this).data("rulekey");
+                if(len<selected.size())
+                {
+                    demo = demo +'"'+ruleKey+'":"",'+"\r\n";
+                }else{
+                    demo = demo +'"'+ruleKey+'":""'+"\r\n"+'}';
+                }
+
+            });
+            editorDemo.setValue(demo);
         });
 
     };

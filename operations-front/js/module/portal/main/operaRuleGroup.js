@@ -153,12 +153,12 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 			var selections = $('#tb_var').bootstrapTable('getSelections');
 			var varIds = new Array();
 			for(var i in selections){
-				varIds.push(selections[i].varId);
+				varIds.push(selections[i].id);
             } 
 			var url = "msg";
 			requestUtil.del(url, varIds).then(function(result) {
 				if(result.success){
-             	   $('#tb_var').bootstrapTable('refresh',me.queryParams);
+             	   $('#tb_rule_group').bootstrapTable('refresh',me.queryParams);
                 }
 			});
 		});
@@ -169,6 +169,30 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 		me.find(".add").click(function() {
 			me.moveTo('operaRuleGroupDetail');
 		});
+
+        me.find(".pub").click(function() {
+            var selections = $('#tb_rule_group').bootstrapTable('getSelections');
+            var groupIds="";
+            for(var i in selections){
+                groupIds += selections[i].id+"|"
+            }
+            if(groupIds.length==0)
+			{
+                alert('请选择已发布状态的规则集');
+                return;
+			}
+            var data = {
+                "groupIds" : groupIds
+            };
+            var url = "/ruleGroup/pub?groupIdStr="+groupIds;
+            requestUtil.get(url).then(function(result) {
+                if(result.success){
+                   alert("发布成功");
+                }else{
+                    alert(result.message);
+				}
+            });
+        });
 	};
 	
 	// 页面隐藏
