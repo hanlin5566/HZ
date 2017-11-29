@@ -149,7 +149,7 @@
             nodeNavbar.addChild(level1);
             nodeHeader.addChild(nodeNavbar);
             level1 = new Menu({
-                pageCode: "role_info",
+                pageCode: "operaRoleList",
                 positionId: "layout_manage",
                 layoutId: "layout_manage",
                 label: "角色管理",

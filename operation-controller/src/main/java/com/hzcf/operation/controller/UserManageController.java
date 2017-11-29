@@ -10,6 +10,7 @@ import com.hzcf.operation.base.result.ResultPage;
 import com.hzcf.operation.base.util.BeanUtils;
 import com.hzcf.operation.base.util.StringUtils;
 import com.hzcf.operation.gen.entity.SystemRole;
+import com.hzcf.operation.gen.entity.SystemRoleExample;
 import com.hzcf.operation.gen.entity.SystemUser;
 import com.hzcf.operation.gen.entity.SystemUserExample;
 import com.hzcf.operation.service.SystemRoleService;
@@ -249,6 +250,29 @@ public class UserManageController {
 
     }
 
+    /***
+     * 角色信息
+     * @param request
+     * @param
+     * @return
+     */
+    @ApiOperation(value="角色信息", notes="查询角色信息Bycondition")
+    @RequestMapping(value="/queryRoleInfo")
+    public ResultPage queryRoleInfo(HttpServletRequest request, SystemRole systemRole, PageEntity page) {
+        ResultPage ret = new ResultPage();
+        List<SystemRole> list = new ArrayList<>();
+        PageInfo pageInfo = page.toPageInfo();
+        try {
+            SystemRoleExample example = BeanUtils.example(systemRole, SystemRoleExample.class);
+            list = systemRoleService.selectByExample(example,pageInfo);
 
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        ret.setPageInfo(pageInfo);
+        ret.setData(list);
+        return  ret;
+
+    }
 
 }
