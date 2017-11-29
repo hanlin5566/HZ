@@ -235,13 +235,13 @@ define([ 'util/requestUtil', 'core/base', 'util/sessionUtil', 'util/domUtil',
 		//如果有ID则填充内容
 
 		//分组选项
-		var url = "/derivedGroup"
+		var url = "/derivedGroup?limit=100&offset=0";
         requestUtil.get(url).then(function(result) {
             if(result.success){
                 var data = result.data;
                 for(var v in data)
                 {
-                    $('#varGroupId').append("<option value="+data[v].varGroupId+">"+data[v].description+"</option>");
+                    $('#varGroupId').append("<option value="+data[v].varGroupId+">"+data[v].groupName+"-"+data[v].description+"</option>");
                 }
 
                 if(me.parameter.varId){

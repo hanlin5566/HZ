@@ -208,7 +208,7 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
 
         me.find("#varGroupId").click(function() {
 
-            var url = "/derivedGroup";
+            var url = "/derivedGroup?limit=100&offset=0";
             var loaded  =$('#isLoadedGrops').val();
             if(loaded==0)
 			{
@@ -217,7 +217,7 @@ define([ 'util/requestUtil', 'core/base','util/formatUtil',
                         var data = result.data;
                         for(var v in data)
                         {
-                            $('#varGroupId').append("<option value="+data[v].varGroupId+">"+data[v].description+"</option>");
+                            $('#varGroupId').append("<option value="+data[v].varGroupId+">"+data[v].groupName+"-"+data[v].description+"</option>");
                         }
                         $('#isLoadedGrops').val(1);
                     }

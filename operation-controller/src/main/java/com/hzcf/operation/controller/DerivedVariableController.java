@@ -69,9 +69,12 @@ public class DerivedVariableController {
 		example.createCriteria().andVarIdEqualTo(varId);
 		List<DerivedVariableWithBLOBs> result = derivedVariableMapper.selectByExampleWithBLOBs(example);
 		//读取文件并将内容写入
-		String content = new String(result.get(0).getClazzPath());
 		DerivedVariableExt copyResult = BeanUtils.copyProperties(result.get(0), DerivedVariableExt.class);
-		copyResult.setContent(content);
+		if(result.get(0).getClazzPath()!=null)
+		{
+			String content = new String(result.get(0).getClazzPath());
+			copyResult.setContent(content);
+		}
 		ret.setData(copyResult);
 		return ret;
 	}
