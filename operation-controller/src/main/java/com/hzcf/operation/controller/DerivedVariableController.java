@@ -1,38 +1,34 @@
 package com.hzcf.operation.controller;
 
-import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.hzcf.compile.DynamicEngine;
-import com.hzcf.compile.JavaStringCompiler;
-import com.hzcf.operation.gen.entity.DerivedVariableWithBLOBs;
-import com.hzcf.variable.engine.DerivedAlgorithms;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hzcf.compile.JavaStringCompiler;
 import com.hzcf.operation.base.entity.DerivedVariableExt;
 import com.hzcf.operation.base.entity.PageEntity;
 import com.hzcf.operation.base.entity.PageInfo;
+import com.hzcf.operation.base.enums.DataStatus;
 import com.hzcf.operation.base.exception.CustomException;
 import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
 import com.hzcf.operation.base.result.ResultPage;
 import com.hzcf.operation.base.util.BeanUtils;
-import com.hzcf.operation.base.util.CompileUtils;
 import com.hzcf.operation.gen.entity.DerivedVariable;
 import com.hzcf.operation.gen.entity.DerivedVariableExample;
+import com.hzcf.operation.gen.entity.DerivedVariableWithBLOBs;
 import com.hzcf.operation.gen.mapper.DerivedVariableMapper;
+import com.hzcf.variable.engine.DerivedAlgorithms;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -85,8 +81,11 @@ public class DerivedVariableController {
 
 		derivedVar.setClazzPath(derivedVar.getContent().getBytes());
 		if(derivedVar.getVarId()!= null){
-			derivedVariableMapper.updateByPrimaryKeyWithBLOBs(derivedVar);
+			//TODO:优化为，拦截insert，统一插入数据状态与更新时间。
+			derivedVariableMapper.updateByPrimaryKeySelective(derivedVar);
 		}else{
+			//TODO:优化为，拦截insert，统一插入数据状态与时间。
+			derivedVar.setDataStatus(DataStatus.NORMAL);
 			derivedVariableMapper.insert(derivedVar);
 		}
 		Result<Integer> ret = new Result<Integer>();
@@ -120,7 +119,7 @@ public class DerivedVariableController {
 			result.setData(derivedVar.getVarRetName()+"="+ret);
 			derivedVar.setClazzName(fullClassName);
 			derivedVar.setClassFile(classBytes.entrySet().iterator().next().getValue());
-			derivedVariableMapper.updateByPrimaryKeyWithBLOBs(derivedVar);
+			derivedVariableMapper.updateByPrimaryKeySelective(derivedVar);
 		}
 		return result;
 	}
