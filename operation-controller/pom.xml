@@ -38,7 +38,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <finalName>HJ-Operation-Platfrom</finalName>
                     <archive>
                         <manifest>
                             <mainClass>com.hzcf.operation.OperationBootStarp</mainClass>
@@ -51,7 +50,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <finalName>${project.artifactId}</finalName>
+                    <finalName>HJ-Operation-Platfrom</finalName>
                     <!--打包打成可shell直接运行的二进制文件-->
                     <executable>true</executable>
                 </configuration>
