@@ -4,12 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.hzcf</groupId>
-	<artifactId>operation-platform</artifactId>
-	<version>${build-version}</version>
+	<artifactId>HJ-Operation-Platfrom</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
-		<build-version>0.0.1-SNAPSHOT</build-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
@@ -19,8 +18,8 @@
 	<modules>
 		<module>operation-base</module>
 		<module>operation-mapper</module>
-		<module>operation-controller</module>
 		<module>operation-service</module>
+		<module>operation-controller</module>
 	</modules>
 
 	<parent>
@@ -40,7 +39,21 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
+		
+		 <!--启用undertow容器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+        
 		<!-- string aop -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -121,13 +134,6 @@
 		    <version>0.1.1</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
-			<version>2.4</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -136,27 +142,15 @@
 
 	</dependencies>
 
-
-	<build>
-		<plugins>
-			<plugin>
-				<!-- The plugin rewrites your manifest -->
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration><!-- 指定该Main Class为全局的唯一入口 -->
-					<mainClass>com.hzcf.operation.OperationBootStarp</mainClass>
-					<layout>ZIP</layout>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal><!--可以把依赖的包都打包到生成的Jar包中 -->
-						</goals>
-						<!--可以生成不含依赖包的不可执行Jar包 -->
-						<!-- configuration> <classifier>exec</classifier> </configuration> -->
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+    <!--使用私服-->
+    <repositories>
+        <repository>
+            <id>spring</id>
+            <url>http://repo.spring.io/plugins-release/</url>
+        </repository>
+         <repository>
+            <id>hz_maven_repositories</id>
+            <url>http://192.168.1.104:8071/repository/hz_maven_repositories/</url>
+        </repository>
+    </repositories>
 </project>

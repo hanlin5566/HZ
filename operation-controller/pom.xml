@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.hzcf</groupId>
-		<artifactId>operation-platform</artifactId>
+		<artifactId>HJ-Operation-Platfrom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>operation-controller</artifactId>
@@ -16,13 +16,53 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.hzcf</groupId>
-			<artifactId>operation-base</artifactId>
-			<version>${build-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.hzcf</groupId>
 			<artifactId>operation-service</artifactId>
-			<version>${build-version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	
+	<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+			
+            <!--指定jar的打包策略-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.hzcf.operation.OperationBootStarp</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>HJ-Operation-Platfrom</finalName>
+                    <!--打包打成可shell直接运行的二进制文件-->
+                    <executable>true</executable>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
+        </plugins>
+    </build>
 </project>
