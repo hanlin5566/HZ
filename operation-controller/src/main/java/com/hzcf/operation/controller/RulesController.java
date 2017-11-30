@@ -57,7 +57,10 @@ public class RulesController {
         Result<RulesExt> result = new Result<RulesExt>();
         Rules rule =derivedRulesService.getEdit(ruleId);
         RulesExt copyResult = BeanUtils.copyProperties(rule, RulesExt.class);
-        copyResult.setContent( new String(rule.getRuleCode()));
+        if(rule.getRuleCode()!=null)
+        {
+            copyResult.setContent( new String(rule.getRuleCode()));
+        }
         result.setData(copyResult);
         return result;
     }

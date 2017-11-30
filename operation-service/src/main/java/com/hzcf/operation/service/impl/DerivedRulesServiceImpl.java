@@ -69,6 +69,7 @@ public class DerivedRulesServiceImpl implements DerivedRulesService {
     @Override
     public Integer saveOrUpdate(Rules rules)
     {
+            rules.setDataStatus(DataStatus.NORMAL);
         if(rules.getId()!= null){
             return rulesMapper.updateByPrimaryKeyWithBLOBs(rules);
         }else{
