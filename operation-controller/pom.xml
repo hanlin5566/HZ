@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.hzcf</groupId>
-		<artifactId>operation-platform</artifactId>
+		<artifactId>HJ-Operation-Platfrom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>operation-controller</artifactId>
@@ -16,13 +16,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.hzcf</groupId>
-			<artifactId>operation-base</artifactId>
-			<version>${build-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.hzcf</groupId>
 			<artifactId>operation-service</artifactId>
-			<version>${build-version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

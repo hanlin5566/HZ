@@ -5,11 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.hzcf</groupId>
-		<artifactId>operation-platform</artifactId>
-		<version>${build-version}</version>
+		<artifactId>HJ-Operation-Platfrom</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>operation-mapper</artifactId>
 	<name>operation-mapper</name>
+	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -17,7 +18,7 @@
 		<dependency>
 			<groupId>com.hzcf</groupId>
 			<artifactId>operation-base</artifactId>
-			<version>${build-version}</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
