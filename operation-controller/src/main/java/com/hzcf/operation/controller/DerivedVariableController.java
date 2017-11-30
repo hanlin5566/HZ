@@ -81,7 +81,7 @@ public class DerivedVariableController {
 
 		derivedVar.setClazzPath(derivedVar.getContent().getBytes());
 		if(derivedVar.getVarId()!= null){
-			//TODO:优化为，拦截insert，统一插入数据状态与更新时间。
+			//TODO:优化为，拦截update，统一插入数据状态与更新时间。
 			derivedVariableMapper.updateByPrimaryKeySelective(derivedVar);
 		}else{
 			//TODO:优化为，拦截insert，统一插入数据状态与时间。
@@ -115,7 +115,7 @@ public class DerivedVariableController {
 		{
 			DerivedAlgorithms derivedAlgorithms = (DerivedAlgorithms)derived;
 			derivedAlgorithms.setVarName(derivedVar.getVarRetName());
-			String ret = derivedAlgorithms.execute(derivedVar.getTestDemo().toString());
+			Object ret = derivedAlgorithms.execute(derivedVar.getTestDemo().toString());
 			result.setData(derivedVar.getVarRetName()+"="+ret);
 			derivedVar.setClazzName(fullClassName);
 			derivedVar.setClassFile(classBytes.entrySet().iterator().next().getValue());
