@@ -18,9 +18,7 @@ import com.hzcf.operation.service.SystemUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -85,7 +83,7 @@ public class UserManageController {
      */
     @ApiOperation(value="增加用户", notes="添加用户信息")
     @RequestMapping(value="/addUserInfo", method= RequestMethod.POST)
-    public Result addUserInfo(HttpServletRequest request,SystemUser systemUser) {
+    public Result addUserInfo(HttpServletRequest request,@RequestBody SystemUser systemUser) {
         Result<Map> ret = new Result<Map>();
 
         if (!StringUtils.isNotNull(systemUser.getUserName())) {
@@ -115,25 +113,25 @@ public class UserManageController {
      * @return
      */
     @ApiOperation(value="查看用户信息", notes="查看用户信息")
-    @RequestMapping(value="/detailuserinfo", method= RequestMethod.POST)
-    public Result detailUserInfo(HttpServletRequest request) {
-        Result<Map> ret = new Result<Map>();
-        int userId = StringUtils.strToInt(request.getParameter("userId"));//用户Id
+    @RequestMapping(value="/{useId}")
+    public Result detailUserInfo(HttpServletRequest request, @PathVariable String useId) {
+        Result ret = new Result();
+        int userId = StringUtils.strToInt(useId);//用户Id
         if (userId<1) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
-        Map<String, Object> map = new HashMap<String, Object>();
-
+       // Map<String, Object> map = new HashMap<String, Object>();
+        SystemUser systemUser = new SystemUser();
         try {
-            SystemUser systemUser = systemUserService.selectByPrimarykey(userId);
+             systemUser = systemUserService.selectByPrimarykey(userId);
             if (systemUser==null){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
             }
-            map.put("data",systemUser);
+           // map.put("data",systemUser);
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-        return  ret.setData(map);
+        return  ret.setData(systemUser);
 
     }
     /***
@@ -143,12 +141,12 @@ public class UserManageController {
      * @return
      */
     @ApiOperation(value="修改用户", notes="修改用户信息")
-    @RequestMapping(value="/updateUserInfo", method= RequestMethod.POST)
-    public Result updateUserInfo(HttpServletRequest request,SystemUser param) {
+    @RequestMapping(value="/updateUserInfo")
+    public Result updateUserInfo(HttpServletRequest request, @RequestBody SystemUser param) {
         Result<Map> ret = new Result<Map>();
 
         //获取Id
-        int userId = StringUtils.strToInt(request.getParameter("userId"));
+        int userId = param.getId();
         if (userId<1) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
