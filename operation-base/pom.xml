@@ -29,4 +29,20 @@
 			<artifactId>jedis</artifactId>
 		</dependency>
 	</dependencies>
+	<build>
+        <plugins>
+        	 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <!--打jar时排除编译完成的classes目录下的一些文件-->
+                    <excludes>
+                        <exclude>application.properties</exclude>
+                        <exclude>logback.xml</exclude>
+                        <exclude>bin/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

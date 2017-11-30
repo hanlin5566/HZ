@@ -5,7 +5,7 @@
 <configuration scan="true" debug="false">
 	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
 	<property name="LOG_HOME" value="logs" />
-	<property name="APP_NAME" value="operation-platform" />
+	<property name="APP_NAME" value="HJ-Operation-Platfrom" />
 	
 	<!-- 控制台输出 -->
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -52,7 +52,7 @@
 	<appender name="MONGO" class="com.hzcf.operation.base.log.MongoDBAppender">
 		<host>192.168.1.110</host>
         <port>27017</port>
-        <db>operation-platform</db>
+        <db>HJ-Operation-Platfrom</db>
 	</appender>
 	<!-- <appender name="MONGO" class="com.hzcf.operation.base.log.MongoTemplateAppender"></appender> -->
 	<!-- 异步输出到Mongo -->
