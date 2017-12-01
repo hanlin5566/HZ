@@ -189,11 +189,11 @@ public class UserManageController {
      * @return
      */
     @ApiOperation(value="增加角色", notes="添加角色信息")
-    @RequestMapping(value="/addRole", method= RequestMethod.POST)
-    public Result addUserRole(HttpServletRequest request,SystemRole systemRole) {
+    @RequestMapping(value="/addRole")
+    public Result addUserRole(HttpServletRequest request,@RequestBody SystemRole systemRole) {
         Result<Map> ret = new Result<Map>();
-        String roleName = request.getParameter("roleName");//角色名称
-        if (!StringUtils.isNotNull(roleName)) {
+        //String roleName = request.getParameter("roleName");//角色名称
+        if (!StringUtils.isNotNull(systemRole.getRoleName())) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
         Map<String, Object> map = new HashMap<String, Object>();
@@ -201,8 +201,6 @@ public class UserManageController {
         try {
             Date date = new Date();
             systemRole.setCreateTime(date);
-           // SystemRole systemRole = new SystemRole();
-            systemRole.setRoleName(roleName);
             int result = systemRoleService.addSystemRole(systemRole);
             if (result<1){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
@@ -222,10 +220,11 @@ public class UserManageController {
      * @return
      */
     @ApiOperation(value="修改角色", notes="修改角色信息")
-    @RequestMapping(value="/updateRole", method= RequestMethod.POST)
-    public Result updateRole(HttpServletRequest request,SystemRole param) {
+    @RequestMapping(value="/updateRole")
+    public Result updateRole(HttpServletRequest request,@RequestBody SystemRole param) {
         Result<Map> ret = new Result<Map>();
-        int roleId = StringUtils.strToInt(request.getParameter("roleId"));//角色名称
+        //int roleId = StringUtils.strToInt(request.getParameter("roleId"));//角色名称
+        int roleId = param.getId();
         if (roleId<1) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
@@ -237,6 +236,10 @@ public class UserManageController {
             if (StringUtils.isNotNull(param.getRoleName())){
                 systemRole.setRoleName(param.getRoleName());
             }
+            if (StringUtils.isNotNull(param.getComments())){
+                systemRole.setComments(param.getComments());
+            }
+            systemRole.setUpdateTime(date);
             int result = systemRoleService.updateSysteRole(systemRole);
             if (result<1){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
@@ -272,5 +275,32 @@ public class UserManageController {
         return  ret;
 
     }
+    /***
+     * 查看角色信息
+     * @param request
+     * @param
+     * @return
+     */
+    @ApiOperation(value="查看角色信息", notes="查看角色信息")
+    //@RequestMapping(value="/role/{roleId}") @RequestMapping(value="/role/{roleId}")
+    @RequestMapping(value="/role/{roleId}",method = RequestMethod.GET)
+    public Result detailRoleInfo(HttpServletRequest request,@PathVariable String roleId) {
+        Result ret = new Result();
+        int rolId = StringUtils.strToInt(roleId);//用户Id
+        if (rolId<1) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
+        }
+        SystemRole systemRole = new SystemRole();
+        try {
+            systemRole = systemRoleService.selectByPrimaryKey(rolId);
+            if (systemRole==null){
+                throw  new CustomException(ResponseCode.ERROR_PARAM,"该角色信息不存在!");
+            }
 
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        return  ret.setData(systemRole);
+
+    }
 }
