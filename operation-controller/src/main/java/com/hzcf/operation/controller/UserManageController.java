@@ -82,7 +82,7 @@ public class UserManageController {
      * @return
      */
     @ApiOperation(value="增加用户", notes="添加用户信息")
-    @RequestMapping(value="/addUserInfo", method= RequestMethod.POST)
+    @RequestMapping(value="/addUserInfo")
     public Result addUserInfo(HttpServletRequest request,@RequestBody SystemUser systemUser) {
         Result<Map> ret = new Result<Map>();
 
