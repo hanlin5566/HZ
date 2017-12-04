@@ -63,7 +63,7 @@ public class FinalExceptionHandler implements ErrorController {
 			case 404:
 				code = ResponseCode.RESOURCE_NOT_FOUND;
 				break;
-			case 500:
+			case 500: 
 				code = ResponseCode.RESULT_SYSTEM_ERROR;
 				break;
 			default:

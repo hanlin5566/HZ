@@ -25,7 +25,7 @@ public class GlobalDefaultExceptionHandler {
         	//404
         	code = ResponseCode.RESOURCE_NOT_FOUND;
         }else if (e instanceof org.springframework.http.converter.HttpMessageNotReadableException) {
-        	//400
+        	//400 
         	code = ResponseCode.ERROR_PARAM;
         }
     	CustomException customException = new CustomException(e,code,e.getMessage());
