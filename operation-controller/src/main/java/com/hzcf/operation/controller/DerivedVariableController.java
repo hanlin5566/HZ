@@ -29,6 +29,7 @@ import com.hzcf.operation.gen.entity.DerivedVariableExample;
 import com.hzcf.operation.gen.entity.DerivedVariableWithBLOBs;
 import com.hzcf.operation.gen.mapper.DerivedVariableMapper;
 import com.hzcf.variable.engine.DerivedAlgorithms;
+import com.hzcf.variable.engine.algorithms.DirectVariableAlgorithms;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,7 +97,21 @@ public class DerivedVariableController {
 	@ApiOperation(value="编译传入的文件", notes="编译传入的文件")
     @RequestMapping(value={"/compile"}, method=RequestMethod.POST)
 	public Result<String> compile(@RequestBody DerivedVariableExt derivedVar,HttpServletRequest request) throws Exception {
+		Result<String> result =  new Result<>();
 		String content = derivedVar.getContent();
+		if(derivedVar.getVarType() == 1){
+			//直接变量处理
+			DirectVariableAlgorithms directVariableAlgorithms = new DirectVariableAlgorithms();
+			try {
+				Object ret = directVariableAlgorithms.execute(derivedVar.getTestDemo(), derivedVar.getVarRecName());
+				result.setData(ret.toString());
+				result.setData(derivedVar.getVarRetName()+"="+ret);
+			} catch (Exception e) {
+				throw new CustomException(ResponseCode.ERROR_PARAM, e.getMessage());
+			}
+			derivedVariableMapper.updateByPrimaryKeySelective(derivedVar);
+			return result;
+		}
 		if(StringUtils.isEmpty(content)){
 			throw new CustomException(ResponseCode.ERROR_PARAM, "传入文件内容不能为空");
 		}
@@ -105,7 +120,6 @@ public class DerivedVariableController {
 		String fullClassName =packagePath + derivedVar.getVarRetName();
 		final Map<String,byte[]> classBytes =new HashMap<>();
 		Object derived = dynamicEngine.compile(derivedVar.getVarRetName(),fullClassName,content,classBytes);
-		Result<String> result =  new Result<>();
 		if(derived instanceof String)
 		{
 			result.setResponseCode(ResponseCode.RESULT_SYSTEM_ERROR);
