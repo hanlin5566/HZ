@@ -14,6 +14,15 @@ public class InterfaceRecordEntity {
 	private String queryHis;
 	private Long timeUsed;
 	private String taskId;
+	private String ruleId;
+
+	public String getRuleId() {
+		return ruleId;
+	}
+
+	public void setRuleId(String ruleId) {
+		this.ruleId = ruleId;
+	}
 
 	public String getTaskId() {
 		return taskId;

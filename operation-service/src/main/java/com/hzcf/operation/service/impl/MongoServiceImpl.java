@@ -369,7 +369,7 @@ public class MongoServiceImpl implements MongoService {
     @Override
     public Map getDesionMsg(String taskId,String parentInterfaceType,String interfaceType){
         InterfaceQueryEntity param = new InterfaceQueryEntity();
-        param.setInterfaceParentType(interfaceType);
+        //param.setInterfaceParentType(interfaceType);
         param.setInterfaceParentType(parentInterfaceType);
         param.setTaskId(taskId);
         Query query = getQueryDecisionSet(param);
