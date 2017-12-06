@@ -46,6 +46,7 @@ public class QueryLogServiceImpl implements QueryLogService{
     {
         ResultPage<QueryLog> result = new ResultPage<QueryLog>();
         QueryLogExample example = BeanUtils.example(queryLogExt,QueryLogExample.class);
+        example.setOrderByClause("id desc");
         if(StringUtils.isNotNull(queryLogExt.getEndTime()) && StringUtils.isNotNull(queryLogExt.getStartTime()))
         {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

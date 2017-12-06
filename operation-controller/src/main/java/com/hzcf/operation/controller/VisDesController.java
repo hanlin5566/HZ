@@ -90,7 +90,7 @@ public class VisDesController {
      */
     @ApiOperation(value="接口查询使用详情", notes="根据主键I")
     @RequestMapping(value="/getQueryDetail")
-    public Result getErrorDetail(HttpServletRequest request,String queryLogId) {
+    public Result getQueryDetail(HttpServletRequest request,String queryLogId) {
         Result<Map> ret = new Result<Map>();
 
         if (!StringUtils.isNotNull(queryLogId)) {
@@ -106,6 +106,27 @@ public class VisDesController {
         return  ret.setData(map);
     }
 
+    @ApiOperation(value="接口查询决策详情", notes="根据taskId")
+    @RequestMapping(value="/getDecisionDetail")
+    public Result getDecisionDetail(HttpServletRequest request,String taskId) {
+        Result<LogQuery> ret = new Result<LogQuery>();
+
+        if (!StringUtils.isNotNull(taskId)) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"taskId不能为空!");
+        }
+        InterfaceQueryEntity interfaceQueryEntity =new InterfaceQueryEntity();
+        interfaceQueryEntity.setTaskId(taskId);
+        interfaceQueryEntity.setInterfaceParentType("hzcf");
+        interfaceQueryEntity.setInterfaceType("decision-start");
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            LogQuery  query = mongoService.getLogQueryOne(interfaceQueryEntity);
+            ret.setData(query);
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        return  ret;
+    }
 
 
     @ApiOperation(value="获取详", notes="")

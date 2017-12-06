@@ -16,3 +16,5 @@ target
 /java
 /operation-controller/*.iml
 /operation-mapper/*.iml
+/operation-base/src/test
+/operation-base/src/test/java/com/hzcf/operation/base/AppTest.java
