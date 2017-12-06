@@ -1,5 +1,10 @@
 package com.hzcf.operation.gen.entity;
 
+import com.hzcf.operation.base.util.DateUtils;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 /**
  * system_user_role 
  * @author huhanlin 2017-11-23
@@ -33,12 +38,30 @@ public class SystemUserRole {
     /**
      * 创建时间
      */
-    private Integer createTime;
+    @DateTimeFormat(pattern = DateUtils.ISO_DATE)
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    private Integer updateTime;
+    @DateTimeFormat(pattern = DateUtils.ISO_DATE)
+    private Date updateTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     /**
      * 数据状态（0.未知，1.正常，-1.删除）
@@ -125,37 +148,7 @@ public class SystemUserRole {
         this.updateUid = updateUid;
     }
 
-    /**
-     * 创建时间
-     * @return create_time 创建时间
-     */
-    public Integer getCreateTime() {
-        return createTime;
-    }
 
-    /**
-     * 创建时间
-     * @param createTime 创建时间
-     */
-    public void setCreateTime(Integer createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 修改时间
-     * @return update_time 修改时间
-     */
-    public Integer getUpdateTime() {
-        return updateTime;
-    }
-
-    /**
-     * 修改时间
-     * @param updateTime 修改时间
-     */
-    public void setUpdateTime(Integer updateTime) {
-        this.updateTime = updateTime;
-    }
 
     /**
      * 数据状态（0.未知，1.正常，-1.删除）

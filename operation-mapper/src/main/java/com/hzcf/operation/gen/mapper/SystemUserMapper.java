@@ -3,15 +3,8 @@ package com.hzcf.operation.gen.mapper;
 import com.hzcf.operation.gen.entity.SystemUser;
 import com.hzcf.operation.gen.entity.SystemUserExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 
@@ -42,9 +35,11 @@ public interface SystemUserMapper {
         "#{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, ",
         "#{dataStatus,jdbcType=INTEGER})"
     })
-    int insert(SystemUser record);
+    @Options(useGeneratedKeys=true)
+    void insert(SystemUser record);
 
     @InsertProvider(type=SystemUserSqlProvider.class, method="insertSelective")
+    @Options(useGeneratedKeys=true)
     int insertSelective(SystemUser record);
 
     @SelectProvider(type=SystemUserSqlProvider.class, method="selectByExample")

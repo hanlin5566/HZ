@@ -18,4 +18,6 @@ public interface SystemUserService {
 	  List<SystemUser> getSystemUserByCondition(SystemUserExample examp, PageInfo pageInfo);
 
 	  List<SystemUser> getSystemUserByExample(SystemUserExample example);
+
+	  /*int insertReturnGenId(SystemUser systemUser);*/
 }

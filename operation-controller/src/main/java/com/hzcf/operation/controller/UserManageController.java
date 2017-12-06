@@ -9,11 +9,11 @@ import com.hzcf.operation.base.result.Result;
 import com.hzcf.operation.base.result.ResultPage;
 import com.hzcf.operation.base.util.BeanUtils;
 import com.hzcf.operation.base.util.StringUtils;
-import com.hzcf.operation.gen.entity.SystemRole;
-import com.hzcf.operation.gen.entity.SystemRoleExample;
-import com.hzcf.operation.gen.entity.SystemUser;
-import com.hzcf.operation.gen.entity.SystemUserExample;
+import com.hzcf.operation.gen.entity.*;
+import com.hzcf.operation.gen.mapper.SystemUserMapper;
+import com.hzcf.operation.service.SystemRoleMenuService;
 import com.hzcf.operation.service.SystemRoleService;
+import com.hzcf.operation.service.SystemUserRoleService;
 import com.hzcf.operation.service.SystemUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +37,15 @@ public class UserManageController {
 
     @Autowired
     private SystemRoleService systemRoleService;
+
+    @Autowired
+    private SystemUserRoleService systemUserRoleService;
+
+
+    @Autowired
+    private SystemRoleMenuService roleMenuService;
+
+
 
 
     /***
@@ -78,26 +87,42 @@ public class UserManageController {
     /***
      * 添加用户
      * @param request
-     * @param systemUser
+     * @param
      * @return
      */
     @ApiOperation(value="增加用户", notes="添加用户信息")
     @RequestMapping(value="/addUserInfo")
-    public Result addUserInfo(HttpServletRequest request,@RequestBody SystemUser systemUser) {
+    public Result addUserInfo(HttpServletRequest request,@RequestBody SystemUserDto systemUserDto) {
         Result<Map> ret = new Result<Map>();
-
-        if (!StringUtils.isNotNull(systemUser.getUserName())) {
+       // System.out.println("添加用户所属的角色:"+systemUserDto.getUserRoleId());
+        int  roleId = StringUtils.strToInt(systemUserDto.getUserRoleId());
+        if (!StringUtils.isNotNull(systemUserDto.getUserName())||roleId<1) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
         Map<String, Object> map = new HashMap<String, Object>();
 
         try {
             Date date = new Date();
-            systemUser.setCreateTime(date);
-            int result= systemUserService.addSystemUserInfo(systemUser);
-            if (result<1){
+            systemUserDto.setCreateTime(date);
+            systemUserDto.setDataStatus(1);
+            //添加用户 获取返回的主键Id
+            int result= systemUserService.addSystemUserInfo(systemUserDto);
+
+            System.out.println("返回的主键用户表ID:"+systemUserDto.getId());
+            if (systemUserDto.getId()<1){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
             }
+            //添加用户所属角色
+            SystemUserRole systemUserRole = new SystemUserRole();
+            systemUserRole.setUserId(result);
+            systemUserRole.setRoleId(roleId);
+            systemUserRole.setCreateTime(date);
+            systemUserRole.setDataStatus(1);
+            int resultReturn = systemUserRoleService.addSystemUserRole(systemUserRole);
+            if (resultReturn<1){
+                throw new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
+            }
+
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
@@ -120,18 +145,34 @@ public class UserManageController {
         if (userId<1) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
-       // Map<String, Object> map = new HashMap<String, Object>();
         SystemUser systemUser = new SystemUser();
+        SystemUserDto userDto = new SystemUserDto();
         try {
              systemUser = systemUserService.selectByPrimarykey(userId);
             if (systemUser==null){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
             }
-           // map.put("data",systemUser);
+            //获取用户所属角色
+            SystemUserRoleExample example = new SystemUserRoleExample();
+            example.createCriteria().andUserIdEqualTo(userId);
+            List<SystemUserRole> list = systemUserRoleService.selectByExample(example);
+            if (list.size()!=1){
+                throw  new CustomException(ResponseCode.ERROR_PARAM,"数据异常!");
+            }
+
+            userDto.setUserRoleId(Integer.toString(list.get(0).getRoleId()));
+            userDto.setUpdateTime(systemUser.getUpdateTime());
+            userDto.setUserName(systemUser.getUserName());
+            userDto.setUserPhone(systemUser.getUserPhone());
+            userDto.setUserEmail(systemUser.getUserEmail());
+            userDto.setCreateTime(systemUser.getCreateTime());
+            userDto.setApiPwd(systemUser.getApiPwd());
+            userDto.setUserPwd(systemUser.getUserPwd());
+
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-        return  ret.setData(systemUser);
+        return  ret.setData(userDto);
 
     }
     /***
@@ -190,21 +231,39 @@ public class UserManageController {
      */
     @ApiOperation(value="增加角色", notes="添加角色信息")
     @RequestMapping(value="/addRole")
-    public Result addUserRole(HttpServletRequest request,@RequestBody SystemRole systemRole) {
+    public Result addUserRole(HttpServletRequest request,@RequestBody RoleDto systemRole) {
         Result<Map> ret = new Result<Map>();
         //String roleName = request.getParameter("roleName");//角色名称
-        if (!StringUtils.isNotNull(systemRole.getRoleName())) {
+        if (!StringUtils.isNotNull(systemRole.getRoleName())||!StringUtils.isNotNull(systemRole.getAuthMenu())) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
         Map<String, Object> map = new HashMap<String, Object>();
+        String[] a   = systemRole.getAuthMenu().split("-");
 
         try {
+            //添加角色
             Date date = new Date();
             systemRole.setCreateTime(date);
+            systemRole.setDataStatus(1);
             int result = systemRoleService.addSystemRole(systemRole);
             if (result<1){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
             }
+            //添加角色对应的菜单权限
+            SystemRoleMenu roleMenu = new SystemRoleMenu();
+            for (int l=0;l<a.length;l++){
+                roleMenu.setRoleId(result);
+                roleMenu.setModuleId(StringUtils.strToInt(a[l]));
+                roleMenu.setCreateTime(date);
+                roleMenu.setDataStatus(1);
+                int r = roleMenuService.addRoleMenu(roleMenu);
+                if (r<1){
+                    throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
+                }
+
+            }
+
+
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
@@ -221,14 +280,15 @@ public class UserManageController {
      */
     @ApiOperation(value="修改角色", notes="修改角色信息")
     @RequestMapping(value="/updateRole")
-    public Result updateRole(HttpServletRequest request,@RequestBody SystemRole param) {
+    public Result updateRole(HttpServletRequest request,@RequestBody RoleDto param) {
         Result<Map> ret = new Result<Map>();
-        //int roleId = StringUtils.strToInt(request.getParameter("roleId"));//角色名称
+       //必传参数验证
         int roleId = param.getId();
-        if (roleId<1) {
+        if (roleId<1||!StringUtils.isNotNull(param.getAuthMenu())) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
         Map<String, Object> map = new HashMap<String, Object>();
+        String[] a   = param.getAuthMenu().split("-");
 
         try {
             Date date = new Date();
@@ -244,6 +304,34 @@ public class UserManageController {
             if (result<1){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
             }
+            //修改角色对应的权限 即删除
+            SystemRoleMenuExample example = new SystemRoleMenuExample();
+            example.createCriteria().andRoleIdEqualTo(roleId).andDataStatusEqualTo(1);//角色Id
+            List<SystemRoleMenu> list = roleMenuService.selectByExample(example);
+            //修改用户权限 删除原来权限
+            if (list.size()>0){
+                for (SystemRoleMenu roleMenu:list){
+                    roleMenu.setDataStatus(-1);//已删除状态
+                    int retu = roleMenuService.updateRoleMenu(roleMenu);
+                    if (retu<1){
+                        throw new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
+                    }
+                }
+            }
+            //角色重新赋新的权限
+            SystemRoleMenu roleMenu = new SystemRoleMenu();
+            for (int l=0;l<a.length;l++){
+                roleMenu.setRoleId(result);
+                roleMenu.setModuleId(StringUtils.strToInt(a[l]));
+                roleMenu.setCreateTime(date);
+                roleMenu.setDataStatus(1);
+                int r = roleMenuService.addRoleMenu(roleMenu);
+                if (r<1){
+                    throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
+                }
+
+            }
+
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
@@ -290,17 +378,25 @@ public class UserManageController {
         if (rolId<1) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
-        SystemRole systemRole = new SystemRole();
+
+        ComReturnDto returnDto = new ComReturnDto();
         try {
-            systemRole = systemRoleService.selectByPrimaryKey(rolId);
+            //查看角色信息
+            SystemRole systemRole  = systemRoleService.selectByPrimaryKey(rolId);
             if (systemRole==null){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"该角色信息不存在!");
             }
+            //获取角色对应的菜单权限(未删除)
+            SystemRoleMenuExample example = new SystemRoleMenuExample();
+            example.createCriteria().andRoleIdEqualTo(rolId).andDataStatusEqualTo(1);//角色Id
+            List<SystemRoleMenu> list = roleMenuService.selectByExample(example);
+            returnDto.setSystemRole(systemRole);
+            returnDto.setRetuList(list);
 
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-        return  ret.setData(systemRole);
+        return  ret.setData(returnDto);
 
     }
 }

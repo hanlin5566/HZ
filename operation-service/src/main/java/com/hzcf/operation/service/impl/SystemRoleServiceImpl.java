@@ -25,7 +25,8 @@ public class SystemRoleServiceImpl implements SystemRoleService {
 
     @Override
     public  int addSystemRole(SystemRole systemRole){
-        return  systemRoleMapper.insert(systemRole);
+            systemRoleMapper.insert(systemRole);
+        return systemRole.getId();
     }
 
     @Override

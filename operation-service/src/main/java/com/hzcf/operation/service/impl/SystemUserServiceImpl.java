@@ -24,7 +24,8 @@ public class SystemUserServiceImpl implements SystemUserService {
 
    @Override
    public int addSystemUserInfo(SystemUser systemUser){
-       return systemUserMapper.insert(systemUser);
+        systemUserMapper.insert(systemUser);
+       return systemUser.getId();
    }
 
    @Override
@@ -46,4 +47,9 @@ public class SystemUserServiceImpl implements SystemUserService {
     public List<SystemUser> getSystemUserByExample(SystemUserExample example){
         return  systemUserMapper.selectByExample(example);
     }
+
+   /* @Override
+    public  int insertReturnGenId(SystemUser systemUser){
+        return  systemUserMapper.insertSelective(systemUser);
+    }*/
 }

@@ -1,6 +1,7 @@
 package com.hzcf.operation.service;
 
 
+import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.gen.entity.SystemMenu;
 import com.hzcf.operation.gen.entity.SystemMenuExample;
 
@@ -15,5 +16,7 @@ public interface SystemMenuService {
 	  SystemMenu selectByPrimaryKey(int id);
 
 	  List<SystemMenu> selectByExample(SystemMenuExample example);
+
+	List<SystemMenu> selectByExamplePage(SystemMenuExample example,PageInfo pageInfo);
 
 }
