@@ -9,15 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.hzcf.operation.base.enums.DerivedVarStatus;
-import com.hzcf.operation.gen.entity.DerivedVariable;
-import com.hzcf.operation.gen.entity.DerivedVariableExample;
 
 /**
  * Create by hanlin on 2017年11月8日
@@ -136,17 +133,25 @@ public class BeanUtils {
 			ret = exc.newInstance();
 			Method excm = exc.getDeclaredMethod("createCriteria");
 			Object criteria = excm.invoke(ret);
-			for (Field f : obj.getClass().getDeclaredFields()) {
+			//获取所有字段，包含所有父类，但不包含Object.
+			List<Field> fieldList = new ArrayList<>() ;
+			Class<?> tempClass = obj.getClass();
+			//递归查找所以字段，当父类为null或为Object时，说明到达了最上层的父类。
+			while (tempClass != null && !tempClass.getName().toLowerCase().equals("java.lang.object")) {
+			      fieldList.addAll(Arrays.asList(tempClass.getDeclaredFields()));
+			      tempClass = tempClass.getSuperclass();
+			}
+			for (Field f : fieldList) {
 				f.setAccessible(true);
 				if (f.get(obj) != null) { // 判断字段是否为空，并且对象属性中的基本都会转为对象类型来判断
 					Type type = f.getGenericType();
 					Class<?> typeClazz = Class.forName(type.getTypeName());
 					// //字符串则用like
 					if (typeClazz == String.class) {
-						// 字符串则用like
-						String methodName = String.format("and%sLike", StringUtils.toUpperFristChar(f.getName()));
+						// 字符串也改为equals
+						String methodName = String.format("and%sEqualTo", StringUtils.toUpperFristChar(f.getName()));
 						Method method = criteria.getClass().getMethod(methodName, typeClazz);
-						method.invoke(criteria, f.get(obj) + "%");
+						method.invoke(criteria, f.get(obj));
 					} else if (typeClazz == Date.class) {
 						// 日期用大于等于今天，小于明天
 						Date queryDate = (Date) f.get(obj);
