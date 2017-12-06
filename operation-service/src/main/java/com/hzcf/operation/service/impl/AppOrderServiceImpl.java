@@ -45,6 +45,7 @@ public class AppOrderServiceImpl implements AppOrderService {
     {
         ResultPage<AppOrder> result = new ResultPage<AppOrder>();
         AppOrderExample example = BeanUtils.example(appOrderExt,AppOrderExample.class);
+        example.setOrderByClause("id desc");
         if(StringUtils.isNotNull(appOrderExt.getEndTime()) && StringUtils.isNotNull(appOrderExt.getStartTime()))
         {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

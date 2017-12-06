@@ -15,6 +15,15 @@ public class InterfaceRecordEntity {
 	private Long timeUsed;
 	private String taskId;
 	private String ruleId;
+	private String errorReturn;
+
+	public String getErrorReturn() {
+		return errorReturn;
+	}
+
+	public void setErrorReturn(String errorReturn) {
+		this.errorReturn = errorReturn;
+	}
 
 	public String getRuleId() {
 		return ruleId;

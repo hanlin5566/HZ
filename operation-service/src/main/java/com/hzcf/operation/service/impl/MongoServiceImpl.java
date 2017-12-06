@@ -198,6 +198,14 @@ public class MongoServiceImpl implements MongoService {
     }
 
     @Override
+    public LogQuery getLogQueryOne(InterfaceQueryEntity params) {
+        Query query = getQueryForLog(params);
+        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "_id"));
+        LogQuery logQuery = mongoTemplate.findOne(query.with(sort), LogQuery.class, "log_query");
+        return logQuery;
+    }
+
+    @Override
     public PageInfo getLogQueryCount(InterfaceQueryEntity params)
     {
         PageInfo page = new PageInfo(params.getPageNo(),params.getPageSize());
@@ -251,6 +259,9 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message.userName", true);
         fieldObject.put("message.queryTime", true);
         fieldObject.put("message.state", true);
+        fieldObject.put("message.queryParams", true);
+        fieldObject.put("message.errorReturn", true);
+        fieldObject.put("message.taskId", true);
         Query query= new BasicQuery(dbObject, fieldObject);
         return query;
     }
