@@ -109,6 +109,10 @@ public class DerivedVariableController {
 			} catch (Exception e) {
 				throw new CustomException(ResponseCode.ERROR_PARAM, e.getMessage());
 			}
+			//如果className为空则添加默认的算法类
+			if(StringUtils.isEmpty(derivedVar.getClazzName())){
+				derivedVar.setClazzName("com.hzcf.variable.engine.algorithms.DirectVariableAlgorithms");
+			}
 			derivedVariableMapper.updateByPrimaryKeySelective(derivedVar);
 			return result;
 		}
