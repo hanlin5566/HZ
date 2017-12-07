@@ -102,7 +102,5 @@ public class RulesController {
             return result;
         }
 
-
-
     }
 }

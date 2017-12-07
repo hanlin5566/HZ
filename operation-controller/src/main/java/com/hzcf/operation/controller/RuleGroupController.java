@@ -104,7 +104,7 @@ public class RuleGroupController {
         JSONObject param =new JSONObject();
         param.put("product","buddy_help");
         JSONArray steps = new JSONArray();
-        String[] groupIds = groupIdStr.split("|");
+        String[] groupIds = groupIdStr.split("\\|");
         for(String groupId:groupIds)
         {
             if(!"|".equals(groupId) &&  !"".equals(groupId) && Integer.valueOf(groupId)>0)
@@ -129,7 +129,7 @@ public class RuleGroupController {
                             len++;
                             if(len<interfaces.size())
                             {
-                                interface_.append(inter.get("queryIface")).append(",");
+                                interface_.append(inter.get("queryIface")).append("-");
                             }else{
                                 interface_.append(inter.get("queryIface"));
                             }
