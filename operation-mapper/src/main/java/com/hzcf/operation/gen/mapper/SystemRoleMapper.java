@@ -3,15 +3,8 @@ package com.hzcf.operation.gen.mapper;
 import com.hzcf.operation.gen.entity.SystemRole;
 import com.hzcf.operation.gen.entity.SystemRoleExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.JdbcType;
 
@@ -34,7 +27,8 @@ public interface SystemRoleMapper {
         "#{updateUid,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}, ",
         "#{updateTime,jdbcType=DATE})"
     })
-    int insert(SystemRole record);
+    @Options(useGeneratedKeys=true)
+    void insert(SystemRole record);
 
     @InsertProvider(type=SystemRoleSqlProvider.class, method="insertSelective")
     int insertSelective(SystemRole record);

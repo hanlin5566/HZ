@@ -6,6 +6,7 @@ import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
 import com.hzcf.operation.base.util.StringUtils;
 import com.hzcf.operation.gen.entity.*;
+import com.hzcf.operation.interceptor.SessionInterceptor;
 import com.hzcf.operation.service.SystemMenuService;
 import com.hzcf.operation.service.SystemRoleMenuService;
 import com.hzcf.operation.service.SystemUserRoleService;
@@ -13,6 +14,7 @@ import com.hzcf.operation.service.SystemUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.hzcf.operation.base.util.BeanUtils;
@@ -50,7 +52,7 @@ public class LoginController {
      */
     @ApiOperation(value="用户登录", notes="用户登录加载该用户存在的权限")
     @RequestMapping(value="/userlogin")
-    public Result queryLogErrorList(HttpServletRequest request, SystemUser systemUser) {
+    public Result queryLogErrorList(HttpServletRequest request, @RequestBody  SystemUser systemUser) {
         Result ret = new Result();
         //参数验证
         if (systemUser.getUserName()==null||systemUser.getUserPwd()==null) {
@@ -59,7 +61,7 @@ public class LoginController {
         SystemUserExample example = BeanUtils.example(systemUser, SystemUserExample.class);
         example.createCriteria().andDataStatusEqualTo(1);//数据状态可用
         SystemUser retunResult = new SystemUser();
-        //密码没有处理 确认密码之后需要对密码做加密 匹配
+        //密码没有处理 确认密码之后需要对密码做加密 匹配 TODO:list?
         List<SystemUser> list = systemUserService.getSystemUserByExample(example);
         if (list.size()!=1){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"用户名或密码不正确!");
@@ -69,6 +71,7 @@ public class LoginController {
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
+        request.getSession().setAttribute(SessionInterceptor.SESSION_USER, list.get(0));
         return  ret.setData(retunResult);
     }
 

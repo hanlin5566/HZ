@@ -1,5 +1,6 @@
 package com.hzcf.operation.service.impl;
 
+import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.gen.entity.SystemMenu;
 import com.hzcf.operation.gen.entity.SystemMenuExample;
 import com.hzcf.operation.gen.mapper.SystemMenuMapper;
@@ -40,4 +41,11 @@ public class SystemMenuServiceImpl implements SystemMenuService {
     public  List<SystemMenu> selectByExample(SystemMenuExample example){
        return  systemMenuMapper.selectByExample(example);
     }
+
+
+    @Override
+    public  List<SystemMenu> selectByExamplePage(SystemMenuExample example,PageInfo pageInfo){
+        return  systemMenuMapper.selectByExampleWithRowbounds(example,pageInfo);
+    }
+
 }
