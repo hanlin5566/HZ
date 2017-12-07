@@ -6,6 +6,7 @@ import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
 import com.hzcf.operation.base.util.StringUtils;
 import com.hzcf.operation.gen.entity.*;
+import com.hzcf.operation.interceptor.SessionInterceptor;
 import com.hzcf.operation.service.SystemMenuService;
 import com.hzcf.operation.service.SystemRoleMenuService;
 import com.hzcf.operation.service.SystemUserRoleService;
@@ -60,7 +61,7 @@ public class LoginController {
         SystemUserExample example = BeanUtils.example(systemUser, SystemUserExample.class);
         example.createCriteria().andDataStatusEqualTo(1);//数据状态可用
         SystemUser retunResult = new SystemUser();
-        //密码没有处理 确认密码之后需要对密码做加密 匹配
+        //密码没有处理 确认密码之后需要对密码做加密 匹配 TODO:list?
         List<SystemUser> list = systemUserService.getSystemUserByExample(example);
         if (list.size()!=1){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"用户名或密码不正确!");
@@ -70,6 +71,7 @@ public class LoginController {
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
+        request.getSession().setAttribute(SessionInterceptor.SESSION_USER, list.get(0));
         return  ret.setData(retunResult);
     }
 
