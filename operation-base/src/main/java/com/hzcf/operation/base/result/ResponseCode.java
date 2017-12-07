@@ -12,6 +12,7 @@ public enum ResponseCode implements EnumType{
 	ERROR_PARAM(401,"请求参数错误"),
 	RESOURCE_NOT_FOUND(404,"请求资源未找到"),
 	RESULT_SYSTEM_ERROR(500, "系统内部错误"),
+	RESULT_LOGIN_EXPIRED(502, "未登录，无访问权限"),
 	RESULT_OPERATION_FAILED(2000, "操作错误"),
 	;
 	private final int code;
