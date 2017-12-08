@@ -47,6 +47,7 @@ public class RuleGroupServiceImpl implements RuleGroupService {
         ResultPage<RuleGroup> ret = new ResultPage<RuleGroup>();
         RuleGroupExample example = BeanUtils.example(rules,RuleGroupExample.class);
         example.createCriteria().andDataStatusEqualTo(DataStatus.NORMAL);
+        example.setOrderByClause("sort desc");
         PageInfo pageInfo = page.toPageInfo();
         List<RuleGroup> rulesList =  ruleGroupMapper.selectByExampleWithRowbounds(example,pageInfo);
         ret.setPageInfo(pageInfo);
