@@ -39,16 +39,11 @@ public class AntiFraudTestController {
         Result result = new Result<>();
         Map a = new HashMap();
         Map<String,String> map = new HashMap<>();
-        param.setIdCard("140502198811102244");
+       /* param.setIdCard("140502198811102244");
         param.setMobile("13986671110");
         param.setName("王亮");
         param.setTaskId("AP500228199306179610");
-        /***
 
-         "workingHours": "1年-3年",
-         "company": "南昌住房公积金管理中心",
-         "position": "
-         */
         param.setApplicationType(1);
         param.setBirthday("2000-11-10");
         param.setGender("男");
@@ -87,33 +82,17 @@ public class AntiFraudTestController {
         param.setNextDataBacktracking("864000");
         param.setNextDataHistoryDays("100");
         param.setEmayCycle("3");
-        param.setEmayPlatform("0");
+        param.setEmayPlatform("0");*/
         String params  = JSONObject.toJSONString(param);
         a.put("account","hjNoNeedAes");
         a.put("signature","rhiaw4uRsU&%JHFhhs53");
         a.put("data",params);
-        System.out.println("转换之后的："+JSONObject.toJSONString(a));
+        //System.out.println("转换之后的："+JSONObject.toJSONString(a));
 
 
         JSONObject jso = antiFraudTestService.testAntiFraud(param);
-        System.out.println("结果，，，，，"+jso);
+        //System.out.println("结果，，，，，"+jso);
         result.setData(jso);
-        /*Integer ruleId = ruleGroupService.saveOrUpdate(rules);
-        if(!(ruleId>0))
-        {
-            result.setResponseCode(ResponseCode.FAILED);
-            result.setMessage("保存失败");
-        }
-        JSONObject ret = ruleGroupService.RuleGroupTest(rules);
-
-        if((boolean)ret.get("success"))
-        {
-            result.setData(ret.toJSONString());
-            return  result;
-        }else{
-            result.setResponseCode(ResponseCode.FAILED);
-            result.setMessage("编译失败!"+ret.getString("message"));
-        }*/
         return result;
     }
 
