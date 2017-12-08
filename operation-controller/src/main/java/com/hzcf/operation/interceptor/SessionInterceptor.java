@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,10 +43,30 @@ public class SessionInterceptor implements HandlerInterceptor {
 	 * cookie key
 	 */
 	public static final String AUTH_TOKEN_KEY = "_IDENTIY_KEY_";
+	/**
+	 * token ttl
+	 */
+	public static final int AUTH_TOKEN_AGE = 14 * 24 * 3600;
+	
+	 /**
+	 * 生成客户端cookie
+	 * @param userId
+	 */
+	public static void createAuthToken(SystemUser user) throws Exception{
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		request.getSession().setAttribute(SessionInterceptor.SESSION_USER, user);
+		AuthToken authToken = new AuthToken(Long.valueOf(user.getId()), SessionInterceptor.AUTH_TOKEN_AGE * 1000L);
+		Cookie cookie = new Cookie(SessionInterceptor.AUTH_TOKEN_KEY, authToken.token());
+		cookie.setMaxAge(SessionInterceptor.AUTH_TOKEN_AGE);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+	}
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		boolean result = this.handleRequest(request, response);
+		System.err.println("**************************执行："+request.getRequestURI());
 		return result;
 	}
 	

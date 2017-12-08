@@ -1,26 +1,42 @@
 package com.hzcf.operation.controller;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import com.hzcf.operation.base.exception.CustomException;
 import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
+import com.hzcf.operation.base.util.BeanUtils;
 import com.hzcf.operation.base.util.StringUtils;
-import com.hzcf.operation.gen.entity.*;
+import com.hzcf.operation.gen.entity.SystemMenu;
+import com.hzcf.operation.gen.entity.SystemMenuExample;
+import com.hzcf.operation.gen.entity.SystemRoleMenu;
+import com.hzcf.operation.gen.entity.SystemRoleMenuExample;
+import com.hzcf.operation.gen.entity.SystemUser;
+import com.hzcf.operation.gen.entity.SystemUserExample;
+import com.hzcf.operation.gen.entity.SystemUserRole;
+import com.hzcf.operation.gen.entity.SystemUserRoleExample;
+import com.hzcf.operation.interceptor.AuthToken;
 import com.hzcf.operation.interceptor.SessionInterceptor;
 import com.hzcf.operation.service.SystemMenuService;
 import com.hzcf.operation.service.SystemRoleMenuService;
 import com.hzcf.operation.service.SystemUserRoleService;
 import com.hzcf.operation.service.SystemUserService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.hzcf.operation.base.util.BeanUtils;
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * author qinfneg.zheng
@@ -68,14 +84,13 @@ public class LoginController {
         }
         try {
             retunResult = list.get(0);
+            SessionInterceptor.createAuthToken(retunResult);
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-        request.getSession().setAttribute(SessionInterceptor.SESSION_USER, list.get(0));
         return  ret.setData(retunResult);
     }
-
-
+    
 
     /***
      * work 得到用户的菜单权限
