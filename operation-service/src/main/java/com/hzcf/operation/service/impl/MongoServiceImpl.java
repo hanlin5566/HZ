@@ -259,6 +259,7 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message.userName", true);
         fieldObject.put("message.queryTime", true);
         fieldObject.put("message.state", true);
+        fieldObject.put("message.results", true);
         fieldObject.put("message.queryParams", true);
         fieldObject.put("message.errorReturn", true);
         fieldObject.put("message.taskId", true);
@@ -319,6 +320,9 @@ public class MongoServiceImpl implements MongoService {
     private Query getQueryDecisionSet(InterfaceQueryEntity params)
     {
         DBObject dbObject = new BasicDBObject();
+        if (StringUtils.isNotNull(params.getTaskId())) {
+            dbObject.put("message.taskId", params.getTaskId());
+        }
         if (StringUtils.isNotNull(params.getIdCard())) {
             dbObject.put("message.idCard", params.getIdCard());
         }
@@ -346,11 +350,6 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("_id", true);
         fieldObject.put("message.interfaceParentType", true);
         fieldObject.put("message.interfaceType", true);
-      /*  fieldObject.put("message.timeUsed", true);
-        fieldObject.put("message.idCard", true);
-        fieldObject.put("message.ipAddress", true);
-        fieldObject.put("message.mobile", true);
-        fieldObject.put("message.userName", true);*/
         fieldObject.put("message.queryTime", true);
         fieldObject.put("message.state", true);
         fieldObject.put("message.ruleId",true);
@@ -386,6 +385,16 @@ public class MongoServiceImpl implements MongoService {
         Query query = getQueryDecisionSet(param);
         Map map =decisionMongoTemplate.findOne(query,Map.class,hjDecisionStep);
         return map;
+    }
+
+    @Override
+    public List<LogQuery> getDecisionSteps(String taskId,String parentInterfaceType){
+        InterfaceQueryEntity param = new InterfaceQueryEntity();
+        param.setInterfaceParentType(parentInterfaceType);
+        param.setTaskId(taskId);
+        Query query = getQueryDecisionSet(param);
+        List<LogQuery> list =decisionMongoTemplate.find(query,LogQuery.class,hjDecisionStep);
+        return list;
     }
 }
 
