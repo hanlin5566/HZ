@@ -10,13 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hzcf.operation.base.redis.RedisProvider;
 import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.ResultResponse;
 import com.hzcf.operation.gen.entity.SystemUser;
@@ -32,6 +36,9 @@ public class SessionInterceptor implements HandlerInterceptor {
 	@Autowired
     private SystemUserService systemUserService;
 	
+	@Value("${server.session.timeout}")
+	private static int sessionTimeout;
+	
 	//白名单，不拦截的名单，比如登录等。
 	private static final String[] whiteList = {"/platfrom/userlogin"};
 	
@@ -46,7 +53,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 	/**
 	 * token ttl
 	 */
-	public static final int AUTH_TOKEN_AGE = 14 * 24 * 3600;
+	public static final int AUTH_TOKEN_AGE = 60 * sessionTimeout;
 	
 	 /**
 	 * 生成客户端cookie
@@ -57,6 +64,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		request.getSession().setAttribute(SessionInterceptor.SESSION_USER, user);
 		AuthToken authToken = new AuthToken(Long.valueOf(user.getId()), SessionInterceptor.AUTH_TOKEN_AGE * 1000L);
+		RedisProvider.set(authToken.token(), JSONObject.toJSONString(user), SessionInterceptor.AUTH_TOKEN_AGE);
 		Cookie cookie = new Cookie(SessionInterceptor.AUTH_TOKEN_KEY, authToken.token());
 		cookie.setMaxAge(SessionInterceptor.AUTH_TOKEN_AGE);
 		cookie.setPath("/");
@@ -66,7 +74,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		boolean result = this.handleRequest(request, response);
-		System.err.println("**************************执行："+request.getRequestURI());
 		return result;
 	}
 	
@@ -91,7 +98,18 @@ public class SessionInterceptor implements HandlerInterceptor {
 		if (user != null) {
 			return true;
 		}
-
+		//基于redis单点登录，request中传入token
+		if(!StringUtils.isEmpty(request.getParameter("token")) && !StringUtils.isEmpty(RedisProvider.get(request.getParameter("token")))){
+			String userJson = RedisProvider.get(request.getParameter("token"));
+			SystemUser userInfo = JSONObject.parseObject(userJson,SystemUser.class);
+			request.getSession().setAttribute(SessionInterceptor.SESSION_USER, userInfo);
+			Cookie cookie = new Cookie(SessionInterceptor.AUTH_TOKEN_KEY, request.getParameter("token"));
+			cookie.setMaxAge(SessionInterceptor.AUTH_TOKEN_AGE);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			return true;
+		}
+		
 		//先判断cookies
 		Cookie authCookie = null;
 		Cookie[] cookies = request.getCookies();
@@ -111,7 +129,13 @@ public class SessionInterceptor implements HandlerInterceptor {
 			return false;
 		}
 		
-		// TODO 应该判断这个cookie在redis里面是否存在，防止外界破解创建cookie
+		//判断redis中的key是否过期
+		if(StringUtils.isEmpty(RedisProvider.get(authCookie.getValue()))){
+			writeReponse(response, ResponseCode.RESULT_LOGIN_EXPIRED);
+			return false;
+		}
+		
+		//判断token是否过期
 		AuthToken token = AuthToken.parse(authCookie.getValue());
 		if (token == null || !token.isActive()) {
 			logger.debug("token expired:{}", token);

@@ -4,17 +4,15 @@ package com.hzcf.operation.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hzcf.operation.base.exception.CustomException;
 import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
@@ -28,7 +26,6 @@ import com.hzcf.operation.gen.entity.SystemUser;
 import com.hzcf.operation.gen.entity.SystemUserExample;
 import com.hzcf.operation.gen.entity.SystemUserRole;
 import com.hzcf.operation.gen.entity.SystemUserRoleExample;
-import com.hzcf.operation.interceptor.AuthToken;
 import com.hzcf.operation.interceptor.SessionInterceptor;
 import com.hzcf.operation.service.SystemMenuService;
 import com.hzcf.operation.service.SystemRoleMenuService;
@@ -88,9 +85,48 @@ public class LoginController {
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-        return  ret.setData(retunResult);
+        /**
+         * 获取用户权限
+         */
+        List<SystemMenu> menuList = new ArrayList<>();
+      //获取登录用户对应的角色 可能对应多个角色
+        SystemUserRoleExample sysExample = new SystemUserRoleExample();
+        sysExample.createCriteria().andUserIdEqualTo(retunResult.getId()).andDataStatusEqualTo(1);
+        List<SystemUserRole> userRoleList = systemUserRoleService.selectByExample(sysExample);
+
+        if (userRoleList.size()<1){
+            throw new CustomException(ResponseCode.ERROR_PARAM,"请联系系统管理员给您分配对应角色!");
+        }
+
+        List roleIdList = new ArrayList();
+        for (SystemUserRole userRole : userRoleList) {
+            roleIdList.add(userRole.getRoleId());
+        }
+
+        //获取角色对应的菜单ID
+        SystemRoleMenuExample roleMenuExample = new SystemRoleMenuExample();
+        roleMenuExample.createCriteria().andDataStatusEqualTo(1);
+        roleMenuExample.createCriteria().andRoleIdIn(roleIdList);
+        roleMenuExample.setDistinct(true);//去重 无法根据某一字段去重 因为后面用的是in 所有对于查询出来的结果并无影响
+        List<SystemRoleMenu> roleMenuList = roleMenuService.selectByExample(roleMenuExample);
+
+        if (roleMenuList.size()<1){
+            throw new CustomException(ResponseCode.ERROR_PARAM,"请联系管理员为该角色开通对应菜单权限!");
+        }
+
+        List menuIdList  = new ArrayList();
+        for (SystemRoleMenu roleMenu:roleMenuList){
+            menuIdList.add(roleMenu.getModuleId());//菜单Id
+        }
+        //获取菜单名称
+        SystemMenuExample menuExample = new SystemMenuExample();
+        menuExample.createCriteria().andIdIn(menuIdList).andDataStatusEqualTo(1);
+        menuList = menuService.selectByExample(menuExample);
+        JSONObject retJson = (JSONObject) JSONObject.toJSON(retunResult);
+        retJson.put("sysMenu", JSON.toJSON(menuIdList));
+        return  ret.setData(retJson);
     }
-    
+
 
     /***
      * work 得到用户的菜单权限
@@ -146,7 +182,8 @@ public class LoginController {
             }
             //获取菜单名称
             SystemMenuExample menuExample = new SystemMenuExample();
-            menuExample.createCriteria().andIdIn(menuIdList).andDataStatusEqualTo(1);
+            menuExample.createCriteria().andIdIn(menuIdList);
+                    //.andDataStatusEqualTo(1);
             menuList = menuService.selectByExample(menuExample);
 
         }catch (Exception e){

@@ -1,5 +1,7 @@
 package com.hzcf.operation.aspect;
 
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -22,10 +25,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hzcf.operation.base.exception.CustomException;
 import com.hzcf.operation.base.log.BehaviorLog;
 import com.hzcf.operation.base.result.ResponseCode;
+import com.hzcf.operation.base.util.DateUtils;
 import com.hzcf.operation.base.util.JsonUtils;
+import com.hzcf.operation.gen.entity.SystemUser;
+import com.hzcf.operation.interceptor.SessionInterceptor;
 
 /**
  * Create by hanlin on 2017年11月14日 基于AOP记录controller的行为日志
@@ -39,8 +48,8 @@ public class ControllerBehaviorAspect {
 	/**
 	 * ~第一个 * 代表任意修饰符及任意返回值.
 	 * ~第二个 * 任意包名
-	 * ~第三个 * 代表任意方法. 
-	 * ~第四个 * 定义子包 
+	 * ~第三个 * 代表任意方法.
+	 * ~第四个 * 定义子包
 	 * ~第五个(..) 任意方法 ~ ..匹配任意数量的参数.
 	 * 定义拦截规则：拦截com.hzcf.operation.controller包下面的所有类中，有@RequestMapping注解的方法。
 	 */
@@ -61,6 +70,39 @@ public class ControllerBehaviorAspect {
 		Date sTime = new Date();
 		ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 		HttpServletRequest request = attributes.getRequest();
+		//TODO:添加操作人，如果是PUT或者是POST则添加
+		if(request.getSession().getAttribute(SessionInterceptor.SESSION_USER) != null){
+			SystemUser userInfo = (SystemUser)request.getSession().getAttribute(SessionInterceptor.SESSION_USER);
+			InputStream inputStream = null;
+			SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.ISO_DATE);
+			try {
+				String saveOrUpdate = null;
+				
+				if("POST".equals(request.getMethod().toUpperCase())){
+					//POST 新增操作
+					saveOrUpdate = "create";
+				}else if("PUT".equals(request.getMethod().toUpperCase())){
+					//PUT 更新操作
+					saveOrUpdate = "update";
+				}
+				if(!StringUtils.isEmpty(saveOrUpdate)){
+					request.getInputStream();
+					String json = IOUtils.toString(inputStream, "UTF-8");
+					IOUtils.closeQuietly(inputStream);
+					JSONObject recJson = JSON.parseObject(json);
+					recJson.put(saveOrUpdate+"Uid",userInfo.getId());
+					recJson.put(saveOrUpdate+"Time",sdf.format(new Date()));
+					request.getInputStream();
+				}else{
+					request.setAttribute("createUid",userInfo.getId());
+					request.setAttribute("updateUid",userInfo.getId());
+					request.setAttribute("createTime",sdf.format(new Date()));
+					request.setAttribute("updateTime",sdf.format(new Date()));
+				}
+			} catch (Exception e) {
+				logger.error(String.format("添加更新人与创建人时出错：%s", e.getMessage()));
+			}
+		}
 		// 记录下请求内容
 		String requestURL = request.getRequestURL().toString();
 		String requestMethod = request.getMethod();
