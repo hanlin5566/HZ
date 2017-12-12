@@ -90,7 +90,7 @@ public class LoginController {
         }
         return  ret.setData(retunResult);
     }
-    
+
 
     /***
      * work 得到用户的菜单权限
@@ -146,7 +146,8 @@ public class LoginController {
             }
             //获取菜单名称
             SystemMenuExample menuExample = new SystemMenuExample();
-            menuExample.createCriteria().andIdIn(menuIdList).andDataStatusEqualTo(1);
+            menuExample.createCriteria().andIdIn(menuIdList);
+                    //.andDataStatusEqualTo(1);
             menuList = menuService.selectByExample(menuExample);
 
         }catch (Exception e){
