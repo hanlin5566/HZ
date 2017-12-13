@@ -344,11 +344,9 @@ public class MongoServiceImpl implements MongoService {
         if (StringUtils.isNotNull(params.getInterfaceType())) {
             dbObject.put("message.interfaceType", params.getInterfaceType());
         }
-
         if (StringUtils.isNotNull(params.getInterfaceParentType())) {
             dbObject.put("message.interfaceParentType", params.getInterfaceParentType());
         }
-
         DBObject fieldObject = new BasicDBObject();
         fieldObject.put("_id", true);
         fieldObject.put("message.interfaceParentType", true);
@@ -360,7 +358,6 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message.queryParams",true);
         fieldObject.put("message.results",true);
         fieldObject.put("message.errorReturn",true);
-        
         fieldObject.put("message.logId",true);
         fieldObject.put("message.returnTime",true);
         fieldObject.put("message.timeUsed",true);
