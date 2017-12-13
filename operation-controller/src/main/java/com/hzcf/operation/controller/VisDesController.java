@@ -116,8 +116,8 @@ public class VisDesController {
         }
         InterfaceQueryEntity interfaceQueryEntity =new InterfaceQueryEntity();
           interfaceQueryEntity.setLogId(logId);
-        //interfaceQueryEntity.setInterfaceParentType("hzcf");
-        //interfaceQueryEntity.setInterfaceType("decision-start");
+          interfaceQueryEntity.setInterfaceParentType("hzcf");
+          interfaceQueryEntity.setInterfaceType("decision-start");
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             LogQuery  query = mongoService.getLogQueryOne(interfaceQueryEntity);

@@ -19,17 +19,12 @@ public class AntiFraudTestServiceImpl implements AntiFraudTestService{
 
     @Override
     public JSONObject testAntiFraud(AntiFraudParam pram){
-        //JSONObject r =new JSONObject();
         JSONObject ret = new JSONObject();
-        /*param.put("account","hjNoNeedAes");
-        param.put("signature","rhiaw4uRsU&%JHFhhs53");*/
         Map a = new HashMap();
         Map<String,String> map = new HashMap<>();
-        String params  = JSONObject.toJSONString(pram);
         a.put("account","hjNoNeedAes");
         a.put("signature","rhiaw4uRsU&%JHFhhs53");
-        a.put("data",params);
-        //System.out.println("转换之后的："+JSONObject.toJSONString(a));
+        a.put("data",JSONObject.toJSON(pram));
         HttpClientInvoker httpClientInvoker = new HttpClientProvider().provide("","http://192.168.1.220:8400/public/rule/start");
         HttpInvokeResult result = httpClientInvoker.invokePostJSON(JSONObject.toJSONString(a));
         if(result.isOK())
