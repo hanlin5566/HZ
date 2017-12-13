@@ -360,6 +360,7 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message.queryParams",true);
         fieldObject.put("message.results",true);
         fieldObject.put("message.errorReturn",true);
+        
         fieldObject.put("message.logId",true);
         fieldObject.put("message.returnTime",true);
         fieldObject.put("message.timeUsed",true);
