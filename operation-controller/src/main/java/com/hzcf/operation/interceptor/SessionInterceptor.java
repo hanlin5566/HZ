@@ -36,8 +36,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 	@Autowired
     private SystemUserService systemUserService;
 	
-	@Value("${server.session.timeout}")
-	private static int sessionTimeout;
 	
 	//白名单，不拦截的名单，比如登录等。
 	private static final String[] whiteList = {"/platfrom/userlogin"};
@@ -51,21 +49,27 @@ public class SessionInterceptor implements HandlerInterceptor {
 	 */
 	public static final String AUTH_TOKEN_KEY = "_IDENTIY_KEY_";
 	/**
-	 * token ttl
+	 * token redis ttl，通过配置注入，默认30分钟
 	 */
-	public static final int AUTH_TOKEN_AGE = 60 * sessionTimeout;
+	@Value("${server.session.timeout}")
+	public int AUTH_TOKEN_AGE = 30;
 	
 	 /**
 	 * 生成客户端cookie
 	 */
-	public static void createAuthToken(SystemUser user) throws Exception{
+	public void createAuthToken(SystemUser user) throws Exception{
+		//60秒为分
+		AUTH_TOKEN_AGE = 60 * AUTH_TOKEN_AGE;
 		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		request.getSession().setAttribute(SessionInterceptor.SESSION_USER, user);
-		AuthToken authToken = new AuthToken(Long.valueOf(user.getId()), SessionInterceptor.AUTH_TOKEN_AGE * 1000L);
-		RedisProvider.set(authToken.token(), JSONObject.toJSONString(user), SessionInterceptor.AUTH_TOKEN_AGE);
+		//token ttl 单位毫秒
+		AuthToken authToken = new AuthToken(Long.valueOf(user.getId()), AUTH_TOKEN_AGE * 1000L );
+		//redis ttl默认是秒
+		RedisProvider.set(authToken.token(), JSONObject.toJSONString(user), AUTH_TOKEN_AGE*1L);
 		Cookie cookie = new Cookie(SessionInterceptor.AUTH_TOKEN_KEY, authToken.token());
-		cookie.setMaxAge(SessionInterceptor.AUTH_TOKEN_AGE);
+		//cookie保存时间秒
+		cookie.setMaxAge(AUTH_TOKEN_AGE);
 		cookie.setPath("/");
 		response.addCookie(cookie);
 	}
@@ -87,10 +91,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 	
 	private boolean handleRequest(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
-		if(1==1)
-		{
-			return true;
-		}
 		// 如果是白名单，放行
 		String path = request.getRequestURI();
 		if (checkInclude(whiteList, path)) {
@@ -107,7 +107,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 			SystemUser userInfo = JSONObject.parseObject(userJson,SystemUser.class);
 			request.getSession().setAttribute(SessionInterceptor.SESSION_USER, userInfo);
 			Cookie cookie = new Cookie(SessionInterceptor.AUTH_TOKEN_KEY, request.getParameter("token"));
-			cookie.setMaxAge(SessionInterceptor.AUTH_TOKEN_AGE);
+			cookie.setMaxAge(AUTH_TOKEN_AGE);
 			cookie.setPath("/");
 			response.addCookie(cookie);
 			return true;

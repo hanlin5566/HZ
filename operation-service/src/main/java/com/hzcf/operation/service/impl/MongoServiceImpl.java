@@ -344,11 +344,9 @@ public class MongoServiceImpl implements MongoService {
         if (StringUtils.isNotNull(params.getInterfaceType())) {
             dbObject.put("message.interfaceType", params.getInterfaceType());
         }
-
         if (StringUtils.isNotNull(params.getInterfaceParentType())) {
             dbObject.put("message.interfaceParentType", params.getInterfaceParentType());
         }
-
         DBObject fieldObject = new BasicDBObject();
         fieldObject.put("_id", true);
         fieldObject.put("message.interfaceParentType", true);
@@ -359,6 +357,8 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message.queryTime",true);
         fieldObject.put("message.queryParams",true);
         fieldObject.put("message.results",true);
+        fieldObject.put("message.errorReturn",true);
+        fieldObject.put("message.logId",true);
         fieldObject.put("message.returnTime",true);
         fieldObject.put("message.timeUsed",true);
         Query query= new BasicQuery(dbObject, fieldObject);
@@ -394,6 +394,7 @@ public class MongoServiceImpl implements MongoService {
     public List<LogQuery> getDecisionSteps(String taskId,String parentInterfaceType){
         InterfaceQueryEntity param = new InterfaceQueryEntity();
         param.setInterfaceParentType(parentInterfaceType);
+        
         param.setTaskId(taskId);
         Query query = getQueryDecisionSet(param);
         List<LogQuery> list =decisionMongoTemplate.find(query,LogQuery.class,hjDecisionStep);

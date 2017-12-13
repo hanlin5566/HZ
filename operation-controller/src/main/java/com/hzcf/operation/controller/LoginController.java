@@ -49,6 +49,9 @@ public class LoginController {
 
     @Autowired
     private SystemMenuService menuService;
+    
+    @Autowired
+    private SessionInterceptor sessionInterceptor;
 
     /***
      * work:用户登录
@@ -74,18 +77,18 @@ public class LoginController {
         }
         try {
             retunResult = list.get(0);
-            SessionInterceptor.createAuthToken(retunResult);
+            sessionInterceptor.createAuthToken(retunResult);
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
         /**
          * 获取用户权限
          */
-        List<SystemMenu> menuList = new ArrayList<>();
+        List<MenuDto> menuList = new ArrayList<MenuDto>();
       //获取登录用户对应的角色 可能对应多个角色
-        SystemUserRoleExample sysExample = new SystemUserRoleExample();
-        sysExample.createCriteria().andUserIdEqualTo(retunResult.getId()).andDataStatusEqualTo(1);
-        List<SystemUserRole> userRoleList = systemUserRoleService.selectByExample(sysExample);
+        SystemUserRoleExample sysMenuExample = new SystemUserRoleExample();
+        sysMenuExample.createCriteria().andUserIdEqualTo(retunResult.getId()).andDataStatusEqualTo(1);
+        List<SystemUserRole> userRoleList = systemUserRoleService.selectByExample(sysMenuExample);
 
         if (userRoleList.size()<1){
             throw new CustomException(ResponseCode.ERROR_PARAM,"请联系系统管理员给您分配对应角色!");
@@ -113,11 +116,23 @@ public class LoginController {
         }
         //获取菜单名称
         SystemMenuExample menuExample = new SystemMenuExample();
-        menuExample.createCriteria().andIdIn(menuIdList);
-                //.andDataStatusEqualTo(1);
-        menuList = menuService.selectByExample(menuExample);
+        menuExample.createCriteria().andIdIn(menuIdList).andParentIdIsNull();//父菜单
+        //.andDataStatusEqualTo(1);
+        List<SystemMenu> lisMenu = menuService.selectByExample(menuExample);
+        //处理
+        if (lisMenu.size()>0){
+            for (int x=0;x<lisMenu.size();x++){
+                MenuDto dto = new MenuDto();
+                SystemMenuExample subMenuExample  = new SystemMenuExample();
+                subMenuExample.createCriteria().andParentIdEqualTo(lisMenu.get(x).getId());
+                List<SystemMenu> subMenuList = menuService.selectByExample(subMenuExample);
+                dto.setParentMenu(lisMenu.get(x));
+                dto.setSubMenuList(subMenuList);
+                menuList.add(dto);
+            }
+        }
         JSONObject retJson = (JSONObject) JSONObject.toJSON(retunResult);
-        retJson.put("sysMenu", JSON.toJSON(menuIdList));
+        retJson.put("sysMenu", JSON.toJSON(menuList));
         return  ret.setData(retJson);
     }
 
