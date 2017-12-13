@@ -49,6 +49,9 @@ public class LoginController {
 
     @Autowired
     private SystemMenuService menuService;
+    
+    @Autowired
+    private SessionInterceptor sessionInterceptor;
 
     /***
      * work:用户登录
@@ -74,7 +77,7 @@ public class LoginController {
         }
         try {
             retunResult = list.get(0);
-            SessionInterceptor.createAuthToken(retunResult);
+            sessionInterceptor.createAuthToken(retunResult);
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
