@@ -17,24 +17,24 @@ import org.apache.ibatis.type.JdbcType;
 
 public interface SystemMenuMapper {
     @Delete({
-        "delete from system_menu",
-        "where id = #{id,jdbcType=INTEGER}"
+            "delete from system_menu",
+            "where id = #{id,jdbcType=INTEGER}"
     })
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into system_menu (id, module_title, ",
-        "module_href, module_icon, ",
-        "module_spread, parent_id, ",
-        "create_uid, update_uid, ",
-        "create_time, update_time, ",
-        "data_status)",
-        "values (#{id,jdbcType=INTEGER}, #{moduleTitle,jdbcType=VARCHAR}, ",
-        "#{moduleHref,jdbcType=VARCHAR}, #{moduleIcon,jdbcType=VARCHAR}, ",
-        "#{moduleSpread,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, ",
-        "#{createUid,jdbcType=INTEGER}, #{updateUid,jdbcType=INTEGER}, ",
-        "#{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, ",
-        "#{dataStatus,jdbcType=INTEGER})"
+            "insert into system_menu (id, module_title, ",
+            "module_code, module_icon, ",
+            "module_spread, parent_id, ",
+            "create_uid, update_uid, ",
+            "create_time, update_time, ",
+            "data_status)",
+            "values (#{id,jdbcType=INTEGER}, #{moduleTitle,jdbcType=VARCHAR}, ",
+            "#{moduleCode,jdbcType=VARCHAR}, #{moduleIcon,jdbcType=VARCHAR}, ",
+            "#{moduleSpread,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, ",
+            "#{createUid,jdbcType=INTEGER}, #{updateUid,jdbcType=INTEGER}, ",
+            "#{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, ",
+            "#{dataStatus,jdbcType=INTEGER})"
     })
     int insert(SystemMenu record);
 
@@ -43,55 +43,55 @@ public interface SystemMenuMapper {
 
     @SelectProvider(type=SystemMenuSqlProvider.class, method="selectByExample")
     @Results({
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="module_title", property="moduleTitle", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_href", property="moduleHref", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_icon", property="moduleIcon", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_spread", property="moduleSpread", jdbcType=JdbcType.VARCHAR),
-        @Result(column="parent_id", property="parentId", jdbcType=JdbcType.INTEGER),
-        @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
-        @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
-        @Result(column="create_time", property="createTime", jdbcType=JdbcType.DATE),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.DATE),
-        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="module_title", property="moduleTitle", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_code", property="moduleCode", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_icon", property="moduleIcon", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_spread", property="moduleSpread", jdbcType=JdbcType.VARCHAR),
+            @Result(column="parent_id", property="parentId", jdbcType=JdbcType.INTEGER),
+            @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
+            @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
+            @Result(column="create_time", property="createTime", jdbcType=JdbcType.DATE),
+            @Result(column="update_time", property="updateTime", jdbcType=JdbcType.DATE),
+            @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
     })
     List<SystemMenu> selectByExampleWithRowbounds(SystemMenuExample example, RowBounds rowBounds);
 
     @SelectProvider(type=SystemMenuSqlProvider.class, method="selectByExample")
     @Results({
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="module_title", property="moduleTitle", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_href", property="moduleHref", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_icon", property="moduleIcon", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_spread", property="moduleSpread", jdbcType=JdbcType.VARCHAR),
-        @Result(column="parent_id", property="parentId", jdbcType=JdbcType.INTEGER),
-        @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
-        @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
-        @Result(column="create_time", property="createTime", jdbcType=JdbcType.DATE),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.DATE),
-        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="module_title", property="moduleTitle", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_code", property="moduleCode", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_icon", property="moduleIcon", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_spread", property="moduleSpread", jdbcType=JdbcType.VARCHAR),
+            @Result(column="parent_id", property="parentId", jdbcType=JdbcType.INTEGER),
+            @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
+            @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
+            @Result(column="create_time", property="createTime", jdbcType=JdbcType.DATE),
+            @Result(column="update_time", property="updateTime", jdbcType=JdbcType.DATE),
+            @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
     })
     List<SystemMenu> selectByExample(SystemMenuExample example);
 
     @Select({
-        "select",
-        "id, module_title, module_href, module_icon, module_spread, parent_id, create_uid, ",
-        "update_uid, create_time, update_time, data_status",
-        "from system_menu",
-        "where id = #{id,jdbcType=INTEGER}"
+            "select",
+            "id, module_title, module_code, module_icon, module_spread, parent_id, create_uid, ",
+            "update_uid, create_time, update_time, data_status",
+            "from system_menu",
+            "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="module_title", property="moduleTitle", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_href", property="moduleHref", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_icon", property="moduleIcon", jdbcType=JdbcType.VARCHAR),
-        @Result(column="module_spread", property="moduleSpread", jdbcType=JdbcType.VARCHAR),
-        @Result(column="parent_id", property="parentId", jdbcType=JdbcType.INTEGER),
-        @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
-        @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
-        @Result(column="create_time", property="createTime", jdbcType=JdbcType.DATE),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.DATE),
-        @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
+            @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+            @Result(column="module_title", property="moduleTitle", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_code", property="moduleCode", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_icon", property="moduleIcon", jdbcType=JdbcType.VARCHAR),
+            @Result(column="module_spread", property="moduleSpread", jdbcType=JdbcType.VARCHAR),
+            @Result(column="parent_id", property="parentId", jdbcType=JdbcType.INTEGER),
+            @Result(column="create_uid", property="createUid", jdbcType=JdbcType.INTEGER),
+            @Result(column="update_uid", property="updateUid", jdbcType=JdbcType.INTEGER),
+            @Result(column="create_time", property="createTime", jdbcType=JdbcType.DATE),
+            @Result(column="update_time", property="updateTime", jdbcType=JdbcType.DATE),
+            @Result(column="data_status", property="dataStatus", jdbcType=JdbcType.INTEGER)
     })
     SystemMenu selectByPrimaryKey(Integer id);
 
@@ -99,18 +99,18 @@ public interface SystemMenuMapper {
     int updateByPrimaryKeySelective(SystemMenu record);
 
     @Update({
-        "update system_menu",
-        "set module_title = #{moduleTitle,jdbcType=VARCHAR},",
-          "module_href = #{moduleHref,jdbcType=VARCHAR},",
-          "module_icon = #{moduleIcon,jdbcType=VARCHAR},",
-          "module_spread = #{moduleSpread,jdbcType=VARCHAR},",
-          "parent_id = #{parentId,jdbcType=INTEGER},",
-          "create_uid = #{createUid,jdbcType=INTEGER},",
-          "update_uid = #{updateUid,jdbcType=INTEGER},",
-          "create_time = #{createTime,jdbcType=DATE},",
-          "update_time = #{updateTime,jdbcType=DATE},",
-          "data_status = #{dataStatus,jdbcType=INTEGER}",
-        "where id = #{id,jdbcType=INTEGER}"
+            "update system_menu",
+            "set module_title = #{moduleTitle,jdbcType=VARCHAR},",
+            "module_code = #{moduleCode,jdbcType=VARCHAR},",
+            "module_icon = #{moduleIcon,jdbcType=VARCHAR},",
+            "module_spread = #{moduleSpread,jdbcType=VARCHAR},",
+            "parent_id = #{parentId,jdbcType=INTEGER},",
+            "create_uid = #{createUid,jdbcType=INTEGER},",
+            "update_uid = #{updateUid,jdbcType=INTEGER},",
+            "create_time = #{createTime,jdbcType=DATE},",
+            "update_time = #{updateTime,jdbcType=DATE},",
+            "data_status = #{dataStatus,jdbcType=INTEGER}",
+            "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(SystemMenu record);
 }

@@ -1,13 +1,16 @@
 package com.hzcf.operation.gen.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hzcf.operation.base.enums.DataStatus;
+import com.hzcf.operation.base.serialize.EnumJsonSerializer;
 import com.hzcf.operation.base.util.DateUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 /**
- * system_menu 
- * @author huhanlin 2017-11-23
+ * system_menu
+ * @author huhanlin 2017-12-08
  */
 public class SystemMenu {
     /**
@@ -16,14 +19,14 @@ public class SystemMenu {
     private Integer id;
 
     /**
-     * 模块Title
+     * 菜单名称
      */
     private String moduleTitle;
 
     /**
-     * 模块对应的url
+     * 菜单对应的pageCode
      */
-    private String moduleHref;
+    private String moduleCode;
 
     /**
      * 模块对应的图标
@@ -65,7 +68,8 @@ public class SystemMenu {
     /**
      * 数据状态（0.未知，1.正常，-1.删除）
      */
-    private Integer dataStatus;
+    @JsonSerialize(using = EnumJsonSerializer.class)
+    private DataStatus dataStatus;
 
     /**
      * system_menu 主键ID
@@ -84,35 +88,35 @@ public class SystemMenu {
     }
 
     /**
-     * 模块Title
-     * @return module_title 模块Title
+     * 菜单名称
+     * @return module_title 菜单名称
      */
     public String getModuleTitle() {
         return moduleTitle;
     }
 
     /**
-     * 模块Title
-     * @param moduleTitle 模块Title
+     * 菜单名称
+     * @param moduleTitle 菜单名称
      */
     public void setModuleTitle(String moduleTitle) {
         this.moduleTitle = moduleTitle == null ? null : moduleTitle.trim();
     }
 
     /**
-     * 模块对应的url
-     * @return module_href 模块对应的url
+     * 菜单对应的pageCode
+     * @return module_code 菜单对应的pageCode
      */
-    public String getModuleHref() {
-        return moduleHref;
+    public String getModuleCode() {
+        return moduleCode;
     }
 
     /**
-     * 模块对应的url
-     * @param moduleHref 模块对应的url
+     * 菜单对应的pageCode
+     * @param moduleCode 菜单对应的pageCode
      */
-    public void setModuleHref(String moduleHref) {
-        this.moduleHref = moduleHref == null ? null : moduleHref.trim();
+    public void setModuleCode(String moduleCode) {
+        this.moduleCode = moduleCode == null ? null : moduleCode.trim();
     }
 
     /**
@@ -231,7 +235,7 @@ public class SystemMenu {
      * 数据状态（0.未知，1.正常，-1.删除）
      * @return data_status 数据状态（0.未知，1.正常，-1.删除）
      */
-    public Integer getDataStatus() {
+    public DataStatus getDataStatus() {
         return dataStatus;
     }
 
@@ -239,7 +243,7 @@ public class SystemMenu {
      * 数据状态（0.未知，1.正常，-1.删除）
      * @param dataStatus 数据状态（0.未知，1.正常，-1.删除）
      */
-    public void setDataStatus(Integer dataStatus) {
+    public void setDataStatus(DataStatus dataStatus) {
         this.dataStatus = dataStatus;
     }
 }

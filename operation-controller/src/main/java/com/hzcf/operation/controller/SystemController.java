@@ -3,6 +3,7 @@ package com.hzcf.operation.controller;
 
 import com.hzcf.operation.base.entity.PageEntity;
 import com.hzcf.operation.base.entity.PageInfo;
+import com.hzcf.operation.base.enums.DataStatus;
 import com.hzcf.operation.base.exception.CustomException;
 import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
@@ -85,13 +86,20 @@ public class SystemController {
     public Result addSysMenu(HttpServletRequest request, @RequestBody SystemMenu systemMenu) {
         Result ret = new Result();
 
-        if (!StringUtils.isNotNull(systemMenu.getModuleTitle())||!StringUtils.isNotNull(systemMenu.getModuleHref())){
+        if (!StringUtils.isNotNull(systemMenu.getModuleTitle())||!StringUtils.isNotNull(systemMenu.getModuleCode())){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"必要参数传输不完整或有误!");
         }
         try {
+            //不能添加相同Code的菜单
+            SystemMenuExample example = new SystemMenuExample();
+            example.createCriteria().andModuleCodeEqualTo(systemMenu.getModuleCode()).andDataStatusEqualTo(DataStatus.NORMAL);
+            List<SystemMenu> list  = menuService.selectByExample(example);
+            if (list.size()>0){
+                throw new CustomException(ResponseCode.ERROR_PARAM,"该Code已经存在，请重新输入!");
+            }
             Date date = new Date();
             systemMenu.setCreateTime(date);
-            systemMenu.setDataStatus(1);
+            //systemMenu.setDataStatus(DataStatus.valueOf("正常"));
            int result =  menuService.addSystemMenu(systemMenu);
            if (result<1){
                throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
@@ -112,14 +120,14 @@ public class SystemController {
      * @param
      * @return
      */
-    @ApiOperation(value="父菜单", notes="获取所有有二级菜单")
+    @ApiOperation(value="父菜单", notes="获取所有二级菜单")
     @RequestMapping(value="/parentmenuInfo")
     public Result parentMenuInfo(HttpServletRequest request) {
         Result ret = new Result();
         List<SystemMenu> list = new ArrayList<>();
         try {
             SystemMenuExample example = new SystemMenuExample();
-            example.createCriteria().andDataStatusEqualTo(1).andParentIdIsNull();
+            example.createCriteria().andDataStatusEqualTo(DataStatus.NORMAL).andParentIdIsNull();
             list = menuService.selectByExample(example);
 
         }catch (Exception e){
@@ -146,14 +154,14 @@ public class SystemController {
         try {
             //获取所有父菜单
             SystemMenuExample example = new SystemMenuExample();
-            example.createCriteria().andDataStatusEqualTo(1).andParentIdIsNull();
+            example.createCriteria().andDataStatusEqualTo(DataStatus.NORMAL).andParentIdIsNull();
             List<SystemMenu> list = menuService.selectByExample(example);
 
             //获取子菜单
             if (list.size()>0){
                 for (SystemMenu systemMenu:list){
                     SystemMenuExample ex2 = new SystemMenuExample();
-                    ex2.createCriteria().andDataStatusEqualTo(1).andParentIdEqualTo(systemMenu.getId());
+                    ex2.createCriteria().andDataStatusEqualTo(DataStatus.NORMAL).andParentIdEqualTo(systemMenu.getId());
                     List<SystemMenu> twoMenuList = new ArrayList<>();
                     twoMenuList  =  menuService.selectByExample(ex2);
                     MenuDto menuDto = new MenuDto();
