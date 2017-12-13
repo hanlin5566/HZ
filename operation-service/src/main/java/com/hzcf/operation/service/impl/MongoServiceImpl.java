@@ -394,6 +394,7 @@ public class MongoServiceImpl implements MongoService {
     public List<LogQuery> getDecisionSteps(String taskId,String parentInterfaceType){
         InterfaceQueryEntity param = new InterfaceQueryEntity();
         param.setInterfaceParentType(parentInterfaceType);
+        
         param.setTaskId(taskId);
         Query query = getQueryDecisionSet(param);
         List<LogQuery> list =decisionMongoTemplate.find(query,LogQuery.class,hjDecisionStep);
