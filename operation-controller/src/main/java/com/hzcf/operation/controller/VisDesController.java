@@ -106,18 +106,18 @@ public class VisDesController {
         return  ret.setData(map);
     }
 
-    @ApiOperation(value="接口查询决策详情", notes="根据taskId")
+    @ApiOperation(value="接口查询决策详情", notes="根据logId")
     @RequestMapping(value="/getDecisionDetail")
-    public Result getDecisionDetail(HttpServletRequest request,String taskId) {
+    public Result getDecisionDetail(HttpServletRequest request,String logId) {
         Result<LogQuery> ret = new Result<LogQuery>();
 
-        if (!StringUtils.isNotNull(taskId)) {
-            throw  new CustomException(ResponseCode.ERROR_PARAM,"taskId不能为空!");
+        if (!StringUtils.isNotNull(logId)) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"logId不能为空!");
         }
         InterfaceQueryEntity interfaceQueryEntity =new InterfaceQueryEntity();
-        interfaceQueryEntity.setTaskId(taskId);
-        interfaceQueryEntity.setInterfaceParentType("hzcf");
-        interfaceQueryEntity.setInterfaceType("decision-start");
+          interfaceQueryEntity.setLogId(logId);
+        //interfaceQueryEntity.setInterfaceParentType("hzcf");
+        //interfaceQueryEntity.setInterfaceType("decision-start");
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             LogQuery  query = mongoService.getLogQueryOne(interfaceQueryEntity);

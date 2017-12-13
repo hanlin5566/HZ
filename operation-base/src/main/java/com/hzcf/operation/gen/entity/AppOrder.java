@@ -8,13 +8,18 @@ import java.util.Date;
 
 /**
  * hj_app_order 
- * @author huhanlin 2017-12-06
+ * @author huhanlin 2017-12-13
  */
 public class AppOrder {
     /**
      * 
      */
     private Integer id;
+
+    /**
+     * 
+     */
+    private String logId;
 
     /**
      * 唯一进件号
@@ -78,6 +83,22 @@ public class AppOrder {
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    /**
+     * 
+     * @return log_id 
+     */
+    public String getLogId() {
+        return logId;
+    }
+
+    /**
+     * 
+     * @param logId 
+     */
+    public void setLogId(String logId) {
+        this.logId = logId == null ? null : logId.trim();
     }
 
     /**

@@ -24,16 +24,16 @@ public interface AppOrderMapper {
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into hj_app_order (task_id, application_type, ",
-        "application_time, id_card, ",
-        "decision_type, decision_desc, ",
-        "time_used, create_time, ",
-        "update_time)",
-        "values (#{taskId,jdbcType=VARCHAR}, #{applicationType,jdbcType=INTEGER}, ",
-        "#{applicationTime,jdbcType=TIMESTAMP}, #{idCard,jdbcType=VARCHAR}, ",
-        "#{decisionType,jdbcType=TINYINT}, #{decisionDesc,jdbcType=VARCHAR}, ",
-        "#{timeUsed,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, ",
-        "#{updateTime,jdbcType=TIMESTAMP})"
+        "insert into hj_app_order (log_id, task_id, ",
+        "application_type, application_time, ",
+        "id_card, decision_type, ",
+        "decision_desc, time_used, ",
+        "create_time, update_time)",
+        "values (#{logId,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, ",
+        "#{applicationType,jdbcType=INTEGER}, #{applicationTime,jdbcType=TIMESTAMP}, ",
+        "#{idCard,jdbcType=VARCHAR}, #{decisionType,jdbcType=TINYINT}, ",
+        "#{decisionDesc,jdbcType=VARCHAR}, #{timeUsed,jdbcType=DECIMAL}, ",
+        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(AppOrder record);
@@ -45,6 +45,7 @@ public interface AppOrderMapper {
     @SelectProvider(type=AppOrderSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="log_id", property="logId", jdbcType=JdbcType.VARCHAR),
         @Result(column="task_id", property="taskId", jdbcType=JdbcType.VARCHAR),
         @Result(column="application_type", property="applicationType", jdbcType=JdbcType.INTEGER),
         @Result(column="application_time", property="applicationTime", jdbcType=JdbcType.TIMESTAMP),
@@ -60,6 +61,7 @@ public interface AppOrderMapper {
     @SelectProvider(type=AppOrderSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="log_id", property="logId", jdbcType=JdbcType.VARCHAR),
         @Result(column="task_id", property="taskId", jdbcType=JdbcType.VARCHAR),
         @Result(column="application_type", property="applicationType", jdbcType=JdbcType.INTEGER),
         @Result(column="application_time", property="applicationTime", jdbcType=JdbcType.TIMESTAMP),
@@ -74,13 +76,14 @@ public interface AppOrderMapper {
 
     @Select({
         "select",
-        "id, task_id, application_type, application_time, id_card, decision_type, decision_desc, ",
-        "time_used, create_time, update_time",
+        "id, log_id, task_id, application_type, application_time, id_card, decision_type, ",
+        "decision_desc, time_used, create_time, update_time",
         "from hj_app_order",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="log_id", property="logId", jdbcType=JdbcType.VARCHAR),
         @Result(column="task_id", property="taskId", jdbcType=JdbcType.VARCHAR),
         @Result(column="application_type", property="applicationType", jdbcType=JdbcType.INTEGER),
         @Result(column="application_time", property="applicationTime", jdbcType=JdbcType.TIMESTAMP),
@@ -98,7 +101,8 @@ public interface AppOrderMapper {
 
     @Update({
         "update hj_app_order",
-        "set task_id = #{taskId,jdbcType=VARCHAR},",
+        "set log_id = #{logId,jdbcType=VARCHAR},",
+          "task_id = #{taskId,jdbcType=VARCHAR},",
           "application_type = #{applicationType,jdbcType=INTEGER},",
           "application_time = #{applicationTime,jdbcType=TIMESTAMP},",
           "id_card = #{idCard,jdbcType=VARCHAR},",

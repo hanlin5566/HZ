@@ -7,13 +7,18 @@ import java.util.Date;
 
 /**
  * hj_query_log 新版查询记录
- * @author huhanlin 2017-12-03
+ * @author huhanlin 2017-12-13
  */
 public class QueryLog {
     /**
      * 
      */
     private Integer id;
+
+    /**
+     * 
+     */
+    private String logId;
 
     /**
      * 
@@ -106,6 +111,22 @@ public class QueryLog {
      */
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    /**
+     * 
+     * @return log_id 
+     */
+    public String getLogId() {
+        return logId;
+    }
+
+    /**
+     * 
+     * @param logId 
+     */
+    public void setLogId(String logId) {
+        this.logId = logId == null ? null : logId.trim();
     }
 
     /**

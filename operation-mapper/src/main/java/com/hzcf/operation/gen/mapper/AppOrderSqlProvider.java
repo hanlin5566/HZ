@@ -13,6 +13,10 @@ public class AppOrderSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("hj_app_order");
         
+        if (record.getLogId() != null) {
+            sql.VALUES("log_id", "#{logId,jdbcType=VARCHAR}");
+        }
+        
         if (record.getTaskId() != null) {
             sql.VALUES("task_id", "#{taskId,jdbcType=VARCHAR}");
         }
@@ -59,6 +63,7 @@ public class AppOrderSqlProvider {
         } else {
             sql.SELECT("id");
         }
+        sql.SELECT("log_id");
         sql.SELECT("task_id");
         sql.SELECT("application_type");
         sql.SELECT("application_time");
@@ -81,6 +86,10 @@ public class AppOrderSqlProvider {
     public String updateByPrimaryKeySelective(AppOrder record) {
         SQL sql = new SQL();
         sql.UPDATE("hj_app_order");
+        
+        if (record.getLogId() != null) {
+            sql.SET("log_id = #{logId,jdbcType=VARCHAR}");
+        }
         
         if (record.getTaskId() != null) {
             sql.SET("task_id = #{taskId,jdbcType=VARCHAR}");

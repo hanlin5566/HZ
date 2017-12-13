@@ -24,20 +24,22 @@ public interface QueryLogMapper {
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into hj_query_log (order_no, user_name, ",
-        "user_id, query_time, ",
-        "query_his, query_hi, ",
-        "time_used, return_time, ",
-        "interface_parent_type, interface_type, ",
-        "state, id_card, name, ",
-        "mobile, ip_address)",
-        "values (#{orderNo,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, ",
-        "#{userId,jdbcType=VARCHAR}, #{queryTime,jdbcType=TIMESTAMP}, ",
-        "#{queryHis,jdbcType=VARCHAR}, #{queryHi,jdbcType=VARCHAR}, ",
-        "#{timeUsed,jdbcType=INTEGER}, #{returnTime,jdbcType=TIMESTAMP}, ",
-        "#{interfaceParentType,jdbcType=VARCHAR}, #{interfaceType,jdbcType=VARCHAR}, ",
-        "#{state,jdbcType=INTEGER}, #{idCard,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
-        "#{mobile,jdbcType=VARCHAR}, #{ipAddress,jdbcType=VARCHAR})"
+        "insert into hj_query_log (log_id, order_no, ",
+        "user_name, user_id, ",
+        "query_time, query_his, ",
+        "query_hi, time_used, ",
+        "return_time, interface_parent_type, ",
+        "interface_type, state, ",
+        "id_card, name, mobile, ",
+        "ip_address)",
+        "values (#{logId,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, ",
+        "#{userName,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, ",
+        "#{queryTime,jdbcType=TIMESTAMP}, #{queryHis,jdbcType=VARCHAR}, ",
+        "#{queryHi,jdbcType=VARCHAR}, #{timeUsed,jdbcType=INTEGER}, ",
+        "#{returnTime,jdbcType=TIMESTAMP}, #{interfaceParentType,jdbcType=VARCHAR}, ",
+        "#{interfaceType,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, ",
+        "#{idCard,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, ",
+        "#{ipAddress,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Integer.class)
     int insert(QueryLog record);
@@ -49,6 +51,7 @@ public interface QueryLogMapper {
     @SelectProvider(type=QueryLogSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="log_id", property="logId", jdbcType=JdbcType.VARCHAR),
         @Result(column="order_no", property="orderNo", jdbcType=JdbcType.VARCHAR),
         @Result(column="user_name", property="userName", jdbcType=JdbcType.VARCHAR),
         @Result(column="user_id", property="userId", jdbcType=JdbcType.VARCHAR),
@@ -70,6 +73,7 @@ public interface QueryLogMapper {
     @SelectProvider(type=QueryLogSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="log_id", property="logId", jdbcType=JdbcType.VARCHAR),
         @Result(column="order_no", property="orderNo", jdbcType=JdbcType.VARCHAR),
         @Result(column="user_name", property="userName", jdbcType=JdbcType.VARCHAR),
         @Result(column="user_id", property="userId", jdbcType=JdbcType.VARCHAR),
@@ -90,7 +94,7 @@ public interface QueryLogMapper {
 
     @Select({
         "select",
-        "id, order_no, user_name, user_id, query_time, query_his, query_hi, time_used, ",
+        "id, log_id, order_no, user_name, user_id, query_time, query_his, query_hi, time_used, ",
         "return_time, interface_parent_type, interface_type, state, id_card, name, mobile, ",
         "ip_address",
         "from hj_query_log",
@@ -98,6 +102,7 @@ public interface QueryLogMapper {
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="log_id", property="logId", jdbcType=JdbcType.VARCHAR),
         @Result(column="order_no", property="orderNo", jdbcType=JdbcType.VARCHAR),
         @Result(column="user_name", property="userName", jdbcType=JdbcType.VARCHAR),
         @Result(column="user_id", property="userId", jdbcType=JdbcType.VARCHAR),
@@ -121,7 +126,8 @@ public interface QueryLogMapper {
 
     @Update({
         "update hj_query_log",
-        "set order_no = #{orderNo,jdbcType=VARCHAR},",
+        "set log_id = #{logId,jdbcType=VARCHAR},",
+          "order_no = #{orderNo,jdbcType=VARCHAR},",
           "user_name = #{userName,jdbcType=VARCHAR},",
           "user_id = #{userId,jdbcType=VARCHAR},",
           "query_time = #{queryTime,jdbcType=TIMESTAMP},",

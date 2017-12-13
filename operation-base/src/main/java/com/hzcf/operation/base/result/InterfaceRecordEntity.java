@@ -3,7 +3,16 @@ package com.hzcf.operation.base.result;
 import java.util.Date;
 
 public class InterfaceRecordEntity {
-	private String id;
+	private String logId;
+
+	public String getLogId() {
+		return logId;
+	}
+
+	public void setLogId(String logId) {
+		this.logId = logId;
+	}
+
 	private String userId;
 	private String userName;
 	private String interfaceParentType;
@@ -112,12 +121,6 @@ public class InterfaceRecordEntity {
 	private String queryParams;
 	private String results;
 	private String ipAddress;
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	public String getUserId() {
 		return userId;
 	}

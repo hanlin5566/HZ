@@ -199,7 +199,7 @@ public class MongoServiceImpl implements MongoService {
 
     @Override
     public LogQuery getLogQueryOne(InterfaceQueryEntity params) {
-        Query query = getQueryForLog(params);
+        Query query = getQueryDecisionSet(params);
         Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "_id"));
         LogQuery logQuery = mongoTemplate.findOne(query.with(sort), LogQuery.class, "log_query");
         return logQuery;
@@ -320,6 +320,9 @@ public class MongoServiceImpl implements MongoService {
     private Query getQueryDecisionSet(InterfaceQueryEntity params)
     {
         DBObject dbObject = new BasicDBObject();
+        if (StringUtils.isNotNull(params.getLogId())) {
+            dbObject.put("message.logId", params.getLogId());
+        }
         if (StringUtils.isNotNull(params.getTaskId())) {
             dbObject.put("message.taskId", params.getTaskId());
         }
@@ -356,7 +359,7 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message.queryTime",true);
         fieldObject.put("message.queryParams",true);
         fieldObject.put("message.results",true);
-        fieldObject.put("msaage.returnTime",true);
+        fieldObject.put("message.returnTime",true);
         fieldObject.put("message.timeUsed",true);
         Query query= new BasicQuery(dbObject, fieldObject);
         return query;

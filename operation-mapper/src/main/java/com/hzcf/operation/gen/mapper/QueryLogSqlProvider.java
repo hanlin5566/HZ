@@ -13,6 +13,10 @@ public class QueryLogSqlProvider {
         SQL sql = new SQL();
         sql.INSERT_INTO("hj_query_log");
         
+        if (record.getLogId() != null) {
+            sql.VALUES("log_id", "#{logId,jdbcType=VARCHAR}");
+        }
+        
         if (record.getOrderNo() != null) {
             sql.VALUES("order_no", "#{orderNo,jdbcType=VARCHAR}");
         }
@@ -83,6 +87,7 @@ public class QueryLogSqlProvider {
         } else {
             sql.SELECT("id");
         }
+        sql.SELECT("log_id");
         sql.SELECT("order_no");
         sql.SELECT("user_name");
         sql.SELECT("user_id");
@@ -111,6 +116,10 @@ public class QueryLogSqlProvider {
     public String updateByPrimaryKeySelective(QueryLog record) {
         SQL sql = new SQL();
         sql.UPDATE("hj_query_log");
+        
+        if (record.getLogId() != null) {
+            sql.SET("log_id = #{logId,jdbcType=VARCHAR}");
+        }
         
         if (record.getOrderNo() != null) {
             sql.SET("order_no = #{orderNo,jdbcType=VARCHAR}");

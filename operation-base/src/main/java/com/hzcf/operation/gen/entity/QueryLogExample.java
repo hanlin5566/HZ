@@ -74,7 +74,7 @@ public class QueryLogExample {
     }
 
     /**
-     * hj_query_log 2017-12-03
+     * hj_query_log 2017-12-13
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -174,6 +174,76 @@ public class QueryLogExample {
 
         public Criteria andIdNotBetween(Integer value1, Integer value2) {
             addCriterion("id not between", value1, value2, "id");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdIsNull() {
+            addCriterion("log_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdIsNotNull() {
+            addCriterion("log_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdEqualTo(String value) {
+            addCriterion("log_id =", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotEqualTo(String value) {
+            addCriterion("log_id <>", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdGreaterThan(String value) {
+            addCriterion("log_id >", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdGreaterThanOrEqualTo(String value) {
+            addCriterion("log_id >=", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdLessThan(String value) {
+            addCriterion("log_id <", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdLessThanOrEqualTo(String value) {
+            addCriterion("log_id <=", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdLike(String value) {
+            addCriterion("log_id like", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotLike(String value) {
+            addCriterion("log_id not like", value, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdIn(List<String> values) {
+            addCriterion("log_id in", values, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotIn(List<String> values) {
+            addCriterion("log_id not in", values, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdBetween(String value1, String value2) {
+            addCriterion("log_id between", value1, value2, "logId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLogIdNotBetween(String value1, String value2) {
+            addCriterion("log_id not between", value1, value2, "logId");
             return (Criteria) this;
         }
 
@@ -1199,7 +1269,7 @@ public class QueryLogExample {
     }
 
     /**
-     * hj_query_log 2017-12-03
+     * hj_query_log 2017-12-13
      */
     public static class Criterion {
         private String condition;
