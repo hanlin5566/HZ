@@ -120,7 +120,8 @@ public class LoginController {
         }
         //获取菜单名称
         SystemMenuExample menuExample = new SystemMenuExample();
-        menuExample.createCriteria().andIdIn(menuIdList).andDataStatusEqualTo(1);
+        menuExample.createCriteria().andIdIn(menuIdList);
+                //.andDataStatusEqualTo(1);
         menuList = menuService.selectByExample(menuExample);
         JSONObject retJson = (JSONObject) JSONObject.toJSON(retunResult);
         retJson.put("sysMenu", JSON.toJSON(menuIdList));

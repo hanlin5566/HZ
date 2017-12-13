@@ -17,4 +17,5 @@ public interface QueryLogService {
     public Result<Map<String,Object>> staticByTimeUsed(String startTime, String endTime);
     public Result<Map<String,Object>> staticState(String startTime, String endTime);
     public ResultPage<QueryLog> getQueryList(QueryLogExt queryLogExt, PageEntity page);
+    public QueryLog selectByPrimary(int id);
 }

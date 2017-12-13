@@ -12,51 +12,51 @@ public class SystemMenuSqlProvider {
     public String insertSelective(SystemMenu record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("system_menu");
-        
+
         if (record.getId() != null) {
             sql.VALUES("id", "#{id,jdbcType=INTEGER}");
         }
-        
+
         if (record.getModuleTitle() != null) {
             sql.VALUES("module_title", "#{moduleTitle,jdbcType=VARCHAR}");
         }
-        
-        if (record.getModuleHref() != null) {
-            sql.VALUES("module_href", "#{moduleHref,jdbcType=VARCHAR}");
+
+        if (record.getModuleCode() != null) {
+            sql.VALUES("module_code", "#{moduleCode,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModuleIcon() != null) {
             sql.VALUES("module_icon", "#{moduleIcon,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModuleSpread() != null) {
             sql.VALUES("module_spread", "#{moduleSpread,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getParentId() != null) {
             sql.VALUES("parent_id", "#{parentId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreateUid() != null) {
             sql.VALUES("create_uid", "#{createUid,jdbcType=INTEGER}");
         }
-        
+
         if (record.getUpdateUid() != null) {
             sql.VALUES("update_uid", "#{updateUid,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreateTime() != null) {
             sql.VALUES("create_time", "#{createTime,jdbcType=DATE}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.VALUES("update_time", "#{updateTime,jdbcType=DATE}");
         }
-        
+
         if (record.getDataStatus() != null) {
             sql.VALUES("data_status", "#{dataStatus,jdbcType=INTEGER}");
         }
-        
+
         return sql.toString();
     }
 
@@ -68,7 +68,7 @@ public class SystemMenuSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("module_title");
-        sql.SELECT("module_href");
+        sql.SELECT("module_code");
         sql.SELECT("module_icon");
         sql.SELECT("module_spread");
         sql.SELECT("parent_id");
@@ -79,60 +79,60 @@ public class SystemMenuSqlProvider {
         sql.SELECT("data_status");
         sql.FROM("system_menu");
         applyWhere(sql, example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
+
         return sql.toString();
     }
 
     public String updateByPrimaryKeySelective(SystemMenu record) {
         SQL sql = new SQL();
         sql.UPDATE("system_menu");
-        
+
         if (record.getModuleTitle() != null) {
             sql.SET("module_title = #{moduleTitle,jdbcType=VARCHAR}");
         }
-        
-        if (record.getModuleHref() != null) {
-            sql.SET("module_href = #{moduleHref,jdbcType=VARCHAR}");
+
+        if (record.getModuleCode() != null) {
+            sql.SET("module_code = #{moduleCode,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModuleIcon() != null) {
             sql.SET("module_icon = #{moduleIcon,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getModuleSpread() != null) {
             sql.SET("module_spread = #{moduleSpread,jdbcType=VARCHAR}");
         }
-        
+
         if (record.getParentId() != null) {
             sql.SET("parent_id = #{parentId,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreateUid() != null) {
             sql.SET("create_uid = #{createUid,jdbcType=INTEGER}");
         }
-        
+
         if (record.getUpdateUid() != null) {
             sql.SET("update_uid = #{updateUid,jdbcType=INTEGER}");
         }
-        
+
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{createTime,jdbcType=DATE}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{updateTime,jdbcType=DATE}");
         }
-        
+
         if (record.getDataStatus() != null) {
             sql.SET("data_status = #{dataStatus,jdbcType=INTEGER}");
         }
-        
+
         sql.WHERE("id = #{id,jdbcType=INTEGER}");
-        
+
         return sql.toString();
     }
 
@@ -140,7 +140,7 @@ public class SystemMenuSqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -162,7 +162,7 @@ public class SystemMenuSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -174,7 +174,7 @@ public class SystemMenuSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -185,7 +185,7 @@ public class SystemMenuSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
@@ -223,7 +223,7 @@ public class SystemMenuSqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             sql.WHERE(sb.toString());
         }

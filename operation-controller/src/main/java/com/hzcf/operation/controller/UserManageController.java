@@ -141,7 +141,7 @@ public class UserManageController {
     @RequestMapping(value="/{useId}")
     public Result detailUserInfo(HttpServletRequest request, @PathVariable String useId) {
         Result ret = new Result();
-        int userId = StringUtils.strToInt(useId);//用户Id
+         int userId = StringUtils.strToInt(useId);//用户Id
         if (userId<1) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
@@ -212,6 +212,46 @@ public class UserManageController {
             }
             int result  = systemUserService.updateSystemUserInfo(systemUser);
             if (result<1){
+                throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
+            }
+
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        return  ret.setData(map);
+
+    }
+
+
+    /***
+     *  删除用户信息
+     * @param request
+     * @param
+     * @return
+     */
+    @ApiOperation(value="", notes="删除用户")
+    @RequestMapping(value="/delUserInfo")
+    public Result delUserInfo(HttpServletRequest request, @RequestBody SystemUser param) {
+        Result<Map> ret = new Result<Map>();
+
+        //获取Id
+        int userId = param.getId();
+        if (userId<1) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        try {
+            Date date = new Date();
+            //查询
+            SystemUser systemUser = systemUserService.selectByPrimarykey(userId);
+            if (systemUser==null){
+                throw new CustomException(ResponseCode.ERROR_PARAM,"用户信息不存在!");
+            }
+            systemUser.setUpdateTime(date);
+            systemUser.setDataStatus(-1);
+            int returnResult = systemUserService.updateSystemUserInfo(systemUser);
+            if (returnResult<1){
                 throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
             }
 
@@ -397,6 +437,56 @@ public class UserManageController {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
         return  ret.setData(returnDto);
+
+    }
+
+    /***
+     * 删除角色信息
+     * @param request
+     * @param
+     * @return
+     */
+    @ApiOperation(value="删除角色信息", notes="删除角色信息")
+    @RequestMapping(value="/delRole")
+    public Result delRoleInfo(HttpServletRequest request,@RequestBody SystemRole param) {
+        Result<Map> ret = new Result<Map>();
+        //必传参数验证
+        int roleId = param.getId();
+        if (roleId<1) {
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        //String[] a   = param.getAuthMenu().split("-");
+
+        try {
+            Date date = new Date();
+            SystemRole systemRole = systemRoleService.selectByPrimaryKey(roleId);
+            systemRole.setUpdateTime(date);
+            systemRole.setDataStatus(-1);//已删除状态
+            //删除用户
+            int result = systemRoleService.updateSysteRole(systemRole);
+            if (result<1){
+                throw  new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常!");
+            }
+
+            //修改角色对应的权限 即删除
+            SystemRoleMenuExample example = new SystemRoleMenuExample();
+            example.createCriteria().andRoleIdEqualTo(roleId).andDataStatusEqualTo(1);//角色Id
+            List<SystemRoleMenu> list = roleMenuService.selectByExample(example);
+            // 删除角色权限
+            if (list.size()>0){
+                for (SystemRoleMenu roleMenu:list){
+                    roleMenu.setDataStatus(-1);//已删除
+                    int retuResullt = roleMenuService.updateRoleMenu(roleMenu);
+                    if (retuResullt<1){
+                        throw new CustomException(ResponseCode.ERROR_PARAM,"数据库操作异常");
+                    }
+                }
+            }
+        }catch (Exception e){
+            throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
+        }
+        return  ret.setData(map);
 
     }
 }

@@ -4,6 +4,7 @@ import com.hzcf.operation.base.entity.PageEntity;
 import com.hzcf.operation.base.entity.PageInfo;
 import com.hzcf.operation.base.entity.QueryLogExt;
 import com.hzcf.operation.base.enums.DataStatus;
+import com.hzcf.operation.base.result.LogQuery;
 import com.hzcf.operation.base.result.ResponseCode;
 import com.hzcf.operation.base.result.Result;
 import com.hzcf.operation.base.result.ResultPage;
@@ -162,6 +163,12 @@ public class QueryLogServiceImpl implements QueryLogService{
         return result;
     }
 
+
+    @Override
+    public QueryLog selectByPrimary(int id){
+        return   queryLogMapper.selectByPrimaryKey(id);
+    }
+
     private String validateStartTime(String startTime) {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -204,4 +211,5 @@ public class QueryLogServiceImpl implements QueryLogService{
         }
         return sdf.format(end);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.hzcf.operation.gen.entity;
 
+import com.hzcf.operation.base.enums.DataStatus;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -75,7 +76,7 @@ public class SystemMenuExample {
     }
 
     /**
-     * system_menu 2017-11-23
+     * system_menu 2017-12-08
      */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
@@ -274,73 +275,73 @@ public class SystemMenuExample {
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefIsNull() {
-            addCriterion("module_href is null");
+        public Criteria andModuleCodeIsNull() {
+            addCriterion("module_code is null");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefIsNotNull() {
-            addCriterion("module_href is not null");
+        public Criteria andModuleCodeIsNotNull() {
+            addCriterion("module_code is not null");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefEqualTo(String value) {
-            addCriterion("module_href =", value, "moduleHref");
+        public Criteria andModuleCodeEqualTo(String value) {
+            addCriterion("module_code =", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefNotEqualTo(String value) {
-            addCriterion("module_href <>", value, "moduleHref");
+        public Criteria andModuleCodeNotEqualTo(String value) {
+            addCriterion("module_code <>", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefGreaterThan(String value) {
-            addCriterion("module_href >", value, "moduleHref");
+        public Criteria andModuleCodeGreaterThan(String value) {
+            addCriterion("module_code >", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefGreaterThanOrEqualTo(String value) {
-            addCriterion("module_href >=", value, "moduleHref");
+        public Criteria andModuleCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("module_code >=", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefLessThan(String value) {
-            addCriterion("module_href <", value, "moduleHref");
+        public Criteria andModuleCodeLessThan(String value) {
+            addCriterion("module_code <", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefLessThanOrEqualTo(String value) {
-            addCriterion("module_href <=", value, "moduleHref");
+        public Criteria andModuleCodeLessThanOrEqualTo(String value) {
+            addCriterion("module_code <=", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefLike(String value) {
-            addCriterion("module_href like", value, "moduleHref");
+        public Criteria andModuleCodeLike(String value) {
+            addCriterion("module_code like", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefNotLike(String value) {
-            addCriterion("module_href not like", value, "moduleHref");
+        public Criteria andModuleCodeNotLike(String value) {
+            addCriterion("module_code not like", value, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefIn(List<String> values) {
-            addCriterion("module_href in", values, "moduleHref");
+        public Criteria andModuleCodeIn(List<String> values) {
+            addCriterion("module_code in", values, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefNotIn(List<String> values) {
-            addCriterion("module_href not in", values, "moduleHref");
+        public Criteria andModuleCodeNotIn(List<String> values) {
+            addCriterion("module_code not in", values, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefBetween(String value1, String value2) {
-            addCriterion("module_href between", value1, value2, "moduleHref");
+        public Criteria andModuleCodeBetween(String value1, String value2) {
+            addCriterion("module_code between", value1, value2, "moduleCode");
             return (Criteria) this;
         }
 
-        public Criteria andModuleHrefNotBetween(String value1, String value2) {
-            addCriterion("module_href not between", value1, value2, "moduleHref");
+        public Criteria andModuleCodeNotBetween(String value1, String value2) {
+            addCriterion("module_code not between", value1, value2, "moduleCode");
             return (Criteria) this;
         }
 
@@ -794,52 +795,52 @@ public class SystemMenuExample {
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusEqualTo(Integer value) {
+        public Criteria andDataStatusEqualTo(DataStatus value) {
             addCriterion("data_status =", value, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusNotEqualTo(Integer value) {
+        public Criteria andDataStatusNotEqualTo(DataStatus value) {
             addCriterion("data_status <>", value, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusGreaterThan(Integer value) {
+        public Criteria andDataStatusGreaterThan(DataStatus value) {
             addCriterion("data_status >", value, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDataStatusGreaterThanOrEqualTo(DataStatus value) {
             addCriterion("data_status >=", value, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusLessThan(Integer value) {
+        public Criteria andDataStatusLessThan(DataStatus value) {
             addCriterion("data_status <", value, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andDataStatusLessThanOrEqualTo(DataStatus value) {
             addCriterion("data_status <=", value, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusIn(List<Integer> values) {
+        public Criteria andDataStatusIn(List<DataStatus> values) {
             addCriterion("data_status in", values, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusNotIn(List<Integer> values) {
+        public Criteria andDataStatusNotIn(List<DataStatus> values) {
             addCriterion("data_status not in", values, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusBetween(Integer value1, Integer value2) {
+        public Criteria andDataStatusBetween(DataStatus value1, DataStatus value2) {
             addCriterion("data_status between", value1, value2, "dataStatus");
             return (Criteria) this;
         }
 
-        public Criteria andDataStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andDataStatusNotBetween(DataStatus value1, DataStatus value2) {
             addCriterion("data_status not between", value1, value2, "dataStatus");
             return (Criteria) this;
         }
@@ -856,7 +857,7 @@ public class SystemMenuExample {
     }
 
     /**
-     * system_menu 2017-11-23
+     * system_menu 2017-12-08
      */
     public static class Criterion {
         private String condition;
