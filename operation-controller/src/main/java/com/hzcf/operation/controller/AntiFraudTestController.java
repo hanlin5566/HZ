@@ -50,7 +50,6 @@ public class AntiFraudTestController {
         Result result = new Result<>();
         JSONObject jso = antiFraudTestService.testAntiFraud(param);
         result.setData(jso);
-        
         return result;
     }
 
