@@ -45,6 +45,7 @@ public class QueryLogServiceImpl implements QueryLogService{
     @Override
     public ResultPage<QueryLog> getQueryList(QueryLogExt queryLogExt, PageEntity page)
     {
+        
         ResultPage<QueryLog> result = new ResultPage<QueryLog>();
         QueryLogExample example = BeanUtils.example(queryLogExt,QueryLogExample.class);
         example.setOrderByClause("id desc");
