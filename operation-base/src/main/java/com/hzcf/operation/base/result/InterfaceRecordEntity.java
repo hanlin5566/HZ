@@ -1,8 +1,10 @@
 package com.hzcf.operation.base.result;
 
 import java.util.Date;
+import java.util.Map;
 
 public class InterfaceRecordEntity {
+	private String id;
 	private String logId;
 
 	public String getLogId() {
@@ -15,24 +17,31 @@ public class InterfaceRecordEntity {
 
 	private String userId;
 	private String userName;
+	//一级接口名称
 	private String interfaceParentType;
+	//二级接口名称
+	private String interfaceType;
 	private String idCard;
 	private String name;
 	private String mobile;
 	private String queryHi;
 	private String queryHis;
+	//查询用时
 	private Long timeUsed;
+	//流程Id
 	private String taskId;
+	//规则集Id
 	private String ruleId;
-	private String errorReturn;
+	private String companyAddr;
 
-	public String getErrorReturn() {
-		return errorReturn;
+	public String getCompanyAddr() {
+		return companyAddr;
 	}
 
-	public void setErrorReturn(String errorReturn) {
-		this.errorReturn = errorReturn;
+	public void setCompanyAddr(String companyAddr) {
+		this.companyAddr = companyAddr;
 	}
+	//查询时间
 
 	public String getRuleId() {
 		return ruleId;
@@ -40,6 +49,63 @@ public class InterfaceRecordEntity {
 
 	public void setRuleId(String ruleId) {
 		this.ruleId = ruleId;
+	}
+
+	private Date queryTime;
+	//返回时间
+	private Date returnTime;
+	//查询状态 1=查询异常 2=查询正常且有数据 3=查询正常且无数据  4=历史数据状态
+	private String state;
+	//查询入参
+	private String queryParams;
+	//查询回传
+	private String results;
+	//异常描述
+	private String errorReturn;
+	private String homeAddr;
+	private String email;
+	private String company;
+	private String ipAddress;
+	private Map data;
+
+	public Map getData() {
+		return data;
+	}
+
+	public void setData(Map data) {
+		this.data = data;
+	}
+
+	public String getHomeAddr() {
+		return homeAddr;
+	}
+
+	public void setHomeAddr(String homeAddr) {
+		this.homeAddr = homeAddr;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getErrorReturn() {
+		return errorReturn;
+	}
+
+	public void setErrorReturn(String errorReturn) {
+		this.errorReturn = errorReturn;
 	}
 
 	public String getTaskId() {
@@ -114,13 +180,12 @@ public class InterfaceRecordEntity {
 		this.mobile = mobile;
 	}
 
-	private Date queryTime;
-	private Date returnTime;
-	private String interfaceType;
-	private String state;
-	private String queryParams;
-	private String results;
-	private String ipAddress;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getUserId() {
 		return userId;
 	}
