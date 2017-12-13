@@ -204,27 +204,24 @@ public class VisDesController {
 
     }
 
-    @ApiOperation(value="获取决策引擎信息", notes="获取决策引擎信息根据taskId-interfaceParentType-interfaceType")
-    @RequestMapping(value="/getDecisionMsg")
-    public Result getDecisionMsg(HttpServletRequest request) {
+    @ApiOperation(value="获取决策引擎信息", notes="获取决策引擎信息根据taskId-interfaceParentType")
+    @RequestMapping(value="/getDecisionSteps")
+    public Result getDecisionSteps(HttpServletRequest request) {
         Result ret = new Result();
         String taskId = request.getParameter("taskId");
         String interfaceParentType = request.getParameter("interfaceParentType");
-        String interfaceType = request.getParameter("interfaceType");
-
         //必要参数验证
         if (!StringUtils.isNotNull(taskId)||!StringUtils.isNotNull(interfaceParentType)||!StringUtils.isNotNull(interfaceParentType)
-                ||!StringUtils.isNotNull(interfaceType)) {
+               ) {
             throw  new CustomException(ResponseCode.ERROR_PARAM,"请求参数不完整或有误!");
         }
-
-        Map returnMap = new HashMap();
         try {
-            returnMap  =  mongoService.getDesionMsg("AP500228199306179610","variable","app");
+            List<LogQuery> list  =  mongoService.getDecisionSteps(taskId,interfaceParentType);
+            ret.setData(list);
         }catch (Exception e){
             throw  new CustomException(ResponseCode.ERROR_PARAM,"系统运行错误!");
         }
-        return  ret.setData(returnMap);
+        return  ret;
 
     }
 
