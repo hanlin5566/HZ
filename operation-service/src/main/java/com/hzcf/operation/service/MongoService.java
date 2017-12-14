@@ -24,5 +24,6 @@ public interface MongoService {
 	public Map getDesionMsg(String taskId,String parentInterfaceType,String interfaceType);
 	public LogQuery getLogQueryOne(InterfaceQueryEntity params);
 	List<LogQuery> getDecisionSteps(String taskId,String parentInterfaceType);
+	public List<LogQuery> getDeciSionByRuleId(InterfaceQueryEntity params);
 
 }

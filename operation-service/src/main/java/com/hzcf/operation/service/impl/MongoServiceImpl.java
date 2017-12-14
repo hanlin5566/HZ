@@ -293,6 +293,9 @@ public class MongoServiceImpl implements MongoService {
         if (StringUtils.isNotNull(params.getInterfaceParentType())) {
             dbObject.put("message.interfaceParentType", params.getInterfaceParentType());
         }
+        if (StringUtils.isNotNull(params.getRuleId())){
+            dbObject.put("message.ruleId",params.getRuleId());
+        }
        /* Calendar calendar = Calendar.getInstance();//有8小时时差
         calendar.set(2017, 8, 10, 16, 28, 0);
         Date start = calendar.getTime();
@@ -313,6 +316,8 @@ public class MongoServiceImpl implements MongoService {
         fieldObject.put("message.userName", true);
         fieldObject.put("message.queryTime", true);
         fieldObject.put("message.state", true);
+        fieldObject.put("message.queryParams",true);
+        fieldObject.put("message.results",true);
         Query query= new BasicQuery(dbObject, fieldObject);
         return query;
     }
@@ -398,6 +403,15 @@ public class MongoServiceImpl implements MongoService {
         param.setTaskId(taskId);
         Query query = getQueryDecisionSet(param);
         List<LogQuery> list =decisionMongoTemplate.find(query,LogQuery.class,hjDecisionStep);
+        return list;
+    }
+
+    @Override
+    public List<LogQuery> getDeciSionByRuleId(InterfaceQueryEntity params) {
+        Query query = getQueryForLog2(params);
+        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "_id"));
+        //List<LogQuery> list = decisionMongoTemplate.find(query.with(sort).skip((params.getPageNo()-1)*params.getPageSize()).limit(params.getPageSize()), LogQuery.class, hjDecisionStep);
+        List<LogQuery> list = decisionMongoTemplate.find(query.with(sort).skip((params.getPageNo()-1)*params.getPageSize()).limit(params.getPageSize()), LogQuery.class, hjDecisionStep);
         return list;
     }
 }

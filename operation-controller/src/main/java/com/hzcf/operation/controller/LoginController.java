@@ -212,7 +212,8 @@ public class LoginController {
     @RequestMapping(value="/userSubMenu")
     public Result getUserSumMenu(HttpServletRequest request) {
         Result ret = new Result();
-        int userId = StringUtils.strToInt(request.getParameter("userId"));
+        int userId =28;
+                //StringUtils.strToInt(request.getParameter("userId"));
         List<MenuDto> menuList = new ArrayList<>();
         //参数验证
         if (userId<1) {
